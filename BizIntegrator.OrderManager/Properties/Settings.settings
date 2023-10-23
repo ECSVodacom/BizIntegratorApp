@@ -1,0 +1,19 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BizIntegrator.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Enabled" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="PrivateKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;RSAKeyValue&gt;&lt;Modulus&gt;qInYjKFVS+4ZB+SlGJs29uWm2utqkRjbeGLK1cmFIddIlUxKJcI2axDkcEEDwjGuxjraTjFdJeUVho6W8zxMhz9bYHFiq4Egp1ME96hIWfBEpyu5nUSYb9T7cFQFV7AB17weiZPN1IWVZNcdeExxTnehU95ucjZPP+cNVHQnYzE=&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;P&gt;2u5SGxShB4jbaODSIlgm8SpIfXHpDqdKuway//BWavczIeWgu0ZEduGwnRZpRghT3PGk19eQer4906dFr6Q9cw==&lt;/P&gt;&lt;Q&gt;xRM8bbrHPLD3ZY1EpLGpVhulAtoCybA1/r8vtVIFv/1OQ5TSMhh2pojxOcf8aFLx+1OAUKoqBdSgIALcsXBzyw==&lt;/Q&gt;&lt;DP&gt;HfRzyX7GFajVFIGGXuqe0WqOppNaZwXexL5C6Z/xwwr1tRKdLmKL5ZQ1vRie6NUk3Fs3ycyV2SWEghwl/cVEHw==&lt;/DP&gt;&lt;DQ&gt;oUOIY1I/zs4Q46yhyxMGOkwMzzSOq3Ph+z9/TqR7yAsDjBGvnwadsNDGdD3NsaCOGtbNXTShhnvjO86bwSb/2Q==&lt;/DQ&gt;&lt;InverseQ&gt;Qoe4ulQGh8/SwYWJH6jPvj6H5Uc+NeSc+jN8eDOu4pAADu51TZv+9jMrv59H7k8Yp746GqD0KtlXJ/m2LrUcoQ==&lt;/InverseQ&gt;&lt;D&gt;SJkIJJuiKFDpi1LcIttJM9T8qLRbdSDl+NdlU+24YTlg1J7GGbmswzXFkO0Qd2f7Rvw26ROuchJZ0Vo+f4vr0msvv5GVTZNAQy7R5xBfZeDbyJKlb5WX6ucnjFdk2f8YHaa4i+EpXiJWuSS0Bor+Jryucph+3St1eCPlCL7agLk=&lt;/D&gt;&lt;/RSAKeyValue&gt;</Value>
+    </Setting>
+    <Setting Name="ConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;ConnectionString&gt;Data Source=192.168.101.116,1433;Initial Catalog=BizIntegrator;User ID=sparuser;Password=ECsqlOnline!;MultipleActiveResultSets=true&lt;/ConnectionString&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=192.168.101.116,1433;Initial Catalog=BizIntegrator;User ID=sparuser;Password=ECsqlOnline!;MultipleActiveResultSets=true</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

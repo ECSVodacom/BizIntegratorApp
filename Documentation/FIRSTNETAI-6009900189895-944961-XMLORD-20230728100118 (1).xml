@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orderMessage xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="file:///C:/Trandev53.2/XTRAEDIORD.xsd">
+   <standardBusinessDocumentHeader>
+      <headerVersion>1.0</headerVersion>
+      <documentType>ORDER</documentType>
+      <documentStatusCode>ORIGINAL</documentStatusCode>
+      <documentIdentification>
+         <standard>XTRA</standard>
+         <typeVersion>1.0</typeVersion>
+         <creationDateAndTime>2023-07-28 10:01AM</creationDateAndTime>
+      </documentIdentification>
+      <receiver>
+         <gln>6009900189895</gln>
+      </receiver>
+      <sender>
+         <gln>6001008999932</gln>
+      </sender>
+   </standardBusinessDocumentHeader>
+   <order>
+      <customer>
+         <gln>6001008999932</gln>
+         <contactInformation />
+         <customerName>SPARTAN SPAR (FS)</customerName>
+         <deliveryPoint>
+            <gln>6001008401244</gln>
+            <deliveryPointName>SPARTAN SPAR (FS)</deliveryPointName>
+         </deliveryPoint>
+      </customer>
+      <orderIdentification>
+         <orderNo>132406</orderNo>
+         <orderDate>20230728</orderDate>
+         <deliveryDates>
+            <latestDate>20230802</latestDate>
+         </deliveryDates>
+         <orderCurrencyCode>ZAR</orderCurrencyCode>
+         <countryOfSupplyOfGoods>ZA</countryOfSupplyOfGoods>
+         <representatives />
+      </orderIdentification>
+      <orderLineItem>
+         <lineItemNumber>1</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>07622201779030</gtin>
+               <code>07622201779030</code>
+               <description>OREO COOKIES ORIGINAL</description>
+            </customerIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>10</orderdQuantity>
+         <itemPriceExclusive>235.20</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>2352.00</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>2352.00</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>2</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>00000060025296</gtin>
+               <code>060025296</code>
+               <description>HALLS MENTHOL EUCALYPTUS</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>4005657</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>5</orderdQuantity>
+         <itemPriceExclusive>123.30</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>616.50</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>616.50</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>3</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>00000060025265</gtin>
+               <code>060025265</code>
+               <description>HALLS CHERRY</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>4005672</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>5</orderdQuantity>
+         <itemPriceExclusive>123.30</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>616.50</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>616.50</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>4</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>00000060025258</gtin>
+               <code>060025258</code>
+               <description>HALLS ICE BLUE</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>4005677</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>5</orderdQuantity>
+         <itemPriceExclusive>123.30</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>616.50</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>616.50</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>5</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>00000060025272</gtin>
+               <code>060025272</code>
+               <description>HALLS EXTRA STRONG</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>4005682</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>5</orderdQuantity>
+         <itemPriceExclusive>123.30</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>616.50</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>616.50</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>6</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>07622210622211</gtin>
+               <code>07622210622211</code>
+               <description>CADBURY BARS 5 STAR</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>4029981</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>6</orderdQuantity>
+         <itemPriceExclusive>279.36</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>1676.16</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>1676.16</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>7</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>00000060026125</gtin>
+               <code>060026125</code>
+               <description>HALLS C/DROPS F/EXPLOSION</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>4032701</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>5</orderdQuantity>
+         <itemPriceExclusive>123.30</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>616.50</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>616.50</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>8</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>00000050312351</gtin>
+               <code>050312351</code>
+               <description>CADBURY FLAKE ORIGINAL</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>4059075</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>10</orderdQuantity>
+         <itemPriceExclusive>376.80</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>3768.00</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>3768.00</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>9</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>07622210957375</gtin>
+               <code>07622210957375</code>
+               <description>CADBURY DM CHOC BAR OREO</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>4072102</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>2</orderdQuantity>
+         <itemPriceExclusive>397.44</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>794.88</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>794.88</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>10</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>06001065036427</gtin>
+               <code>06001065036427</code>
+               <description>CADBURY CRUNCHIE LARGE</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>672272</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>6</orderdQuantity>
+         <itemPriceExclusive>349.20</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>2095.20</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>2095.20</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>11</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>06001065034010</gtin>
+               <code>06001065034010</code>
+               <description>CADBURY LUNCH BAR DREAM</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>673853</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>6</orderdQuantity>
+         <itemPriceExclusive>349.20</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>2095.20</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>2095.20</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>12</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>06001065034027</gtin>
+               <code>06001065034027</code>
+               <description>CADBURY LUNCH BAR</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>673856</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>10</orderdQuantity>
+         <itemPriceExclusive>349.20</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>3492.00</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>3492.00</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>13</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>06001065034065</gtin>
+               <code>06001065034065</code>
+               <description>CADBURY PS D/MILK ORG</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>673859</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>4</orderdQuantity>
+         <itemPriceExclusive>349.20</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>1396.80</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>1396.80</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderLineItem>
+         <lineItemNumber>14</lineItemNumber>
+         <transactionalTradeItem>
+            <customerIdentifier>
+               <gtin>06001065421902</gtin>
+               <code>06001065421902</code>
+               <description>CADBURY CHOMP LARGE</description>
+            </customerIdentifier>
+            <supplierIdentifier>
+               <gtin>674079</gtin>
+            </supplierIdentifier>
+         </transactionalTradeItem>
+         <orderdQuantity>4</orderdQuantity>
+         <itemPriceExclusive>385.20</itemPriceExclusive>
+         <amountExclusiveBeforeDiscount>1540.80</amountExclusiveBeforeDiscount>
+         <discount>0.00</discount>
+         <amountExclusiveAfterDiscount>1540.80</amountExclusiveAfterDiscount>
+         <orderLineTaxInformation />
+      </orderLineItem>
+      <orderTotals>
+         <totalOrderAmountExclusive>22293.54</totalOrderAmountExclusive>
+         <totalOrderAmountInclusive>22293.54</totalOrderAmountInclusive>
+      </orderTotals>
+   </order>
+</orderMessage>

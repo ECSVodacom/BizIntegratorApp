@@ -1,0 +1,1672 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BizIntegratorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="APIEndpoints">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="API_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EndPoint" Type="varchar" MaxLength="1000" />
+          <Property Name="TransactionType" Type="varchar" MaxLength="15" />
+          <Property Name="HttpVerb" Type="varchar" MaxLength="15" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="APIs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="AccountKey" Type="nvarchar(max)" />
+          <Property Name="Username" Type="varchar" MaxLength="100" />
+          <Property Name="Password" Type="varchar" MaxLength="100" />
+          <Property Name="PublicKey" Type="nvarchar(max)" />
+          <Property Name="PrivateKey" Type="nvarchar(max)" />
+          <Property Name="EndPointBase" Type="varchar" MaxLength="100" />
+          <Property Name="AuthenticationType" Type="varchar" MaxLength="50" />
+          <Property Name="UseAPIKey" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="ConfirmedOrders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrdNo" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Message" Type="varchar" MaxLength="50" />
+          <Property Name="Confirmed" Type="char" MaxLength="1" />
+          <Property Name="Order_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="ConfirmOrderRequests">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Order_ID" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="DocumentHeaders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Sender_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Receiver_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DocumentIdentification_Id" Type="uniqueidentifier" />
+          <Property Name="Manifest_Id" Type="uniqueidentifier" />
+          <Property Name="Order_Id" Type="uniqueidentifier" />
+          <Property Name="Supplier_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="DocumentIdentifications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Standard" Type="varchar" MaxLength="50" />
+          <Property Name="InstanceIdentifier" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="CreationDateAndTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="InvoiceLines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OurItemNumber" Type="varchar" MaxLength="50" />
+          <Property Name="YourItemNumber" Type="varchar" MaxLength="50" />
+          <Property Name="LineQuantity" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="LineAmount" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="TaxAmount" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="ItemWeight" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="TransportAmount" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="LineDescription" Type="varchar" MaxLength="50" />
+          <Property Name="LineUOM" Type="varchar" MaxLength="50" />
+          <Property Name="PackSize" Type="numeric" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Invoices">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="InvoiceNumber" Type="varchar" MaxLength="50" />
+          <Property Name="InvoiceDate" Type="datetime" />
+          <Property Name="InvoiceType" Type="varchar" MaxLength="50" />
+          <Property Name="RefInvoiceNumber" Type="varchar" MaxLength="50" />
+          <Property Name="OrderNumber" Type="varchar" MaxLength="50" />
+          <Property Name="InvoiceAmount" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="TaxAmount" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="InvoiceAmountInc" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="NumberOfLines" Type="int" />
+          <Property Name="TotalQuantity" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="TotalWeight" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="AcPercentage" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="CgrnNumber" Type="varchar" MaxLength="50" />
+          <Property Name="COrderNumber" Type="varchar" MaxLength="50" />
+          <Property Name="OrderLine_Id" Type="uniqueidentifier" />
+          <Property Name="Order_Id" Type="uniqueidentifier" />
+          <Property Name="InvoiceLine_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="LoggedInUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_Id" Type="uniqueidentifier" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Initials" Type="varchar" MaxLength="50" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyNo" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="50" />
+          <Property Name="EMail" Type="varchar" MaxLength="50" />
+          <Property Name="Permission_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Vendor_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="LoginRequests">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CompNo" Type="varchar" MaxLength="50" />
+          <Property Name="User_Id" Type="uniqueidentifier" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LoginResponses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccessToken" Type="varchar" MaxLength="50" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="Initials" Type="varchar" MaxLength="50" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyNo" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="50" />
+          <Property Name="EMail" Type="varchar" MaxLength="50" />
+          <Property Name="Permission_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Vendor_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="OrderLines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrdLn" Type="int" />
+          <Property Name="ItemNo" Type="varchar" MaxLength="50" />
+          <Property Name="ItemDesc" Type="varchar" MaxLength="50" />
+          <Property Name="MfrItem" Type="varchar" MaxLength="50" />
+          <Property Name="QtyConv" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="OrdQty" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="PurcUom" Type="varchar" MaxLength="50" />
+          <Property Name="PurcUomConv" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="TaxCde" Type="varchar" MaxLength="50" />
+          <Property Name="TaxRate" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="UnitPrc" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="LineTotExcl" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="LineTotTax" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="LineTotVal" Type="numeric" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrdNo" Type="varchar" MaxLength="50" />
+          <Property Name="OrdDate" Type="datetime" />
+          <Property Name="OrdDesc" Type="varchar" MaxLength="50" />
+          <Property Name="OrdType" Type="varchar" MaxLength="50" />
+          <Property Name="OrdTerm" Type="varchar" MaxLength="50" />
+          <Property Name="OrdTermDesc" Type="varchar" MaxLength="50" />
+          <Property Name="OrdStat" Type="int" />
+          <Property Name="OrderStatus" Type="varchar" MaxLength="50" />
+          <Property Name="Origin" Type="varchar" MaxLength="50" />
+          <Property Name="PromDate" Type="datetime" />
+          <Property Name="CompName" Type="varchar" MaxLength="50" />
+          <Property Name="BranchNo" Type="varchar" MaxLength="50" />
+          <Property Name="BranchName" Type="varchar" MaxLength="50" />
+          <Property Name="BranchAddr1" Type="varchar" MaxLength="50" />
+          <Property Name="BranchAddr2" Type="varchar" MaxLength="50" />
+          <Property Name="BranchTel" Type="varchar" MaxLength="50" />
+          <Property Name="BranchFax" Type="varchar" MaxLength="50" />
+          <Property Name="BranchEmail" Type="varchar" MaxLength="50" />
+          <Property Name="BranchVat" Type="varchar" MaxLength="50" />
+          <Property Name="VendorRef" Type="varchar" MaxLength="50" />
+          <Property Name="VendorNo" Type="varchar" MaxLength="50" />
+          <Property Name="VendorName" Type="varchar" MaxLength="50" />
+          <Property Name="VendorAddr1" Type="varchar" MaxLength="50" />
+          <Property Name="VendorAddr2" Type="varchar" MaxLength="50" />
+          <Property Name="VendorSuburb" Type="varchar" MaxLength="50" />
+          <Property Name="VendorCity" Type="varchar" MaxLength="50" />
+          <Property Name="VendorContact" Type="varchar" MaxLength="50" />
+          <Property Name="TotLines" Type="int" />
+          <Property Name="TotQty" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="TotExcl" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="TotTax" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="TotVal" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="DelivAddr1" Type="varchar" MaxLength="50" />
+          <Property Name="DelivAddr2" Type="varchar" MaxLength="50" />
+          <Property Name="DelivSuburb" Type="varchar" MaxLength="50" />
+          <Property Name="DelivCity" Type="varchar" MaxLength="50" />
+          <Property Name="BuyerNote" Type="varchar" MaxLength="50" />
+          <Property Name="ConfirmInd" Type="bit" />
+          <Property Name="CompID" Type="varchar" MaxLength="50" />
+          <Property Name="ResendOrder" Type="bit" />
+          <Property Name="Processed" Type="bit" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ProblemDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="Title" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Detail" Type="varchar" MaxLength="50" />
+          <Property Name="Instance" Type="varchar" MaxLength="50" />
+          <Property Name="Supplier_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="Receivers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdentifierAuthority" Type="varchar" MaxLength="50" />
+          <Property Name="Value" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Senders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdentifierAuthority" Type="varchar" MaxLength="50" />
+          <Property Name="Value" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Suppliers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="API_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ean" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SupplierVendors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SupplierId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="Ean" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="SellerEan" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="Vendor" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UploadedInvoices">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="InvNo" Type="varchar" MaxLength="50" />
+          <Property Name="OrdNo" Type="varchar" MaxLength="50" />
+          <Property Name="VendorNo" Type="varchar" MaxLength="50" />
+          <Property Name="FileName" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Message" Type="varchar" MaxLength="50" />
+          <Property Name="Uploaded" Type="char" MaxLength="1" />
+          <Property Name="Invoice_Id" Type="uniqueidentifier" />
+          <Property Name="Order_Id" Type="uniqueidentifier" />
+          <Property Name="Vendor_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <Association Name="FK_ConfirmOrdersRequest_Ord">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="ConfirmOrderRequests" Type="Self.ConfirmOrderRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConfirmOrderRequests">
+              <PropertyRef Name="Order_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_DocumentIdentification">
+          <End Role="DocumentIdentifications" Type="Self.DocumentIdentifications" Multiplicity="0..1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentIdentifications">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="DocumentIdentification_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_Order">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_Receiver">
+          <End Role="Receivers" Type="Self.Receivers" Multiplicity="1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receivers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="Receiver_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_Sender">
+          <End Role="Senders" Type="Self.Senders" Multiplicity="1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Senders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="Sender_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_Supplier">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="0..1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="Supplier_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_InvoiceLine">
+          <End Role="InvoiceLines" Type="Self.InvoiceLines" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InvoiceLines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="InvoiceLine_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_OrdLine">
+          <End Role="OrderLines" Type="Self.OrderLines" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderLines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="OrderLine_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_UploadedInvoice">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="0..1" />
+          <End Role="UploadedInvoices" Type="Self.UploadedInvoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UploadedInvoices">
+              <PropertyRef Name="Invoice_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoggedInUser_Permission">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
+          <End Role="LoggedInUsers" Type="Self.LoggedInUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoggedInUsers">
+              <PropertyRef Name="Permission_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoggedInUser_SupplierVendors">
+          <End Role="SupplierVendors" Type="Self.SupplierVendors" Multiplicity="0..1" />
+          <End Role="LoggedInUsers" Type="Self.LoggedInUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SupplierVendors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoggedInUsers">
+              <PropertyRef Name="Vendor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginRequests_Users">
+          <End Role="LoggedInUsers" Type="Self.LoggedInUsers" Multiplicity="0..1" />
+          <End Role="LoginRequests" Type="Self.LoginRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoggedInUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoginRequests">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginResponse_Permission">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
+          <End Role="LoginResponses" Type="Self.LoginResponses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoginResponses">
+              <PropertyRef Name="Permission_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginResponse_SupplierVendors">
+          <End Role="SupplierVendors" Type="Self.SupplierVendors" Multiplicity="0..1" />
+          <End Role="LoginResponses" Type="Self.LoginResponses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SupplierVendors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoginResponses">
+              <PropertyRef Name="Vendor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Invoice">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_UploadedInvoice">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="UploadedInvoices" Type="Self.UploadedInvoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UploadedInvoices">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDERS_ConfirmedOrders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="ConfirmedOrders" Type="Self.ConfirmedOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConfirmedOrders">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProblemDetails_Supplier">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="0..1" />
+          <End Role="ProblemDetails" Type="Self.ProblemDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProblemDetails">
+              <PropertyRef Name="Supplier_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Suppliers_APIs">
+          <End Role="APIs" Type="Self.APIs" Multiplicity="1" />
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APIs">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Suppliers">
+              <PropertyRef Name="API_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplierVendors_Suppliers">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1" />
+          <End Role="SupplierVendors" Type="Self.SupplierVendors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SupplierVendors">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vendor_UploadedInvoice">
+          <End Role="SupplierVendors" Type="Self.SupplierVendors" Multiplicity="0..1" />
+          <End Role="UploadedInvoices" Type="Self.UploadedInvoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SupplierVendors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UploadedInvoices">
+              <PropertyRef Name="Vendor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BizIntegratorModelStoreContainer">
+          <EntitySet Name="APIEndpoints" EntityType="Self.APIEndpoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="APIs" EntityType="Self.APIs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConfirmedOrders" EntityType="Self.ConfirmedOrders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConfirmOrderRequests" EntityType="Self.ConfirmOrderRequests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentHeaders" EntityType="Self.DocumentHeaders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentIdentifications" EntityType="Self.DocumentIdentifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InvoiceLines" EntityType="Self.InvoiceLines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoggedInUsers" EntityType="Self.LoggedInUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoginRequests" EntityType="Self.LoginRequests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoginResponses" EntityType="Self.LoginResponses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderLines" EntityType="Self.OrderLines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProblemDetails" EntityType="Self.ProblemDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Receivers" EntityType="Self.Receivers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Senders" EntityType="Self.Senders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SupplierVendors" EntityType="Self.SupplierVendors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UploadedInvoices" EntityType="Self.UploadedInvoices" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ConfirmOrdersRequest_Ord" Association="Self.FK_ConfirmOrdersRequest_Ord">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="ConfirmOrderRequests" EntitySet="ConfirmOrderRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_DocumentIdentification" Association="Self.FK_DocumentHeader_DocumentIdentification">
+            <End Role="DocumentIdentifications" EntitySet="DocumentIdentifications" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_Order" Association="Self.FK_DocumentHeader_Order">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_Receiver" Association="Self.FK_DocumentHeader_Receiver">
+            <End Role="Receivers" EntitySet="Receivers" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_Sender" Association="Self.FK_DocumentHeader_Sender">
+            <End Role="Senders" EntitySet="Senders" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_Supplier" Association="Self.FK_DocumentHeader_Supplier">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_InvoiceLine" Association="Self.FK_Invoice_InvoiceLine">
+            <End Role="InvoiceLines" EntitySet="InvoiceLines" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_OrdLine" Association="Self.FK_Invoice_OrdLine">
+            <End Role="OrderLines" EntitySet="OrderLines" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_UploadedInvoice" Association="Self.FK_Invoice_UploadedInvoice">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="UploadedInvoices" EntitySet="UploadedInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoggedInUser_Permission" Association="Self.FK_LoggedInUser_Permission">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="LoggedInUsers" EntitySet="LoggedInUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoggedInUser_SupplierVendors" Association="Self.FK_LoggedInUser_SupplierVendors">
+            <End Role="SupplierVendors" EntitySet="SupplierVendors" />
+            <End Role="LoggedInUsers" EntitySet="LoggedInUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginRequests_Users" Association="Self.FK_LoginRequests_Users">
+            <End Role="LoggedInUsers" EntitySet="LoggedInUsers" />
+            <End Role="LoginRequests" EntitySet="LoginRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginResponse_Permission" Association="Self.FK_LoginResponse_Permission">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="LoginResponses" EntitySet="LoginResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginResponse_SupplierVendors" Association="Self.FK_LoginResponse_SupplierVendors">
+            <End Role="SupplierVendors" EntitySet="SupplierVendors" />
+            <End Role="LoginResponses" EntitySet="LoginResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Invoice" Association="Self.FK_Order_Invoice">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_UploadedInvoice" Association="Self.FK_Order_UploadedInvoice">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="UploadedInvoices" EntitySet="UploadedInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDERS_ConfirmedOrders" Association="Self.FK_ORDERS_ConfirmedOrders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="ConfirmedOrders" EntitySet="ConfirmedOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProblemDetails_Supplier" Association="Self.FK_ProblemDetails_Supplier">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="ProblemDetails" EntitySet="ProblemDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Suppliers_APIs" Association="Self.FK_Suppliers_APIs">
+            <End Role="APIs" EntitySet="APIs" />
+            <End Role="Suppliers" EntitySet="Suppliers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplierVendors_Suppliers" Association="Self.FK_SupplierVendors_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="SupplierVendors" EntitySet="SupplierVendors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vendor_UploadedInvoice" Association="Self.FK_Vendor_UploadedInvoice">
+            <End Role="SupplierVendors" EntitySet="SupplierVendors" />
+            <End Role="UploadedInvoices" EntitySet="UploadedInvoices" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BizIntegratorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="APIEndpoint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="API_Id" Type="Guid" Nullable="false" />
+          <Property Name="EndPoint" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="TransactionType" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="HttpVerb" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="API">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AccountKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PublicKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PrivateKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EndPointBase" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AuthenticationType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UseAPIKey" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Suppliers" Relationship="Self.FK_Suppliers_APIs" FromRole="APIs" ToRole="Suppliers" />
+        </EntityType>
+        <EntityType Name="ConfirmedOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="OrdNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Confirmed" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Order_Id" Type="Guid" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_ORDERS_ConfirmedOrders" FromRole="ConfirmedOrders" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="ConfirmOrderRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Order_ID" Type="Guid" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_ConfirmOrdersRequest_Ord" FromRole="ConfirmOrderRequests" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="DocumentHeader">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Sender_Id" Type="Guid" Nullable="false" />
+          <Property Name="Receiver_Id" Type="Guid" Nullable="false" />
+          <Property Name="DocumentIdentification_Id" Type="Guid" />
+          <Property Name="Manifest_Id" Type="Guid" />
+          <Property Name="Order_Id" Type="Guid" />
+          <Property Name="Supplier_Id" Type="Guid" />
+          <NavigationProperty Name="DocumentIdentification" Relationship="Self.FK_DocumentHeader_DocumentIdentification" FromRole="DocumentHeaders" ToRole="DocumentIdentifications" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_DocumentHeader_Order" FromRole="DocumentHeaders" ToRole="Orders" />
+          <NavigationProperty Name="Receiver" Relationship="Self.FK_DocumentHeader_Receiver" FromRole="DocumentHeaders" ToRole="Receivers" />
+          <NavigationProperty Name="Sender" Relationship="Self.FK_DocumentHeader_Sender" FromRole="DocumentHeaders" ToRole="Senders" />
+          <NavigationProperty Name="Supplier" Relationship="Self.FK_DocumentHeader_Supplier" FromRole="DocumentHeaders" ToRole="Suppliers" />
+        </EntityType>
+        <EntityType Name="DocumentIdentification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Standard" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InstanceIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreationDateAndTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DocumentHeaders" Relationship="Self.FK_DocumentHeader_DocumentIdentification" FromRole="DocumentIdentifications" ToRole="DocumentHeaders" />
+        </EntityType>
+        <EntityType Name="InvoiceLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="OurItemNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="YourItemNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LineQuantity" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LineAmount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TaxAmount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ItemWeight" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TransportAmount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LineDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LineUOM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PackSize" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_Invoice_InvoiceLine" FromRole="InvoiceLines" ToRole="Invoices" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InvoiceDate" Type="DateTime" Precision="3" />
+          <Property Name="InvoiceType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RefInvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InvoiceAmount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TaxAmount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="InvoiceAmountInc" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="NumberOfLines" Type="Int32" />
+          <Property Name="TotalQuantity" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalWeight" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="AcPercentage" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CgrnNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="COrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrderLine_Id" Type="Guid" />
+          <Property Name="Order_Id" Type="Guid" />
+          <Property Name="InvoiceLine_Id" Type="Guid" />
+          <NavigationProperty Name="InvoiceLine" Relationship="Self.FK_Invoice_InvoiceLine" FromRole="Invoices" ToRole="InvoiceLines" />
+          <NavigationProperty Name="OrderLine" Relationship="Self.FK_Invoice_OrdLine" FromRole="Invoices" ToRole="OrderLines" />
+          <NavigationProperty Name="UploadedInvoices" Relationship="Self.FK_Invoice_UploadedInvoice" FromRole="Invoices" ToRole="UploadedInvoices" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Order_Invoice" FromRole="Invoices" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="LoggedInUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="User_Id" Type="Guid" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Initials" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Permission_Id" Type="Guid" Nullable="false" />
+          <Property Name="Vendor_Id" Type="Guid" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_LoggedInUser_Permission" FromRole="LoggedInUsers" ToRole="Permissions" />
+          <NavigationProperty Name="SupplierVendor" Relationship="Self.FK_LoggedInUser_SupplierVendors" FromRole="LoggedInUsers" ToRole="SupplierVendors" />
+          <NavigationProperty Name="LoginRequests" Relationship="Self.FK_LoginRequests_Users" FromRole="LoggedInUsers" ToRole="LoginRequests" />
+        </EntityType>
+        <EntityType Name="LoginRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CompNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="User_Id" Type="Guid" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LoggedInUser" Relationship="Self.FK_LoginRequests_Users" FromRole="LoginRequests" ToRole="LoggedInUsers" />
+        </EntityType>
+        <EntityType Name="LoginRespons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="AccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Initials" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Permission_Id" Type="Guid" Nullable="false" />
+          <Property Name="Vendor_Id" Type="Guid" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_LoginResponse_Permission" FromRole="LoginResponses" ToRole="Permissions" />
+          <NavigationProperty Name="SupplierVendor" Relationship="Self.FK_LoginResponse_SupplierVendors" FromRole="LoginResponses" ToRole="SupplierVendors" />
+        </EntityType>
+        <EntityType Name="OrderLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="OrdLn" Type="Int32" />
+          <Property Name="ItemNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ItemDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MfrItem" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QtyConv" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="OrdQty" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="PurcUom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PurcUomConv" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TaxCde" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TaxRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="UnitPrc" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LineTotExcl" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LineTotTax" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LineTotVal" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_Invoice_OrdLine" FromRole="OrderLines" ToRole="Invoices" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="OrdNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrdDate" Type="DateTime" Precision="3" />
+          <Property Name="OrdDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrdType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrdTerm" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrdTermDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrdStat" Type="Int32" />
+          <Property Name="OrderStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Origin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PromDate" Type="DateTime" Precision="3" />
+          <Property Name="CompName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchAddr1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchAddr2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchTel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchFax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BranchVat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorRef" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorAddr1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorAddr2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorSuburb" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorContact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TotLines" Type="Int32" />
+          <Property Name="TotQty" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotExcl" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotTax" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotVal" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="DelivAddr1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DelivAddr2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DelivSuburb" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DelivCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BuyerNote" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ConfirmInd" Type="Boolean" />
+          <Property Name="CompID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ResendOrder" Type="Boolean" />
+          <Property Name="Processed" Type="Boolean" />
+          <NavigationProperty Name="ConfirmedOrders" Relationship="Self.FK_ORDERS_ConfirmedOrders" FromRole="Orders" ToRole="ConfirmedOrders" />
+          <NavigationProperty Name="ConfirmOrderRequests" Relationship="Self.FK_ConfirmOrdersRequest_Ord" FromRole="Orders" ToRole="ConfirmOrderRequests" />
+          <NavigationProperty Name="DocumentHeaders" Relationship="Self.FK_DocumentHeader_Order" FromRole="Orders" ToRole="DocumentHeaders" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_Order_Invoice" FromRole="Orders" ToRole="Invoices" />
+          <NavigationProperty Name="UploadedInvoices" Relationship="Self.FK_Order_UploadedInvoice" FromRole="Orders" ToRole="UploadedInvoices" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LoggedInUsers" Relationship="Self.FK_LoggedInUser_Permission" FromRole="Permissions" ToRole="LoggedInUsers" />
+          <NavigationProperty Name="LoginResponses" Relationship="Self.FK_LoginResponse_Permission" FromRole="Permissions" ToRole="LoginResponses" />
+        </EntityType>
+        <EntityType Name="ProblemDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Detail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Instance" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Supplier_Id" Type="Guid" />
+          <NavigationProperty Name="Supplier" Relationship="Self.FK_ProblemDetails_Supplier" FromRole="ProblemDetails" ToRole="Suppliers" />
+        </EntityType>
+        <EntityType Name="Receiver">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="IdentifierAuthority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DocumentHeaders" Relationship="Self.FK_DocumentHeader_Receiver" FromRole="Receivers" ToRole="DocumentHeaders" />
+        </EntityType>
+        <EntityType Name="Sender">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="IdentifierAuthority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DocumentHeaders" Relationship="Self.FK_DocumentHeader_Sender" FromRole="Senders" ToRole="DocumentHeaders" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="API_Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ean" Type="String" MaxLength="14" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="API" Relationship="Self.FK_Suppliers_APIs" FromRole="Suppliers" ToRole="APIs" />
+          <NavigationProperty Name="DocumentHeaders" Relationship="Self.FK_DocumentHeader_Supplier" FromRole="Suppliers" ToRole="DocumentHeaders" />
+          <NavigationProperty Name="ProblemDetails" Relationship="Self.FK_ProblemDetails_Supplier" FromRole="Suppliers" ToRole="ProblemDetails" />
+          <NavigationProperty Name="SupplierVendors" Relationship="Self.FK_SupplierVendors_Suppliers" FromRole="Suppliers" ToRole="SupplierVendors" />
+        </EntityType>
+        <EntityType Name="SupplierVendor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="SupplierId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ean" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SellerEan" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LoggedInUsers" Relationship="Self.FK_LoggedInUser_SupplierVendors" FromRole="SupplierVendors" ToRole="LoggedInUsers" />
+          <NavigationProperty Name="LoginResponses" Relationship="Self.FK_LoginResponse_SupplierVendors" FromRole="SupplierVendors" ToRole="LoginResponses" />
+          <NavigationProperty Name="Supplier" Relationship="Self.FK_SupplierVendors_Suppliers" FromRole="SupplierVendors" ToRole="Suppliers" />
+          <NavigationProperty Name="UploadedInvoices" Relationship="Self.FK_Vendor_UploadedInvoice" FromRole="SupplierVendors" ToRole="UploadedInvoices" />
+        </EntityType>
+        <EntityType Name="UploadedInvoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="InvNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrdNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FileName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Uploaded" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Invoice_Id" Type="Guid" />
+          <Property Name="Order_Id" Type="Guid" />
+          <Property Name="Vendor_Id" Type="Guid" />
+          <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_UploadedInvoice" FromRole="UploadedInvoices" ToRole="Invoices" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Order_UploadedInvoice" FromRole="UploadedInvoices" ToRole="Orders" />
+          <NavigationProperty Name="SupplierVendor" Relationship="Self.FK_Vendor_UploadedInvoice" FromRole="UploadedInvoices" ToRole="SupplierVendors" />
+        </EntityType>
+        <Association Name="FK_Suppliers_APIs">
+          <End Role="APIs" Type="Self.API" Multiplicity="1" />
+          <End Role="Suppliers" Type="Self.Supplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APIs">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Suppliers">
+              <PropertyRef Name="API_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDERS_ConfirmedOrders">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="ConfirmedOrders" Type="Self.ConfirmedOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConfirmedOrders">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConfirmOrdersRequest_Ord">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="ConfirmOrderRequests" Type="Self.ConfirmOrderRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConfirmOrderRequests">
+              <PropertyRef Name="Order_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_DocumentIdentification">
+          <End Role="DocumentIdentifications" Type="Self.DocumentIdentification" Multiplicity="0..1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentIdentifications">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="DocumentIdentification_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_Order">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_Receiver">
+          <End Role="Receivers" Type="Self.Receiver" Multiplicity="1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receivers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="Receiver_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_Sender">
+          <End Role="Senders" Type="Self.Sender" Multiplicity="1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Senders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="Sender_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentHeader_Supplier">
+          <End Role="Suppliers" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="DocumentHeaders" Type="Self.DocumentHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentHeaders">
+              <PropertyRef Name="Supplier_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_InvoiceLine">
+          <End Role="InvoiceLines" Type="Self.InvoiceLine" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InvoiceLines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="InvoiceLine_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_OrdLine">
+          <End Role="OrderLines" Type="Self.OrderLine" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderLines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="OrderLine_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_UploadedInvoice">
+          <End Role="Invoices" Type="Self.Invoice" Multiplicity="0..1" />
+          <End Role="UploadedInvoices" Type="Self.UploadedInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UploadedInvoices">
+              <PropertyRef Name="Invoice_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Invoice">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoggedInUser_Permission">
+          <End Role="Permissions" Type="Self.Permission" Multiplicity="1" />
+          <End Role="LoggedInUsers" Type="Self.LoggedInUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoggedInUsers">
+              <PropertyRef Name="Permission_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoggedInUser_SupplierVendors">
+          <End Role="SupplierVendors" Type="Self.SupplierVendor" Multiplicity="0..1" />
+          <End Role="LoggedInUsers" Type="Self.LoggedInUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SupplierVendors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoggedInUsers">
+              <PropertyRef Name="Vendor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginRequests_Users">
+          <End Role="LoggedInUsers" Type="Self.LoggedInUser" Multiplicity="0..1" />
+          <End Role="LoginRequests" Type="Self.LoginRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoggedInUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoginRequests">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginResponse_Permission">
+          <End Role="Permissions" Type="Self.Permission" Multiplicity="1" />
+          <End Role="LoginResponses" Type="Self.LoginRespons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoginResponses">
+              <PropertyRef Name="Permission_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginResponse_SupplierVendors">
+          <End Role="SupplierVendors" Type="Self.SupplierVendor" Multiplicity="0..1" />
+          <End Role="LoginResponses" Type="Self.LoginRespons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SupplierVendors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoginResponses">
+              <PropertyRef Name="Vendor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_UploadedInvoice">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="UploadedInvoices" Type="Self.UploadedInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UploadedInvoices">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProblemDetails_Supplier">
+          <End Role="Suppliers" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="ProblemDetails" Type="Self.ProblemDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProblemDetails">
+              <PropertyRef Name="Supplier_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplierVendors_Suppliers">
+          <End Role="Suppliers" Type="Self.Supplier" Multiplicity="1" />
+          <End Role="SupplierVendors" Type="Self.SupplierVendor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SupplierVendors">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vendor_UploadedInvoice">
+          <End Role="SupplierVendors" Type="Self.SupplierVendor" Multiplicity="0..1" />
+          <End Role="UploadedInvoices" Type="Self.UploadedInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SupplierVendors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UploadedInvoices">
+              <PropertyRef Name="Vendor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BizIntegratorEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="APIEndpoints" EntityType="Self.APIEndpoint" />
+          <EntitySet Name="APIs" EntityType="Self.API" />
+          <EntitySet Name="ConfirmedOrders" EntityType="Self.ConfirmedOrder" />
+          <EntitySet Name="ConfirmOrderRequests" EntityType="Self.ConfirmOrderRequest" />
+          <EntitySet Name="DocumentHeaders" EntityType="Self.DocumentHeader" />
+          <EntitySet Name="DocumentIdentifications" EntityType="Self.DocumentIdentification" />
+          <EntitySet Name="InvoiceLines" EntityType="Self.InvoiceLine" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoice" />
+          <EntitySet Name="LoggedInUsers" EntityType="Self.LoggedInUser" />
+          <EntitySet Name="LoginRequests" EntityType="Self.LoginRequest" />
+          <EntitySet Name="LoginResponses" EntityType="Self.LoginRespons" />
+          <EntitySet Name="OrderLines" EntityType="Self.OrderLine" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="ProblemDetails" EntityType="Self.ProblemDetail" />
+          <EntitySet Name="Receivers" EntityType="Self.Receiver" />
+          <EntitySet Name="Senders" EntityType="Self.Sender" />
+          <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
+          <EntitySet Name="SupplierVendors" EntityType="Self.SupplierVendor" />
+          <EntitySet Name="UploadedInvoices" EntityType="Self.UploadedInvoice" />
+          <AssociationSet Name="FK_Suppliers_APIs" Association="Self.FK_Suppliers_APIs">
+            <End Role="APIs" EntitySet="APIs" />
+            <End Role="Suppliers" EntitySet="Suppliers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDERS_ConfirmedOrders" Association="Self.FK_ORDERS_ConfirmedOrders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="ConfirmedOrders" EntitySet="ConfirmedOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConfirmOrdersRequest_Ord" Association="Self.FK_ConfirmOrdersRequest_Ord">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="ConfirmOrderRequests" EntitySet="ConfirmOrderRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_DocumentIdentification" Association="Self.FK_DocumentHeader_DocumentIdentification">
+            <End Role="DocumentIdentifications" EntitySet="DocumentIdentifications" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_Order" Association="Self.FK_DocumentHeader_Order">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_Receiver" Association="Self.FK_DocumentHeader_Receiver">
+            <End Role="Receivers" EntitySet="Receivers" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_Sender" Association="Self.FK_DocumentHeader_Sender">
+            <End Role="Senders" EntitySet="Senders" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentHeader_Supplier" Association="Self.FK_DocumentHeader_Supplier">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="DocumentHeaders" EntitySet="DocumentHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_InvoiceLine" Association="Self.FK_Invoice_InvoiceLine">
+            <End Role="InvoiceLines" EntitySet="InvoiceLines" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_OrdLine" Association="Self.FK_Invoice_OrdLine">
+            <End Role="OrderLines" EntitySet="OrderLines" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_UploadedInvoice" Association="Self.FK_Invoice_UploadedInvoice">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="UploadedInvoices" EntitySet="UploadedInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Invoice" Association="Self.FK_Order_Invoice">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoggedInUser_Permission" Association="Self.FK_LoggedInUser_Permission">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="LoggedInUsers" EntitySet="LoggedInUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoggedInUser_SupplierVendors" Association="Self.FK_LoggedInUser_SupplierVendors">
+            <End Role="SupplierVendors" EntitySet="SupplierVendors" />
+            <End Role="LoggedInUsers" EntitySet="LoggedInUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginRequests_Users" Association="Self.FK_LoginRequests_Users">
+            <End Role="LoggedInUsers" EntitySet="LoggedInUsers" />
+            <End Role="LoginRequests" EntitySet="LoginRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginResponse_Permission" Association="Self.FK_LoginResponse_Permission">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="LoginResponses" EntitySet="LoginResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginResponse_SupplierVendors" Association="Self.FK_LoginResponse_SupplierVendors">
+            <End Role="SupplierVendors" EntitySet="SupplierVendors" />
+            <End Role="LoginResponses" EntitySet="LoginResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_UploadedInvoice" Association="Self.FK_Order_UploadedInvoice">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="UploadedInvoices" EntitySet="UploadedInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProblemDetails_Supplier" Association="Self.FK_ProblemDetails_Supplier">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="ProblemDetails" EntitySet="ProblemDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplierVendors_Suppliers" Association="Self.FK_SupplierVendors_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="SupplierVendors" EntitySet="SupplierVendors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vendor_UploadedInvoice" Association="Self.FK_Vendor_UploadedInvoice">
+            <End Role="SupplierVendors" EntitySet="SupplierVendors" />
+            <End Role="UploadedInvoices" EntitySet="UploadedInvoices" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BizIntegratorModelStoreContainer" CdmEntityContainer="BizIntegratorEntities">
+          <EntitySetMapping Name="APIEndpoints">
+            <EntityTypeMapping TypeName="BizIntegratorModel.APIEndpoint">
+              <MappingFragment StoreEntitySet="APIEndpoints">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="API_Id" ColumnName="API_Id" />
+                <ScalarProperty Name="EndPoint" ColumnName="EndPoint" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="HttpVerb" ColumnName="HttpVerb" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APIs">
+            <EntityTypeMapping TypeName="BizIntegratorModel.API">
+              <MappingFragment StoreEntitySet="APIs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AccountKey" ColumnName="AccountKey" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PublicKey" ColumnName="PublicKey" />
+                <ScalarProperty Name="PrivateKey" ColumnName="PrivateKey" />
+                <ScalarProperty Name="EndPointBase" ColumnName="EndPointBase" />
+                <ScalarProperty Name="AuthenticationType" ColumnName="AuthenticationType" />
+                <ScalarProperty Name="UseAPIKey" ColumnName="UseAPIKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConfirmedOrders">
+            <EntityTypeMapping TypeName="BizIntegratorModel.ConfirmedOrder">
+              <MappingFragment StoreEntitySet="ConfirmedOrders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrdNo" ColumnName="OrdNo" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConfirmOrderRequests">
+            <EntityTypeMapping TypeName="BizIntegratorModel.ConfirmOrderRequest">
+              <MappingFragment StoreEntitySet="ConfirmOrderRequests">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Order_ID" ColumnName="Order_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentHeaders">
+            <EntityTypeMapping TypeName="BizIntegratorModel.DocumentHeader">
+              <MappingFragment StoreEntitySet="DocumentHeaders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Sender_Id" ColumnName="Sender_Id" />
+                <ScalarProperty Name="Receiver_Id" ColumnName="Receiver_Id" />
+                <ScalarProperty Name="DocumentIdentification_Id" ColumnName="DocumentIdentification_Id" />
+                <ScalarProperty Name="Manifest_Id" ColumnName="Manifest_Id" />
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+                <ScalarProperty Name="Supplier_Id" ColumnName="Supplier_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentIdentifications">
+            <EntityTypeMapping TypeName="BizIntegratorModel.DocumentIdentification">
+              <MappingFragment StoreEntitySet="DocumentIdentifications">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Standard" ColumnName="Standard" />
+                <ScalarProperty Name="InstanceIdentifier" ColumnName="InstanceIdentifier" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CreationDateAndTime" ColumnName="CreationDateAndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceLines">
+            <EntityTypeMapping TypeName="BizIntegratorModel.InvoiceLine">
+              <MappingFragment StoreEntitySet="InvoiceLines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OurItemNumber" ColumnName="OurItemNumber" />
+                <ScalarProperty Name="YourItemNumber" ColumnName="YourItemNumber" />
+                <ScalarProperty Name="LineQuantity" ColumnName="LineQuantity" />
+                <ScalarProperty Name="LineAmount" ColumnName="LineAmount" />
+                <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
+                <ScalarProperty Name="ItemWeight" ColumnName="ItemWeight" />
+                <ScalarProperty Name="TransportAmount" ColumnName="TransportAmount" />
+                <ScalarProperty Name="LineDescription" ColumnName="LineDescription" />
+                <ScalarProperty Name="LineUOM" ColumnName="LineUOM" />
+                <ScalarProperty Name="PackSize" ColumnName="PackSize" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoices">
+            <EntityTypeMapping TypeName="BizIntegratorModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoices">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="InvoiceType" ColumnName="InvoiceType" />
+                <ScalarProperty Name="RefInvoiceNumber" ColumnName="RefInvoiceNumber" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="InvoiceAmount" ColumnName="InvoiceAmount" />
+                <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
+                <ScalarProperty Name="InvoiceAmountInc" ColumnName="InvoiceAmountInc" />
+                <ScalarProperty Name="NumberOfLines" ColumnName="NumberOfLines" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="TotalWeight" ColumnName="TotalWeight" />
+                <ScalarProperty Name="AcPercentage" ColumnName="AcPercentage" />
+                <ScalarProperty Name="CgrnNumber" ColumnName="CgrnNumber" />
+                <ScalarProperty Name="COrderNumber" ColumnName="COrderNumber" />
+                <ScalarProperty Name="OrderLine_Id" ColumnName="OrderLine_Id" />
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+                <ScalarProperty Name="InvoiceLine_Id" ColumnName="InvoiceLine_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoggedInUsers">
+            <EntityTypeMapping TypeName="BizIntegratorModel.LoggedInUser">
+              <MappingFragment StoreEntitySet="LoggedInUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Initials" ColumnName="Initials" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="CompanyNo" ColumnName="CompanyNo" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Permission_Id" ColumnName="Permission_Id" />
+                <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoginRequests">
+            <EntityTypeMapping TypeName="BizIntegratorModel.LoginRequest">
+              <MappingFragment StoreEntitySet="LoginRequests">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompNo" ColumnName="CompNo" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoginResponses">
+            <EntityTypeMapping TypeName="BizIntegratorModel.LoginRespons">
+              <MappingFragment StoreEntitySet="LoginResponses">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Initials" ColumnName="Initials" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="CompanyNo" ColumnName="CompanyNo" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Permission_Id" ColumnName="Permission_Id" />
+                <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderLines">
+            <EntityTypeMapping TypeName="BizIntegratorModel.OrderLine">
+              <MappingFragment StoreEntitySet="OrderLines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrdLn" ColumnName="OrdLn" />
+                <ScalarProperty Name="ItemNo" ColumnName="ItemNo" />
+                <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
+                <ScalarProperty Name="MfrItem" ColumnName="MfrItem" />
+                <ScalarProperty Name="QtyConv" ColumnName="QtyConv" />
+                <ScalarProperty Name="OrdQty" ColumnName="OrdQty" />
+                <ScalarProperty Name="PurcUom" ColumnName="PurcUom" />
+                <ScalarProperty Name="PurcUomConv" ColumnName="PurcUomConv" />
+                <ScalarProperty Name="TaxCde" ColumnName="TaxCde" />
+                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
+                <ScalarProperty Name="UnitPrc" ColumnName="UnitPrc" />
+                <ScalarProperty Name="LineTotExcl" ColumnName="LineTotExcl" />
+                <ScalarProperty Name="LineTotTax" ColumnName="LineTotTax" />
+                <ScalarProperty Name="LineTotVal" ColumnName="LineTotVal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="BizIntegratorModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrdNo" ColumnName="OrdNo" />
+                <ScalarProperty Name="OrdDate" ColumnName="OrdDate" />
+                <ScalarProperty Name="OrdDesc" ColumnName="OrdDesc" />
+                <ScalarProperty Name="OrdType" ColumnName="OrdType" />
+                <ScalarProperty Name="OrdTerm" ColumnName="OrdTerm" />
+                <ScalarProperty Name="OrdTermDesc" ColumnName="OrdTermDesc" />
+                <ScalarProperty Name="OrdStat" ColumnName="OrdStat" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="PromDate" ColumnName="PromDate" />
+                <ScalarProperty Name="CompName" ColumnName="CompName" />
+                <ScalarProperty Name="BranchNo" ColumnName="BranchNo" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="BranchAddr1" ColumnName="BranchAddr1" />
+                <ScalarProperty Name="BranchAddr2" ColumnName="BranchAddr2" />
+                <ScalarProperty Name="BranchTel" ColumnName="BranchTel" />
+                <ScalarProperty Name="BranchFax" ColumnName="BranchFax" />
+                <ScalarProperty Name="BranchEmail" ColumnName="BranchEmail" />
+                <ScalarProperty Name="BranchVat" ColumnName="BranchVat" />
+                <ScalarProperty Name="VendorRef" ColumnName="VendorRef" />
+                <ScalarProperty Name="VendorNo" ColumnName="VendorNo" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="VendorAddr1" ColumnName="VendorAddr1" />
+                <ScalarProperty Name="VendorAddr2" ColumnName="VendorAddr2" />
+                <ScalarProperty Name="VendorSuburb" ColumnName="VendorSuburb" />
+                <ScalarProperty Name="VendorCity" ColumnName="VendorCity" />
+                <ScalarProperty Name="VendorContact" ColumnName="VendorContact" />
+                <ScalarProperty Name="TotLines" ColumnName="TotLines" />
+                <ScalarProperty Name="TotQty" ColumnName="TotQty" />
+                <ScalarProperty Name="TotExcl" ColumnName="TotExcl" />
+                <ScalarProperty Name="TotTax" ColumnName="TotTax" />
+                <ScalarProperty Name="TotVal" ColumnName="TotVal" />
+                <ScalarProperty Name="DelivAddr1" ColumnName="DelivAddr1" />
+                <ScalarProperty Name="DelivAddr2" ColumnName="DelivAddr2" />
+                <ScalarProperty Name="DelivSuburb" ColumnName="DelivSuburb" />
+                <ScalarProperty Name="DelivCity" ColumnName="DelivCity" />
+                <ScalarProperty Name="BuyerNote" ColumnName="BuyerNote" />
+                <ScalarProperty Name="ConfirmInd" ColumnName="ConfirmInd" />
+                <ScalarProperty Name="CompID" ColumnName="CompID" />
+                <ScalarProperty Name="ResendOrder" ColumnName="ResendOrder" />
+                <ScalarProperty Name="Processed" ColumnName="Processed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="BizIntegratorModel.Permission">
+              <MappingFragment StoreEntitySet="Permissions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProblemDetails">
+            <EntityTypeMapping TypeName="BizIntegratorModel.ProblemDetail">
+              <MappingFragment StoreEntitySet="ProblemDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Detail" ColumnName="Detail" />
+                <ScalarProperty Name="Instance" ColumnName="Instance" />
+                <ScalarProperty Name="Supplier_Id" ColumnName="Supplier_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receivers">
+            <EntityTypeMapping TypeName="BizIntegratorModel.Receiver">
+              <MappingFragment StoreEntitySet="Receivers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdentifierAuthority" ColumnName="IdentifierAuthority" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Senders">
+            <EntityTypeMapping TypeName="BizIntegratorModel.Sender">
+              <MappingFragment StoreEntitySet="Senders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdentifierAuthority" ColumnName="IdentifierAuthority" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="BizIntegratorModel.Supplier">
+              <MappingFragment StoreEntitySet="Suppliers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="API_Id" ColumnName="API_Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Ean" ColumnName="Ean" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SupplierVendors">
+            <EntityTypeMapping TypeName="BizIntegratorModel.SupplierVendor">
+              <MappingFragment StoreEntitySet="SupplierVendors">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Ean" ColumnName="Ean" />
+                <ScalarProperty Name="SellerEan" ColumnName="SellerEan" />
+                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UploadedInvoices">
+            <EntityTypeMapping TypeName="BizIntegratorModel.UploadedInvoice">
+              <MappingFragment StoreEntitySet="UploadedInvoices">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+                <ScalarProperty Name="OrdNo" ColumnName="OrdNo" />
+                <ScalarProperty Name="VendorNo" ColumnName="VendorNo" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Uploaded" ColumnName="Uploaded" />
+                <ScalarProperty Name="Invoice_Id" ColumnName="Invoice_Id" />
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+                <ScalarProperty Name="Vendor_Id" ColumnName="Vendor_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
