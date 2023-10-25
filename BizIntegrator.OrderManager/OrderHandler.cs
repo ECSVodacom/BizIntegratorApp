@@ -677,7 +677,7 @@ namespace BizIntegrator.OrderManager
             }
             catch (Exception ex)
             {
-                dataHandler.WriteException(ex.Message, "CreateOrders");
+                dataHandler.WriteException(ex.Message, "ProcessInvoice");
                 return ex.Message;
             }
         }
