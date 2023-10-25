@@ -9,6 +9,9 @@ using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -20,28 +23,43 @@ namespace BizIntegrator.OrderManager
         private string senderEanCode { get; set; }
         private string recieverEanCode { get; set; }
 
+        string Id { get; set; }
+        string ApiKey { get; set; }
+        string Name { get; set; }
+        string Url { get; set; }
+        string PrivateKey { get; set; }
+        string Username { get; set; }
+        string Password { get; set; }
+        string AuthenticationType { get; set; }
+        string UseAPIKey { get; set; }
+        string TransactionType { get; set; }
+
+        DataTable dtApiData;
+
         public void ProcessOrders()
         {
             DataHandler dataHandler = new DataHandler();
             try
             {
-                DataTable dtApiData;
 
-                dtApiData = dataHandler.GetApiData();
+
+                TransactionType = "Orders";
+
+                dtApiData = dataHandler.GetApiData(TransactionType);
 
                 foreach (DataRow row in dtApiData.Rows)
                 {
-                    string _Id = row["Id"].ToString();
-                    string _apiKey = row["AccountKey"].ToString();
-                    string _name = row["Name"].ToString();
-                    string _url = row["EndPoint"].ToString();
-                    string _privateKey = row["PrivateKey"].ToString();
-                    string _username = row["Username"].ToString();
-                    string _password = row["Password"].ToString();
-                    string _authenticationType = row["AuthenticationType"].ToString();
-                    string _useAPIKey = row["UseAPIKey"].ToString();
+                    Id = row["Id"].ToString();
+                    ApiKey = row["AccountKey"].ToString();
+                    Name = row["Name"].ToString();
+                    Url = row["EndPoint"].ToString();
+                    PrivateKey = row["PrivateKey"].ToString();
+                    Username = row["Username"].ToString();
+                    Password = row["Password"].ToString();
+                    AuthenticationType = row["AuthenticationType"].ToString();
+                    UseAPIKey = row["UseAPIKey"].ToString();
 
-                    ConvertOrderToXtraEdi(_Id, _apiKey, _name, _url, _privateKey, _username, _password, _authenticationType, _useAPIKey);
+                    ConvertOrderToXtraEdi(Id, ApiKey, Name, Url, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
 
 
                 }
@@ -56,7 +74,6 @@ namespace BizIntegrator.OrderManager
         public string ConvertOrderToXtraEdi(string _Id, string _apiKey, string _name, string _url, string _privateKey, string _username, string _Password, string _authenticationType, string _useAPIKey)
         {
             DataHandler dataHandler = new DataHandler();
-
             Orders ord = new Orders();
             try
             {
@@ -319,6 +336,10 @@ namespace BizIntegrator.OrderManager
                             {
                                 bizHandler.PostToBiz(outputXtraEdit, fileName + ".xml");
                                 dataHandler.UpdateProcessedOrder(ord.OrdNo);
+
+
+                                //Method to send invoice back to the Woerman API
+                                ProcessInvoice();
                             }
                         }
 
@@ -335,7 +356,6 @@ namespace BizIntegrator.OrderManager
             }
 
         }
-
         public string CreateOrders(string _id, string _apiKey, string _name, string _url, string _privateKey, string _username, string _Password, string _authenticationType, string _useAPIKey)
         {
             DataHandler dataHandler = new DataHandler();
@@ -462,10 +482,10 @@ namespace BizIntegrator.OrderManager
                         {
                             o.OrdNo = obj["ordNo"].ToString();
                             o.OrdDate = obj["ordDate"].ToString();
-                            o.OrdDesc = obj["ordDesc"].ToString(); 
-                            o.OrdType = obj["ordType"].ToString(); 
-                            o.OrdTerm = obj["ordTerm"].ToString(); 
-                            o.OrdTermDesc = obj["ordTermDesc"].ToString(); 
+                            o.OrdDesc = obj["ordDesc"].ToString();
+                            o.OrdType = obj["ordType"].ToString();
+                            o.OrdTerm = obj["ordTerm"].ToString();
+                            o.OrdTermDesc = obj["ordTermDesc"].ToString();
                             o.OrdStat = obj["ordStat"].ToString();
                             o.OrderStatus = obj["orderStatus"].ToString();
                             o.Origin = obj["origin"].ToString();
@@ -583,6 +603,82 @@ namespace BizIntegrator.OrderManager
             {
                 dataHandler.WriteException(ex.Message, "IsValidXml");
                 return false;
+            }
+        }
+
+        static async Task<string> GetJsonData()
+        {
+            string invoiceUrl = "https://example.com/api/data"; 
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(invoiceUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+
+                        return json;
+                    }
+                    else
+                    {
+                        return "Request failed with status code: " + response.StatusCode;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "An error occurred: " + ex.Message;
+                }
+            }
+        }
+
+        private string ProcessInvoice()
+        {
+            DataHandler dataHandler = new DataHandler();
+            RestHandler restHandler = new RestHandler();
+            HttpClient client;
+
+            try
+            {
+                //Get Json Invoice file from Biz
+                string jSonData = GetJsonData().ToString();
+
+                //Pass through invoice file as body on the post request to Woerman (with key)
+
+                client = restHandler.SetClient(Id, Name, Url, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
+
+                client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+                TransactionType = "Invoices";
+
+                dataHandler.GetApiData(TransactionType);
+
+                dtApiData = dataHandler.GetApiData(TransactionType);
+
+                Url = dtApiData.Rows[0]["EndPoint"].ToString();
+
+                var content = new StringContent(jSonData, System.Text.Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(Url, content).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return content.ToString();
+                }
+
+                else
+                {
+                    return response.StatusCode.ToString();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                dataHandler.WriteException(ex.Message, "CreateOrders");
+                return ex.Message;
             }
         }
     }

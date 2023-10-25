@@ -12,7 +12,7 @@ namespace BizIntegrator.Data
 {
     public class DataHandler
     {
-        public DataTable GetApiData()
+        public DataTable GetApiData(string transactionType)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace BizIntegrator.Data
                     sb.AppendLine("from APIs api ");
                     sb.AppendLine("inner join APIEndpoints ep  ");
                     sb.AppendLine("on api.Id = ep.API_Id ");
-                    sb.AppendLine("where ep.TransactionType = 'Orders' and IsActive = 1 ");
+                    sb.AppendLine("where ep.TransactionType = '"+ transactionType + "' and IsActive = 1 ");
                     using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
                     {
                         da.Fill(dataTable);
