@@ -2,6 +2,7 @@
 using BizIntegrator.Security;
 using Newtonsoft.Json;
 using System;
+using System.Data;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -87,11 +88,14 @@ namespace BizIntegrator.OrderManager
         {
             DataHandler dataHandler = new DataHandler();
 
+            string transactionType = "Login";
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    string loginUrl = dataHandler.GetLoginUrl(_id);
+                    DataTable dtLoginUrl = dataHandler.GetApiData(transactionType);
+                    DataRow row = dtLoginUrl.Rows[0];
+                    string loginUrl = row["EndPoint"].ToString();
 
                     var credentials = new
                     {
