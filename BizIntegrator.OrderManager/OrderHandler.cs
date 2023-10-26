@@ -339,7 +339,7 @@ namespace BizIntegrator.OrderManager
 
 
                                 //Method to send invoice back to the Woerman API
-                                ProcessInvoice();
+                                //ProcessInvoice();
                             }
                         }
 
