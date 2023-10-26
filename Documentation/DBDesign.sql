@@ -7,15 +7,12 @@ GO
 CREATE TABLE [dbo].[APIs](
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
 	[Name] [varchar](20) NOT NULL,
-	--[EndPoint] [varchar](100) NOT NULL,
-	--[NameSpace] [varchar](50) NOT NULL,
-	--[Gln] [varchar](15) NULL,
-	[EndPointBase] [varchar](1000) NULL,
 	[AccountKey] [nvarchar](max) NULL,
 	[Username] [varchar](100) NULL,
 	[Password] [varchar](100) NULL,
 	[PublicKey] [nvarchar](max) NULL,
 	[PrivateKey] [nvarchar](max) NULL,
+	[EndPointBase] [varchar](1000) NULL,
 	[AuthenticationType] [varchar](50) NULL,
 	[UseAPIKey] [char](1) NULL,
 	[EanCode] [varchar](20) ,
@@ -36,7 +33,6 @@ CREATE TABLE [dbo].[Suppliers](
 	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
 	[API_Id] UNIQUEIDENTIFIER NOT NULL,
 	[Name] [varchar](50) NOT NULL,
-	[AccountKey] [varchar](1000) NULL,
 	[EanCode] [varchar](14) NOT NULL,
 	[IsEnabled] [bit] NOT NULL
 	)
@@ -115,6 +111,14 @@ Id 							UNIQUEIDENTIFIER PRIMARY KEY NOT NULL
 ,LineTotTax					numeric(10,2) NULL
 ,LineTotVal					numeric(10,2) NULL
 )
+GO
+
+CREATE TABLE [dbo].[MessageException](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[ExceptionDate] [datetime] NULL,
+	[Exception] [varchar](50) NULL,
+	[Method] [varchar](50) NULL
+) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[SupplierVendors](
