@@ -163,43 +163,6 @@ namespace BizIntegrator.Data
             }
         }
 
-        public string GetLoginUrl(string id)
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.ConnectionString))
-                {
-                    StringBuilder sb = new StringBuilder();
-
-                    connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("SELECT EndPoint FROM APIs a ");
-                    sb.AppendLine("inner join APIEndpoints ae ");
-                    sb.AppendLine("on a.Id = ae.API_Id ");
-                    sb.AppendLine("where API_Id = '" + id + "' and TransactionType = 'Login'");
-                    sb.AppendLine("");
-                    SqlDataAdapter dt = new SqlDataAdapter(sb.ToString(), connection);
-                    DataSet ds = new DataSet();
-                    dt.Fill(ds);
-
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-                        return ds.Tables[0].Rows[0]["EndPoint"].ToString();
-                    }
-
-                    else
-                    {
-                        return "Cannot get API Endpoint ";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex.InnerException.Message, "GetLoginUrl");
-                throw;
-            }
-        }
-
         public void WriteException(String exception, string method)
         {
             try
@@ -408,7 +371,7 @@ namespace BizIntegrator.Data
             }
             catch (Exception ex)
             {
-                WriteException(ex.InnerException.Message, "GetOrders");
+                WriteException(ex.InnerException.Message, "GetOrderLines");
                 throw;
             }
 
