@@ -33,21 +33,20 @@ namespace BizIntegrator.PostToBiz
 
         public PostResult PostResult { get; set; }
 
-        public bool PostToBiz(string fileContent, string fileName)
+        public bool PostToBiz(string fContent, string fileName, string from, string to)
         {
+            string fileContent = "[" + fContent + "]";
             DataHandler dataHandler = new DataHandler();
 
             string contentType = "text/xml";
             byte[] bytes = null;
-            string from = "";
-            string to = "";
             string protocol = Settings.Default.Protocol;
             string uri = Settings.Default.BizLinkURL;
             string port = Settings.Default.Port;
             string party = Settings.Default.Party;
 
             string uriBiz =
-                string.Format("{0}://{1}:{2}/msgsrv/http?from={3}&filename={4}&to={5}",
+                string.Format("{0}://{1}:{2}/msgsrv/http?from={3}&to={5}&filename={4}.{3}.{5}",
                     protocol, uri, port, from == "" ? party : from, fileName, to);
 
             HttpWebRequest webRequest = WebRequest.Create(new Uri(uriBiz)) as HttpWebRequest;

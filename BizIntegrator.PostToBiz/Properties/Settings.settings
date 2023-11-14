@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="BizLinkURL" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">192.168.200.31</Value>
+      <Value Profile="(Default)">192.168.202.31</Value>
     </Setting>
     <Setting Name="Protocol" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http</Value>
@@ -17,9 +17,9 @@
     <Setting Name="ConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
-  &lt;ConnectionString&gt;Data Source=192.168.101.36,1433;Initial Catalog=BizIntegrator;User ID=sparuser;Password=ECsqlOnline!;MultipleActiveResultSets=true&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=192.168.101.116,1433;Initial Catalog=BizIntegrator;User ID=sparuser;Password=ECsqlOnline!;MultipleActiveResultSets=true&lt;/ConnectionString&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=192.168.101.36,1433;Initial Catalog=BizIntegrator;User ID=sparuser;Password=ECsqlOnline!;MultipleActiveResultSets=true</Value>
+      <Value Profile="(Default)">Data Source=192.168.101.116,1433;Initial Catalog=BizIntegrator;User ID=sparuser;Password=ECsqlOnline!;MultipleActiveResultSets=true</Value>
     </Setting>
   </Settings>
 </SettingsFile>

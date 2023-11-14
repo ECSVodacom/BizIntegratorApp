@@ -25,7 +25,7 @@ namespace BizIntegrator.PostToBiz.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.200.31")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.202.31")]
         public string BizLinkURL {
             get {
                 return ((string)(this["BizLinkURL"]));
@@ -62,8 +62,8 @@ namespace BizIntegrator.PostToBiz.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.101.36,1433;Initial Catalog=BizIntegrator;User ID=sparuser;Pa" +
-            "ssword=ECsqlOnline!;MultipleActiveResultSets=true")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.101.116,1433;Initial Catalog=BizIntegrator;User ID=sparuser;P" +
+            "assword=ECsqlOnline!;MultipleActiveResultSets=true")]
         public string ConnectionString {
             get {
                 return ((string)(this["ConnectionString"]));

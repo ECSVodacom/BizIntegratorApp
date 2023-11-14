@@ -78,7 +78,7 @@ namespace BizIntegrator.OrderManager
                 string outputXtraEdit = string.Empty;
 
                 string Response = CreateOrders(_Id, _apiKey, _name, _url, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
-
+                /*
                 XmlWriterSettings settings = new XmlWriterSettings
                 {
                     Indent = true,
@@ -342,8 +342,8 @@ namespace BizIntegrator.OrderManager
                     }
 
                 }
-
-                return outputXtraEdit;
+                */
+                return "";
             }
             catch (Exception ex)
             {
@@ -379,9 +379,12 @@ namespace BizIntegrator.OrderManager
 
                     dataArray = jObject;
 
+                    string ordNo = string.Empty;
+
                     foreach (var obj in dataArray)
                     {
                         o.OrdNo = obj["ordNo"].ToString();
+                        ordNo = o.OrdNo;
                         o.OrdDate = obj["ordDate"].ToString();
                         o.OrdDesc = obj["ordDesc"].ToString();
                         o.OrdType = obj["ordType"].ToString();
@@ -390,7 +393,7 @@ namespace BizIntegrator.OrderManager
                         o.OrdStat = obj["ordStat"].ToString();
                         o.OrderStatus = obj["orderStatus"].ToString();
                         o.Origin = obj["origin"].ToString();
-                        o.PromDate = obj["promDate"].ToString();
+                        //o.PromDate = obj["promDate"].ToString();
                         o.CompName = obj["compName"].ToString();
                         o.BranchNo = obj["branchNo"].ToString();
                         o.BranchName = obj["branchName"].ToString();
@@ -423,6 +426,20 @@ namespace BizIntegrator.OrderManager
                         o.ResendOrder = false;
                         o.Processed = false;
 
+                        DataTable dtEancodes = dataHandler.GetEanCodes(obj["vendorNo"].ToString());
+
+                        if (dtEancodes.Rows.Count > 0)
+                        {
+                            senderEanCode = dtEancodes.Rows[0]["SenderGln"].ToString();
+                            recieverEanCode = dtEancodes.Rows[0]["RecieverGln"].ToString();
+                        }
+
+                        else
+                        {
+                            senderEanCode = "6004930994136";
+                            recieverEanCode = "6006510000008";
+                        }
+
                         dataHandler.CreateOrders(o.OrdNo, o.OrdDate, o.OrdDesc, o.OrdType, o.OrdTerm
                                                 , o.OrdTermDesc, o.OrdStat, o.OrderStatus, o.Origin, o.PromDate
                                                 , o.CompName, o.BranchNo, o.BranchName, o.BranchAddr1, o.BranchAddr2
@@ -448,7 +465,7 @@ namespace BizIntegrator.OrderManager
                                 ol.OrdNo = obj["ordNo"].ToString();
                                 ol.ItemNo = objLines["itemNo"].ToString();
                                 ol.ItemDesc = objLines["itemDesc"].ToString();
-                                ol.MfrItem = objLines["mfrItem"].ToString();
+                                //ol.MfrItem = objLines["mfrItem"].ToString();
                                 ol.QtyConv = objLines["qtyConv"].ToString();
                                 ol.OrdQty = objLines["ordQty"].ToString();
                                 ol.PurcUom = objLines["purcUom"].ToString();
@@ -468,14 +485,31 @@ namespace BizIntegrator.OrderManager
                             }
 
                         }
+
+                        DateTime date = DateTime.Now;
+                        string formattedDate = date.ToString("yyyyMMdd");
+
+                        fileName = "PP" + "-ORDER-" + ordNo + "-" + formattedDate + ".json";
+
+                        BizHandler bizHandler = new BizHandler();
+
+                        bool orderProcessed = dataHandler.CheckOrders(ordNo);
+
+                        if (!orderProcessed)
+                        {
+                            bizHandler.PostToBiz(obj.ToString(), fileName, senderEanCode, recieverEanCode);
+                            dataHandler.UpdateProcessedOrder(ordNo);
+                        }
+
+
+
                     }
 
 
-                    JArray jArray = JArray.Parse(dataObjects.Result);
-
-                    XmlDocument doc = JsonConvert.DeserializeXmlNode("{\"order\":" + jArray + "}", "orderMessage");
-                    return doc.OuterXml;
+                    return response.StatusCode.ToString();
                 }
+
+
 
                 else
                 {

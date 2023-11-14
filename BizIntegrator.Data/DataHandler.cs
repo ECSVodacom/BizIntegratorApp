@@ -222,7 +222,7 @@ namespace BizIntegrator.Data
                         cmd.Parameters.Add("@OrdStat", SqlDbType.Int).Value = OrdStat;
                         cmd.Parameters.Add("@OrderStatus", SqlDbType.VarChar).Value = OrderStatus;
                         cmd.Parameters.Add("@Origin", SqlDbType.VarChar).Value = Origin;
-                        cmd.Parameters.Add("@PromDate", SqlDbType.DateTime).Value = PromDate;
+                        //cmd.Parameters.Add("@PromDate", SqlDbType.DateTime).Value = PromDate;
                         cmd.Parameters.Add("@CompName", SqlDbType.VarChar).Value = CompName;
                         cmd.Parameters.Add("@BranchNo", SqlDbType.VarChar).Value = BranchNo;
                         cmd.Parameters.Add("@BranchName", SqlDbType.VarChar).Value = BranchName;
@@ -282,7 +282,7 @@ namespace BizIntegrator.Data
                         cmd.Parameters.Add("@OrderNo", SqlDbType.VarChar).Value = OrdNo;
                         cmd.Parameters.Add("@ItemNo", SqlDbType.VarChar).Value = ItemNo;
                         cmd.Parameters.Add("@ItemDesc", SqlDbType.VarChar).Value = ItemDesc;
-                        cmd.Parameters.Add("@MfrItem", SqlDbType.VarChar).Value = MfrItem;
+                        //cmd.Parameters.Add("@MfrItem", SqlDbType.VarChar).Value = MfrItem;
                         cmd.Parameters.Add("@QtyConv", SqlDbType.Decimal).Value = QtyConv;
                         cmd.Parameters.Add("@OrdQty", SqlDbType.Decimal).Value = OrdQty;
                         cmd.Parameters.Add("@PurcUom", SqlDbType.VarChar).Value = PurcUom;
