@@ -437,7 +437,7 @@ namespace BizIntegrator.OrderManager
                         else
                         {
                             senderEanCode = "6004930994136";
-                            recieverEanCode = "6006510000008";
+                            recieverEanCode = "0000000000000";
                         }
 
                         dataHandler.CreateOrders(o.OrdNo, o.OrdDate, o.OrdDesc, o.OrdType, o.OrdTerm
