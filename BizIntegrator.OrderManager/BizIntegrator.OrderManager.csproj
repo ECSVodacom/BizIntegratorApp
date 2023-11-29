@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>BizIntegrator.OrderManager</RootNamespace>
     <AssemblyName>BizIntegrator.OrderManager</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -40,6 +40,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BizIntegrator.PostToBiz">
+      <HintPath>..\BizIntegrator.PostToBiz\bin\Debug\BizIntegrator.PostToBiz.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -175,10 +178,6 @@
     <ProjectReference Include="..\BizIntegrator.Security\BizIntegrator.Security.csproj">
       <Project>{801257f2-4f90-496c-9b55-025bf45b1631}</Project>
       <Name>BizIntegrator.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BizIntegrator.PostToBiz\BizIntegrator.PostToBiz.csproj">
-      <Project>{c833f01a-a102-462a-8a2d-2be9cb4c7e5b}</Project>
-      <Name>BizIntegrator.PostToBiz</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

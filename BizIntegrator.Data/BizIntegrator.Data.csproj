@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BizIntegrator.Data</RootNamespace>
     <AssemblyName>BizIntegrator.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -122,98 +122,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="APIEndpoint.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BizIntModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BizIntModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BizIntModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BizIntModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BizIntModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="ConfirmedOrder.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ConfirmOrderRequest.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataHandler.cs" />
-    <Compile Include="DocumentHeader.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DocumentIdentification.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Invoice.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="InvoiceLine.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LoggedInUser.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LoginRequest.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LoginRespons.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Order.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="OrderLine.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Permission.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ProblemDetail.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Receiver.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Sender.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Supplier.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SupplierVendor.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UploadedInvoice.cs">
-      <DependentUpon>BizIntModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <EntityDeploy Include="BizIntModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>BizIntModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="BizIntModel.edmx.diagram">
-      <DependentUpon>BizIntModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -222,18 +140,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="BizIntModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BizIntModel.edmx</DependentUpon>
-      <LastGenOutput>BizIntModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="BizIntModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BizIntModel.edmx</DependentUpon>
-      <LastGenOutput>BizIntModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -44,7 +44,7 @@ namespace BizIntegrator.OrderManager.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.101.116,1433;Initial Catalog=BizIntegrator;User ID=sparuser;P" +
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.101.36,1433;Initial Catalog=BizIntegrator;User ID=sparuser;P" +
             "assword=ECsqlOnline!;MultipleActiveResultSets=true")]
         public string ConnectionString {
             get {

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Data;
+using System.Data.Entity.Infrastructure.Design;
 using System.Globalization;
 using System.IO;
 using System.Net.Http;
@@ -79,6 +80,8 @@ namespace BizIntegrator.OrderManager
 
                 string Response = CreateOrders(_Id, _apiKey, _name, _url, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
                 /*
+                 * 
+                 * Commented out code to convert json to xml format
                 XmlWriterSettings settings = new XmlWriterSettings
                 {
                     Indent = true,
@@ -352,6 +355,7 @@ namespace BizIntegrator.OrderManager
             }
 
         }
+       
         public string CreateOrders(string _id, string _apiKey, string _name, string _url, string _privateKey, string _username, string _Password, string _authenticationType, string _useAPIKey)
         {
             DataHandler dataHandler = new DataHandler();
@@ -495,18 +499,19 @@ namespace BizIntegrator.OrderManager
 
                         bool orderProcessed = dataHandler.CheckOrders(ordNo);
 
-                        if (!orderProcessed)
+                       if (!orderProcessed)
                         {
                             bizHandler.PostToBiz(obj.ToString(), fileName, senderEanCode, recieverEanCode);
                             dataHandler.UpdateProcessedOrder(ordNo);
+
+                            obj["confirmInd"] = true;
+
+                            ConfirmOrders(ordNo, obj.ToString(), _id, _name, _url, _apiKey, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
                         }
-
-
-
                     }
 
 
-                    return response.StatusCode.ToString();
+                    return response.RequestMessage.ToString();
                 }
 
 
@@ -521,6 +526,36 @@ namespace BizIntegrator.OrderManager
             {
                 dataHandler.WriteException(ex.Message, "CreateOrders");
                 return ex.Message;
+            }
+
+        }
+
+        private void ConfirmOrders(string ordNo, string ordContent, string id, string name, string url, string apiKey, string privateKey, string username, string password, string authenticationType, string useAPIKey)
+        {
+            RestHandler restHandler = new RestHandler();
+            DataHandler dataHandler = new DataHandler();
+            HttpClient client;
+
+            string transactionType = "Orders";
+
+            try
+            {
+                client = restHandler.SetClient(id, name, url, apiKey, privateKey, username, password, authenticationType, useAPIKey);
+
+                client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+                DataTable dtPostDataUrl = dataHandler.GetApiData(transactionType);
+                DataRow row = dtPostDataUrl.Rows[0];
+                string postDataUrl = row["EndPoint"].ToString() + "/"+ordNo;
+
+                var content = new StringContent(ordContent, System.Text.Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(postDataUrl, content).Result;
+            }
+            catch (Exception ex)
+            {
+                dataHandler.WriteException(ex.Message, "ConfirmOrders");
             }
 
         }
