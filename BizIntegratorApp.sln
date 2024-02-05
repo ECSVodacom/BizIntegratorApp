@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.Client", "Biz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.Models", "BizIntegrator.Models\BizIntegrator.Models.csproj", "{0BE9D51A-4815-4405-A251-4E22C0B6BE21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.GetFromBiz", "BizIntegrator.GetOrdersFromBiz\BizIntegrator.GetFromBiz.csproj", "{BCFCF313-84C7-4258-AF02-7C6BEEED5182}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.InvoiceManager", "BizIntegrator.InvoiceManager\BizIntegrator.InvoiceManager.csproj", "{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{0BE9D51A-4815-4405-A251-4E22C0B6BE21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BE9D51A-4815-4405-A251-4E22C0B6BE21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BE9D51A-4815-4405-A251-4E22C0B6BE21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCFCF313-84C7-4258-AF02-7C6BEEED5182}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCFCF313-84C7-4258-AF02-7C6BEEED5182}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCFCF313-84C7-4258-AF02-7C6BEEED5182}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCFCF313-84C7-4258-AF02-7C6BEEED5182}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
