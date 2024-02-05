@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Data;
+using System.Data.Entity.Infrastructure.Design;
 using System.Globalization;
 using System.IO;
 using System.Net.Http;
@@ -78,7 +79,9 @@ namespace BizIntegrator.OrderManager
                 string outputXtraEdit = string.Empty;
 
                 string Response = CreateOrders(_Id, _apiKey, _name, _url, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
-
+                /*
+                 * 
+                 * Commented out code to convert json to xml format
                 XmlWriterSettings settings = new XmlWriterSettings
                 {
                     Indent = true,
@@ -342,8 +345,8 @@ namespace BizIntegrator.OrderManager
                     }
 
                 }
-
-                return outputXtraEdit;
+                */
+                return "";
             }
             catch (Exception ex)
             {
@@ -352,6 +355,7 @@ namespace BizIntegrator.OrderManager
             }
 
         }
+       
         public string CreateOrders(string _id, string _apiKey, string _name, string _url, string _privateKey, string _username, string _Password, string _authenticationType, string _useAPIKey)
         {
             DataHandler dataHandler = new DataHandler();
@@ -379,9 +383,12 @@ namespace BizIntegrator.OrderManager
 
                     dataArray = jObject;
 
+                    string ordNo = string.Empty;
+
                     foreach (var obj in dataArray)
                     {
                         o.OrdNo = obj["ordNo"].ToString();
+                        ordNo = o.OrdNo;
                         o.OrdDate = obj["ordDate"].ToString();
                         o.OrdDesc = obj["ordDesc"].ToString();
                         o.OrdType = obj["ordType"].ToString();
@@ -390,7 +397,7 @@ namespace BizIntegrator.OrderManager
                         o.OrdStat = obj["ordStat"].ToString();
                         o.OrderStatus = obj["orderStatus"].ToString();
                         o.Origin = obj["origin"].ToString();
-                        o.PromDate = obj["promDate"].ToString();
+                        //o.PromDate = obj["promDate"].ToString();
                         o.CompName = obj["compName"].ToString();
                         o.BranchNo = obj["branchNo"].ToString();
                         o.BranchName = obj["branchName"].ToString();
@@ -423,6 +430,20 @@ namespace BizIntegrator.OrderManager
                         o.ResendOrder = false;
                         o.Processed = false;
 
+                        DataTable dtEancodes = dataHandler.GetEanCodes(obj["vendorNo"].ToString());
+
+                        if (dtEancodes.Rows.Count > 0)
+                        {
+                            senderEanCode = dtEancodes.Rows[0]["SenderGln"].ToString();
+                            recieverEanCode = dtEancodes.Rows[0]["RecieverGln"].ToString();
+                        }
+
+                        else
+                        {
+                            senderEanCode = "6004930994136";
+                            recieverEanCode = "0000000000000";
+                        }
+
                         dataHandler.CreateOrders(o.OrdNo, o.OrdDate, o.OrdDesc, o.OrdType, o.OrdTerm
                                                 , o.OrdTermDesc, o.OrdStat, o.OrderStatus, o.Origin, o.PromDate
                                                 , o.CompName, o.BranchNo, o.BranchName, o.BranchAddr1, o.BranchAddr2
@@ -448,7 +469,7 @@ namespace BizIntegrator.OrderManager
                                 ol.OrdNo = obj["ordNo"].ToString();
                                 ol.ItemNo = objLines["itemNo"].ToString();
                                 ol.ItemDesc = objLines["itemDesc"].ToString();
-                                ol.MfrItem = objLines["mfrItem"].ToString();
+                                //ol.MfrItem = objLines["mfrItem"].ToString();
                                 ol.QtyConv = objLines["qtyConv"].ToString();
                                 ol.OrdQty = objLines["ordQty"].ToString();
                                 ol.PurcUom = objLines["purcUom"].ToString();
@@ -468,14 +489,32 @@ namespace BizIntegrator.OrderManager
                             }
 
                         }
+
+                        DateTime date = DateTime.Now;
+                        string formattedDate = date.ToString("yyyyMMdd");
+
+                        fileName = "PP" + "-ORDER-" + ordNo + "-" + formattedDate + ".json";
+
+                        BizHandler bizHandler = new BizHandler();
+
+                        bool orderProcessed = dataHandler.CheckOrders(ordNo);
+
+                       if (!orderProcessed)
+                        {
+                            bizHandler.PostToBiz(obj.ToString(), fileName, senderEanCode, recieverEanCode);
+                            dataHandler.UpdateProcessedOrder(ordNo);
+
+                            obj["confirmInd"] = true;
+
+                            ConfirmOrders(ordNo, obj.ToString(), _id, _name, _url, _apiKey, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
+                        }
                     }
 
 
-                    JArray jArray = JArray.Parse(dataObjects.Result);
-
-                    XmlDocument doc = JsonConvert.DeserializeXmlNode("{\"order\":" + jArray + "}", "orderMessage");
-                    return doc.OuterXml;
+                    return response.RequestMessage.ToString();
                 }
+
+
 
                 else
                 {
@@ -487,6 +526,36 @@ namespace BizIntegrator.OrderManager
             {
                 dataHandler.WriteException(ex.Message, "CreateOrders");
                 return ex.Message;
+            }
+
+        }
+
+        private void ConfirmOrders(string ordNo, string ordContent, string id, string name, string url, string apiKey, string privateKey, string username, string password, string authenticationType, string useAPIKey)
+        {
+            RestHandler restHandler = new RestHandler();
+            DataHandler dataHandler = new DataHandler();
+            HttpClient client;
+
+            string transactionType = "Orders";
+
+            try
+            {
+                client = restHandler.SetClient(id, name, url, apiKey, privateKey, username, password, authenticationType, useAPIKey);
+
+                client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+                DataTable dtPostDataUrl = dataHandler.GetApiData(transactionType);
+                DataRow row = dtPostDataUrl.Rows[0];
+                string postDataUrl = row["EndPoint"].ToString() + "/"+ordNo;
+
+                var content = new StringContent(ordContent, System.Text.Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = client.PostAsync(postDataUrl, content).Result;
+            }
+            catch (Exception ex)
+            {
+                dataHandler.WriteException(ex.Message, "ConfirmOrders");
             }
 
         }
