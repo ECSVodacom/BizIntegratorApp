@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Numerics;
+using System.Diagnostics;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace BizIntegrator.Data
 {
@@ -27,7 +29,7 @@ namespace BizIntegrator.Data
                     sb.AppendLine("select api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey ");
                     sb.AppendLine(",api.Username ");
                     sb.AppendLine(",api.[Password] ");
-                    sb.AppendLine(", api.AuthenticationType, api.UseAPIKey ");
+                    sb.AppendLine(", api.AuthenticationType, api.UseAPIKey, ep.TransactionType ");
                     sb.AppendLine("from APIs api ");
                     sb.AppendLine("inner join APIEndpoints ep  ");
                     sb.AppendLine("on api.Id = ep.API_Id ");
@@ -36,7 +38,6 @@ namespace BizIntegrator.Data
                     {
                         da.Fill(dataTable);
                     }
-
 
                     return dataTable;
                 }
@@ -194,6 +195,75 @@ namespace BizIntegrator.Data
         {
             return input.Replace("'", "").Replace("\"", "").Replace("`", "");
         }
+
+        public void CreateCustomerList(string CustomerCode, string CustomerName, string PhysicalAddress, string Email
+                            , string BranchCode, DateTime DateTimeStamp, string GroupCode, string GroupDescription, string Area, string AreaDescription)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.ConnectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand("SP_CREATE_CustomerList", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@CustomerCode", SqlDbType.VarChar).Value = CustomerCode;
+                        cmd.Parameters.Add("@CustomerName", SqlDbType.VarChar).Value = CustomerName;
+                        cmd.Parameters.Add("@PhysicalAddress", SqlDbType.VarChar).Value = PhysicalAddress;
+                        cmd.Parameters.Add("@Email", SqlDbType.VarChar).Value = Email;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.VarChar).Value = BranchCode;
+                        cmd.Parameters.Add("@DateTimeStamp", SqlDbType.VarChar).Value = DateTimeStamp;
+                        cmd.Parameters.Add("@GroupCode", SqlDbType.VarChar).Value = GroupCode;
+                        cmd.Parameters.Add("@GroupDescription", SqlDbType.VarChar).Value = GroupDescription;
+                        cmd.Parameters.Add("@Area", SqlDbType.VarChar).Value = Area;
+                        cmd.Parameters.Add("@AreaDescription", SqlDbType.VarChar).Value = AreaDescription;
+                        
+                        cmd.ExecuteNonQuery();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteException(ex.InnerException.Message, "CreateOrders");
+                throw;
+            }
+        }
+
+
+        public void CreateStockList(string ProductCode, string ProductName, string AlternateName, double PriceInVat
+                            , double PriceExVat, string BottleBarcode, string CaseBarcode)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.ConnectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand("SP_CREATE_StockList", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@ProductCode", SqlDbType.VarChar).Value = ProductCode;
+                        cmd.Parameters.Add("@ProductName", SqlDbType.VarChar).Value = ProductName;
+                        cmd.Parameters.Add("@AlternateName", SqlDbType.VarChar).Value = AlternateName;
+                        cmd.Parameters.Add("@PriceInVat", SqlDbType.Decimal).Value = PriceInVat;
+                        cmd.Parameters.Add("@PriceExVat", SqlDbType.Decimal).Value = PriceExVat;
+                        cmd.Parameters.Add("@BottleBarcode", SqlDbType.VarChar).Value = BottleBarcode;
+                        cmd.Parameters.Add("@CaseBarcode", SqlDbType.VarChar).Value = CaseBarcode;
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteException(ex.InnerException.Message, "CreateOrders");
+                throw;
+            }
+        }
+
 
         public void CreateOrders(string OrdNo,string OrdDate,string OrdDesc,string OrdType,string OrdTerm
                                 ,string OrdTermDesc, string OrdStat,string OrderStatus,string Origin, string PromDate
@@ -375,6 +445,88 @@ namespace BizIntegrator.Data
                 throw;
             }
 
+        }
+
+        public void CreateInvoice(string invoiceNumber, string invoiceId, string invoiceDate, int documentState
+            , string orderNumber, string externalOrderNumber, string customerCode, double grossTotalInVat
+            , double grossTotalExVat, double grossTaxTotal, double discountAmountInVat, double discountAmountExVat
+            , double netTotalExVat, double netTaxTotal, int totalInvoiceRounding, double netTotalInVat)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.ConnectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand("SP_CREATE_Invoice", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@InvoiceNumber", SqlDbType.VarChar).Value = invoiceNumber;
+                        cmd.Parameters.Add("@InvoiceId", SqlDbType.VarChar).Value = invoiceId;
+                        cmd.Parameters.Add("@InvoiceDate", SqlDbType.VarChar).Value = invoiceDate;
+                        cmd.Parameters.Add("@DocumentState", SqlDbType.Int).Value = documentState;
+                        cmd.Parameters.Add("@OrderNumber", SqlDbType.VarChar).Value = orderNumber;
+                        cmd.Parameters.Add("@ExternalOrderNumber", SqlDbType.VarChar).Value = externalOrderNumber;
+                        cmd.Parameters.Add("@CustomerCode", SqlDbType.VarChar).Value = customerCode;
+                        cmd.Parameters.Add("@GrossTotalInVat", SqlDbType.VarChar).Value = grossTotalInVat;
+                        cmd.Parameters.Add("@GrossTotalExVat", SqlDbType.VarChar).Value = grossTotalExVat;
+                        cmd.Parameters.Add("@GrossTaxTotal", SqlDbType.VarChar).Value = grossTaxTotal;
+                        cmd.Parameters.Add("@DiscountAmountInVat", SqlDbType.VarChar).Value = discountAmountInVat;
+                        cmd.Parameters.Add("@DiscountAmountExVat", SqlDbType.VarChar).Value = discountAmountExVat;
+                        cmd.Parameters.Add("@NetTotalExVat", SqlDbType.VarChar).Value = netTotalExVat;
+                        cmd.Parameters.Add("@NetTaxTotal", SqlDbType.VarChar).Value = netTaxTotal;
+                        cmd.Parameters.Add("@TotalInvoiceRounding", SqlDbType.VarChar).Value = totalInvoiceRounding;
+                        cmd.Parameters.Add("@NetTotalInVat", SqlDbType.VarChar).Value = netTotalInVat;
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteException(ex.InnerException.Message, "CreateOrders");
+                throw;
+            }
+        }
+
+        public void CreateInvoiceLines(string invoiceNumber, int invoiceId, string warehouseCode, string itemCode, string moduleCode, string lineDescription, double unitPriceExcl, double unitPriceIncl, int quantity, string unitOfMeasure, double lineNetTotalOrderedInVat, double lineNetTotalOrderedExVat, double lineNetTotalProcessedInVat, double lineNetTotalProcessedExVat, string lineNotes)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.ConnectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand("SP_CREATE_InvoiceLine", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@InvoiceNumber", SqlDbType.VarChar).Value = invoiceNumber;
+                        cmd.Parameters.Add("@InvoiceId", SqlDbType.VarChar).Value = invoiceId;
+                        cmd.Parameters.Add("@WarehouseCode", SqlDbType.VarChar).Value = warehouseCode;
+                        cmd.Parameters.Add("@ItemCode", SqlDbType.VarChar).Value = itemCode;
+                        cmd.Parameters.Add("@ModuleCode", SqlDbType.VarChar).Value = moduleCode;
+                        cmd.Parameters.Add("@LineDescription", SqlDbType.VarChar).Value = lineDescription;
+                        cmd.Parameters.Add("@UnitPriceExcl", SqlDbType.VarChar).Value = unitPriceExcl;
+                        cmd.Parameters.Add("@UnitPriceIncl", SqlDbType.VarChar).Value = unitPriceIncl;
+                        cmd.Parameters.Add("@Quantity", SqlDbType.VarChar).Value = quantity;
+                        cmd.Parameters.Add("@UnitOfMeasure", SqlDbType.VarChar).Value = unitOfMeasure;
+                        cmd.Parameters.Add("@LineNetTotalOrderedInVat", SqlDbType.VarChar).Value = lineNetTotalOrderedInVat;
+                        cmd.Parameters.Add("@LineNetTotalOrderedExVat", SqlDbType.VarChar).Value = lineNetTotalOrderedExVat;
+                        cmd.Parameters.Add("@LineNetTotalProcessedInVat", SqlDbType.VarChar).Value = lineNetTotalProcessedInVat;
+                        cmd.Parameters.Add("@LineNetTotalProcessedExVat", SqlDbType.VarChar).Value = lineNetTotalProcessedExVat;
+                        cmd.Parameters.Add("@LineNotes", SqlDbType.VarChar).Value = lineNotes;
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteException(ex.InnerException.Message, "CreateOrders");
+                throw;
+            }
         }
     }
 }
