@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BizIntegrator.Models;
 using System.Reflection;
+using System.Net;
 
 namespace BizIntegrator.Service.Controllers
 {
@@ -106,7 +107,8 @@ namespace BizIntegrator.Service.Controllers
 
                     dynamic jObject = JsonConvert.DeserializeObject(dataObjects.Result);
 
-                    try {
+                    try
+                    {
                         foreach (JObject obj in jObject["data"])
                         {
                             bool dataExists = dataHandler.CheckCustomerList(obj["code"].ToString());
@@ -278,58 +280,63 @@ namespace BizIntegrator.Service.Controllers
 
         }
 
-        [HttpGet(Name = "CustomerList")]
-        [HttpPost]
-        public ActionResult Post()
+        [HttpPost(Name = "CustomerList")]
+        public async Task<ActionResult> Post()
         {
+            string errorMessage = "Errors encountered";
+
+            string apiUrl = string.Empty;
+
+            DataHandler dataHandler = new DataHandler();
+
+            string TransactionType = "PostCustList";
+
             try
             {
-                DataHandler dataHandler = new DataHandler();
+                DataTable dtApiData = dataHandler.GetInternalAPIData(TransactionType);
 
-                DataTable dtCust = dataHandler.GetCustomerData();
+                if (dtApiData.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dtApiData.Rows)
+                    {
+                        apiUrl = row["EndPoint"].ToString();
 
-                // Return the data in the response
-                return Ok(dtCust);
+                        using (HttpClient client = new HttpClient())
+                        {
+                            try
+                            {
+                                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+                                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                                Thread.Sleep(5000);
+
+                                //if (response.IsSuccessStatusCode)
+                                //{
+                                //    Console.WriteLine("CustomerList List data has been successfully imported");
+                                //}
+                                //else
+                                //{
+                                //    Console.WriteLine("Customer List data import failed");
+                                //}
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"An error occurred: {ex.InnerException}");
+                            }
+                        }
+                    }
+
+
+                }
+                return Created(Request.GetDisplayUrl(), "Invoices has been successfully imported and sent to biz");
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
             }
+
         }
 
-
-        //private DataTable GetDataFromDatabase(DataTable request)
-        //{
-        //    DataHandler dataHandler = new DataHandler();
-
-        //    DataTable dtCust = dataHandler.GetCustomerData();
-
-        //    List<CustomerList> custModelList = new List<CustomerList>();
-
-        //    foreach (DataRow row in dtCust.Rows)
-        //    {
-        //        CustomerList model = new CustomerList
-        //        {
-        //            CustomerCode = row["Originator"].ToString(),
-        //            CustomerName = row["Recipient"].ToString(),
-        //            PhysicalAddress = row["Type"].ToString(),
-        //            Email = row["SubType"].ToString(),
-        //            UcARBrnchNo = row["Total"].ToString(),
-        //            BranchCode = row["Total"].ToString(),
-        //            DateTimeStamp = row["Total"].ToString(),
-        //            GroupCode = row["Total"].ToString(),
-        //            GroupDescription = row["Total"].ToString(),
-        //            Area = row["Total"].ToString(),
-        //            AreaDescription = row["Total"].ToString(),
-        //            UlARWHLinked = row["Total"].ToString()
-        //        };
-
-        //        custModelList.Add(model);
-        //    }
-
-        //    return dtCust;
-
-
-        //}
     }
 }

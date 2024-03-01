@@ -785,10 +785,7 @@ namespace BizIntegrator.Data
                     StringBuilder sb = new StringBuilder();
 
                     sb.Clear();
-                    sb.AppendLine("SELECT [OrdLn],[OrderNo],[ItemNo],[ItemDesc],[MfrItem] ");
-                    sb.AppendLine(",[QtyConv],[OrdQty],[PurcUom],[PurcUomConv],[TaxCde] ");
-                    sb.AppendLine(",[TaxRate],[UnitPrc],[LineTotExcl],[LineTotTax],[LineTotVal] ");
-                    sb.AppendLine("FROM [dbo].[CustomerList] ");
+                    sb.AppendLine("SELECT * FROM [dbo].[CustomerList] ");
 
                     connection.Open();
 
