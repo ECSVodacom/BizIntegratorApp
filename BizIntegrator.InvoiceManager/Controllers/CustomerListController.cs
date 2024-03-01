@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using BizIntegrator.Models;
+using System.Reflection;
 
 namespace BizIntegrator.Service.Controllers
 {
@@ -277,5 +278,58 @@ namespace BizIntegrator.Service.Controllers
 
         }
 
+        [HttpGet(Name = "CustomerList")]
+        [HttpPost]
+        public ActionResult Post()
+        {
+            try
+            {
+                DataHandler dataHandler = new DataHandler();
+
+                DataTable dtCust = dataHandler.GetCustomerData();
+
+                // Return the data in the response
+                return Ok(dtCust);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+
+        //private DataTable GetDataFromDatabase(DataTable request)
+        //{
+        //    DataHandler dataHandler = new DataHandler();
+
+        //    DataTable dtCust = dataHandler.GetCustomerData();
+
+        //    List<CustomerList> custModelList = new List<CustomerList>();
+
+        //    foreach (DataRow row in dtCust.Rows)
+        //    {
+        //        CustomerList model = new CustomerList
+        //        {
+        //            CustomerCode = row["Originator"].ToString(),
+        //            CustomerName = row["Recipient"].ToString(),
+        //            PhysicalAddress = row["Type"].ToString(),
+        //            Email = row["SubType"].ToString(),
+        //            UcARBrnchNo = row["Total"].ToString(),
+        //            BranchCode = row["Total"].ToString(),
+        //            DateTimeStamp = row["Total"].ToString(),
+        //            GroupCode = row["Total"].ToString(),
+        //            GroupDescription = row["Total"].ToString(),
+        //            Area = row["Total"].ToString(),
+        //            AreaDescription = row["Total"].ToString(),
+        //            UlARWHLinked = row["Total"].ToString()
+        //        };
+
+        //        custModelList.Add(model);
+        //    }
+
+        //    return dtCust;
+
+
+        //}
     }
 }

@@ -771,5 +771,40 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
+
+        public DataTable GetCustomerData()
+        {
+            _connection = SetConnectionString();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connection))
+                {
+                    DataTable dataTable = new DataTable();
+
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.Clear();
+                    sb.AppendLine("SELECT [OrdLn],[OrderNo],[ItemNo],[ItemDesc],[MfrItem] ");
+                    sb.AppendLine(",[QtyConv],[OrdQty],[PurcUom],[PurcUomConv],[TaxCde] ");
+                    sb.AppendLine(",[TaxRate],[UnitPrc],[LineTotExcl],[LineTotTax],[LineTotVal] ");
+                    sb.AppendLine("FROM [dbo].[CustomerList] ");
+
+                    connection.Open();
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+                    {
+                        da.Fill(dataTable);
+                    }
+                    return dataTable;
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteException(ex.InnerException.Message, "GetOrderLines");
+                throw;
+            }
+
+        }
     }
 }
