@@ -47,6 +47,7 @@ namespace BizIntegrator.Service.Controllers
         [HttpGet(Name = "StockBarcode")]
         public ActionResult Get()
         {
+            string errorMessage = "Errors encountered";
             StockBarcode s = new StockBarcode();
             try
             {
@@ -72,6 +73,10 @@ namespace BizIntegrator.Service.Controllers
                     }
                 }
 
+                else
+                {
+                    return BadRequest(new { Message = errorMessage });
+                }
 
                 HttpClient client;
                 RestHandler restHandler = new RestHandler();
@@ -93,89 +98,95 @@ namespace BizIntegrator.Service.Controllers
 
                     dynamic jObject = JsonConvert.DeserializeObject(dataObjects.Result);
 
-
-                    foreach (JObject obj in jObject["data"])
+                    try
                     {
-                        bool dataExists = dataHandler.CheckStockBarcode(obj["itemCode"].ToString());
-
-                        if (!dataExists)
+                        foreach (JObject obj in jObject["data"])
                         {
-                            if (obj["itemCode"] != null)
-                            {
-                                s.ProductCode = obj["itemCode"].ToString();
-                            }
+                            bool dataExists = dataHandler.CheckStockBarcode(obj["itemCode"].ToString());
 
-                            else
+                            if (!dataExists)
                             {
-                                s.ProductCode = "";
-                            }
+                                if (obj["itemCode"] != null)
+                                {
+                                    s.ProductCode = obj["itemCode"].ToString();
+                                }
 
-                            if (obj["itemDescription"] != null)
-                            {
-                                s.ProductDescription = obj["itemDescription"].ToString();
-                            }
+                                else
+                                {
+                                    s.ProductCode = "";
+                                }
 
-                            else
-                            {
-                                s.ProductDescription = "";
-                            }
+                                if (obj["itemDescription"] != null)
+                                {
+                                    s.ProductDescription = obj["itemDescription"].ToString();
+                                }
 
-                            if (obj["barcodeBottle"] != null)
-                            {
-                                s.BottleBarcode = obj["barcodeBottle"].ToString();
-                            }
+                                else
+                                {
+                                    s.ProductDescription = "";
+                                }
 
-                            else
-                            {
-                                s.BottleBarcode = "";
-                            }
+                                if (obj["barcodeBottle"] != null)
+                                {
+                                    s.BottleBarcode = obj["barcodeBottle"].ToString();
+                                }
 
-                            if (obj["barcodeCase"] != null)
-                            {
-                                s.CaseBarcode = obj["barcodeCase"].ToString();
-                            }
+                                else
+                                {
+                                    s.BottleBarcode = "";
+                                }
 
-                            else
-                            {
-                                s.CaseBarcode = "";
-                            }
+                                if (obj["barcodeCase"] != null)
+                                {
+                                    s.CaseBarcode = obj["barcodeCase"].ToString();
+                                }
 
-                            if (obj["uomBottle"] != null)
-                            {
-                                s.BottleUom = obj["uomBottle"].ToString();
-                            }
+                                else
+                                {
+                                    s.CaseBarcode = "";
+                                }
 
-                            else
-                            {
-                                s.BottleUom = "";
-                            }
+                                if (obj["uomBottle"] != null)
+                                {
+                                    s.BottleUom = obj["uomBottle"].ToString();
+                                }
 
-                            if (obj["uomCase"] != null)
-                            {
-                                s.CaseUom = obj["uomCase"].ToString();
-                            }
+                                else
+                                {
+                                    s.BottleUom = "";
+                                }
 
-                            else
-                            {
-                                s.CaseUom = "";
-                            }
+                                if (obj["uomCase"] != null)
+                                {
+                                    s.CaseUom = obj["uomCase"].ToString();
+                                }
 
-                            if (obj["unitsPerCase"] != null)
-                            {
-                                s.UnitsPerCase = Convert.ToInt32(obj["unitsPerCase"].ToString());
-                            }
-                            else
-                            {
-                                s.UnitsPerCase = 0;
-                            }
+                                else
+                                {
+                                    s.CaseUom = "";
+                                }
 
-                            dataHandler.CreateStocBarcode(s.ProductCode, s.ProductDescription, s.BottleBarcode, s.CaseBarcode, s.BottleUom, s.CaseUom, s.UnitsPerCase, Id);
+                                if (obj["unitsPerCase"] != null)
+                                {
+                                    s.UnitsPerCase = Convert.ToInt32(obj["unitsPerCase"].ToString());
+                                }
+                                else
+                                {
+                                    s.UnitsPerCase = 0;
+                                }
 
+                                dataHandler.CreateStocBarcode(s.ProductCode, s.ProductDescription, s.BottleBarcode, s.CaseBarcode, s.BottleUom, s.CaseUom, s.UnitsPerCase, Id);
+
+                            }
                         }
+                        return Created(Request.GetDisplayUrl(), null);
                     }
 
+                    catch (Exception ex)
+                    {
+                        return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
+                    }
 
-                    return Created(Request.GetDisplayUrl(), null);
                 }
 
                 else
@@ -186,7 +197,7 @@ namespace BizIntegrator.Service.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
             }
         }
     }

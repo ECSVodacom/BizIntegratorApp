@@ -24,7 +24,7 @@ namespace BizIntegrator.Client
 
             await GetOrders();
 
-            await GetInvoices();
+            //await GetInvoices();
         }
 
         static async Task PostOrders()
@@ -111,7 +111,7 @@ namespace BizIntegrator.Client
 
         }
 
-        static async Task GetInvoices()
+        static async Task PostInvoices()
         {
             string apiUrl = string.Empty;
             DataHandler dataHandler = new DataHandler();

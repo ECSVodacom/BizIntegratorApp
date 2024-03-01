@@ -11,5 +11,5 @@ SELECT @Id
       ,'9C9B2B80-B076-4DF4-8482-7721E0DD5A22'
       ,'https://192.168.100.14/BizIntegratorApp/api/StockBarcode'
       ,'GetStockBarcode'
-      ,'GET'
+      ,'POST'
   --FROM [BizIntegrator].[dbo].[APIEndpoints]

@@ -17,6 +17,8 @@ namespace BizIntegrator.Client.GetMasterData
             await GetStockBarcodeData();
 
             await GetCustomerData();
+
+            //await GetInvoiceData();
         }
 
         static async Task GetStockBarcodeData()

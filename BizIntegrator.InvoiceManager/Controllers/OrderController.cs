@@ -62,7 +62,7 @@ namespace BizIntegrator.Service.Controllers
         public ActionResult Post([FromBody] JsonElement orders)
         {
             string jsonString = orders.ToString();
-
+            string errorMessage = "Errors encountered";
             HttpClient client;
             DataHandler dataHandler = new DataHandler();
 
@@ -89,6 +89,10 @@ namespace BizIntegrator.Service.Controllers
                     }
                 }
 
+                else
+                {
+                    return BadRequest(new { Message = errorMessage });
+                }
 
                 if (Name == "Diageo_Vodacom")
                 {
@@ -143,12 +147,12 @@ namespace BizIntegrator.Service.Controllers
 
                 }
 
-                return Created(Request.GetDisplayUrl(), null);
+                return Created(Request.GetDisplayUrl(), "Invoices has been successfully imported and sent to biz");
             }
 
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
             }
         }
 

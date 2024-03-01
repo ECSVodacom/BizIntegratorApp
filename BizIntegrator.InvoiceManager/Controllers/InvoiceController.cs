@@ -51,47 +51,56 @@ namespace BizIntegrator.Service.Controllers
             Invoice i = new Invoice();
             InvoiceLine il = new InvoiceLine();
 
-            try
+            string errorMessage = "Errors encountered";
+
+            //string response = "";
+            //try
+            //{
+            TransactionType = "GetInvoices";
+
+            DataHandler dataHandler = new DataHandler();
+
+            dtApiData = dataHandler.GetApiData(TransactionType);
+
+            if (dtApiData.Rows.Count > 0)
             {
-                TransactionType = "GetInvoices";
-
-                DataHandler dataHandler = new DataHandler();
-
-                dtApiData = dataHandler.GetApiData(TransactionType);
-
-                if (dtApiData.Rows.Count > 0)
+                foreach (DataRow r in dtApiData.Rows)
                 {
-                    foreach (DataRow r in dtApiData.Rows)
-                    {
-                        Id = r["Id"].ToString();
-                        ApiKey = r["AccountKey"].ToString();
-                        Name = r["Name"].ToString();
-                        Url = r["EndPoint"].ToString();
-                        PrivateKey = r["PrivateKey"].ToString();
-                        Username = r["Username"].ToString();
-                        Password = r["Password"].ToString();
-                        AuthenticationType = r["AuthenticationType"].ToString();
-                        UseAPIKey = r["UseAPIKey"].ToString();
-                    }
+                    Id = r["Id"].ToString();
+                    ApiKey = r["AccountKey"].ToString();
+                    Name = r["Name"].ToString();
+                    Url = r["EndPoint"].ToString();
+                    PrivateKey = r["PrivateKey"].ToString();
+                    Username = r["Username"].ToString();
+                    Password = r["Password"].ToString();
+                    AuthenticationType = r["AuthenticationType"].ToString();
+                    UseAPIKey = r["UseAPIKey"].ToString();
                 }
+            }
 
+            else
+            {
+                return BadRequest(new { Message = errorMessage });
+            }
 
-                HttpClient client;
-                RestHandler restHandler = new RestHandler();
+            HttpClient client;
+            RestHandler restHandler = new RestHandler();
 
-                client = restHandler.SetClient(Id, Name, Url, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
+            client = restHandler.SetClient(Id, Name, Url, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
 
-                client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = client.GetAsync("").Result;
+            HttpResponseMessage response = client.GetAsync("").Result;
 
-                if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
+            {
+                var dataObjects = response.Content.ReadAsStringAsync();
+
+                dynamic jObject = JsonConvert.DeserializeObject(dataObjects.Result);
+
+                try
                 {
-                    var dataObjects = response.Content.ReadAsStringAsync();
-
-                    dynamic jObject = JsonConvert.DeserializeObject(dataObjects.Result);
-
                     foreach (JObject obj in jObject["data"])
                     {
                         bool dataExists = dataHandler.CheckInvoice(obj["invoiceId"].ToString());
@@ -454,7 +463,7 @@ namespace BizIntegrator.Service.Controllers
 
                             BizHandler bizHandler = new BizHandler();
 
-                            bool invoiceProcessed = dataHandler.CheckInvoices(obj["invoiceId"].ToString());
+                            bool invoiceProcessed = dataHandler.CheckInvoice(obj["invoiceId"].ToString());
 
                             if (!invoiceProcessed)
                             {
@@ -464,21 +473,18 @@ namespace BizIntegrator.Service.Controllers
                         }
                     }
 
-
-                    return Created(Request.GetDisplayUrl(), null);
+                    return Created(Request.GetDisplayUrl(), "Invoices has been successfully imported and sent to biz");
                 }
-
-                else
+                catch (Exception ex)
                 {
-                    return BadRequest();
+                    return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
                 }
-
             }
-            catch (Exception ex)
+
+            else
             {
-                return BadRequest(ex);
+                return BadRequest(new { Message = errorMessage, ExceptionDetails = response.StatusCode });
             }
-
         }
     }
 }

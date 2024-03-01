@@ -716,38 +716,6 @@ namespace BizIntegrator.Data
             }
         }
 
-        public bool CheckInvoices(string invoiceId)
-        {
-            _connection = SetConnectionString();
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(_connection))
-                {
-                    connection.Open();
-                    SqlDataAdapter dt = new SqlDataAdapter("SELECT isnull(Processed, 0) Processed From Invoices Where InvoiceId = '" + invoiceId + "'", connection);
-                    DataSet ds = new DataSet();
-                    dt.Fill(ds);
-
-                    if (Convert.ToBoolean(ds.Tables[0].Rows[0]["Processed"]) == true)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex.InnerException.Message, "CheckInvoices");
-                throw;
-            }
-        }
-
         public void UpdateProcessedInvoice(string invoiceId)
         {
             _connection = SetConnectionString();
