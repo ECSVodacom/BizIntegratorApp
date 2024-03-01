@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BizIntegrator.InvoiceManager.Repository
+namespace BizIntegrator.Service.Repository
 {
     public class JwtDates
     {

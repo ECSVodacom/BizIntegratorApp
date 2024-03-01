@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BizIntegrator.InvoiceManager.Repository
+namespace BizIntegrator.Service.Repository
 {
     public class TokenPayload
     {

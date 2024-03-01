@@ -1,11 +1,12 @@
 ﻿using System;
 
-namespace BizIntegrator.InvoiceManager.Models
+namespace BizIntegrator.Models
 {
     public class Invoice
     {
-        public string InvoiceId { get; set; }
         public string InvoiceNumber { get; set; }
+        public int InvoiceId { get; set; }
+        
         public string InvoiceDate { get; set; }
         public int DocumentState { get; set; }
         public string OrderNumber { get; set; }
@@ -20,6 +21,9 @@ namespace BizIntegrator.InvoiceManager.Models
         public double NetTaxTotal { get; set; }
         public int TotalInvoiceRounding { get; set; }
         public double NetTotalInVat { get; set; }
+                public Nullable<bool> Processed { get; set; }
+
+        public string API_Id { get; set; }
        
     }
 }

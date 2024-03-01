@@ -12,11 +12,18 @@ using System.Data;
 using BizIntegrator.Data;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
-using BizIntegrator.InvoiceManager.Repository;
+using BizIntegrator.Service.Repository;
 using Microsoft.AspNetCore.Http.Extensions;
+using BizIntegrator.Models;
+using System.Security.Cryptography;
+using System.Xml.Linq;
+using BizIntegrator.PostToBiz;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 
-namespace BizIntegrator.InvoiceManager.Controllers
+
+namespace BizIntegrator.Service.Controllers
 {
 
     
@@ -27,7 +34,6 @@ namespace BizIntegrator.InvoiceManager.Controllers
         private string fileName { get; set; }
         private string senderEanCode { get; set; }
         private string recieverEanCode { get; set; }
-
         string Id { get; set; }
         string ApiKey { get; set; }
         string Name { get; set; }
@@ -38,10 +44,21 @@ namespace BizIntegrator.InvoiceManager.Controllers
         string AuthenticationType { get; set; }
         string UseAPIKey { get; set; }
         string TransactionType { get; set; }
+        string Method { get; set; }
 
         DataTable dtApiData;
 
+        private readonly ILogger<CustomerListController> _logger;
+        private readonly IConfiguration _configuration;
+
+        public OrderController(ILogger<CustomerListController> logger, IConfiguration configuration)
+        {
+            _logger = logger;
+            _configuration = configuration;
+        }
+
         [HttpPost(Name = "Order")]
+        [Consumes("application/json")]
         public ActionResult Post([FromBody] JsonElement orders)
         {
             string jsonString = orders.ToString();
@@ -55,41 +72,131 @@ namespace BizIntegrator.InvoiceManager.Controllers
 
                 dtApiData = dataHandler.GetApiData(TransactionType);
 
-                foreach (DataRow r in dtApiData.Rows)
+                if (dtApiData.Rows.Count > 0)
                 {
-                    Id = r["Id"].ToString();
-                    ApiKey = r["AccountKey"].ToString();
-                    Name = r["Name"].ToString();
-                    Url = r["EndPoint"].ToString();
-                    PrivateKey = r["PrivateKey"].ToString();
-                    Username = r["Username"].ToString();
-                    Password = r["Password"].ToString();
-                    AuthenticationType = r["AuthenticationType"].ToString();
-                    UseAPIKey = r["UseAPIKey"].ToString();
+                    foreach (DataRow r in dtApiData.Rows)
+                    {
+                        Id = r["Id"].ToString();
+                        ApiKey = r["AccountKey"].ToString();
+                        Name = r["Name"].ToString();
+                        Url = r["EndPoint"].ToString();
+                        PrivateKey = r["PrivateKey"].ToString();
+                        Username = r["Username"].ToString();
+                        Password = r["Password"].ToString();
+                        AuthenticationType = r["AuthenticationType"].ToString();
+                        UseAPIKey = r["UseAPIKey"].ToString();
+
+                    }
+                }
+
+
+                if (Name == "Diageo_Vodacom")
+                {
+                    RestHandler restHandler = new RestHandler();
+
+                    client = restHandler.SetClient(Id, Name, Url, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
+
+                    client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    string postDataUrl = Url;
+
+                    dynamic jObject = JsonConvert.DeserializeObject(jsonString);
+
+                    foreach (JObject obj in jObject)
+                    {
+                        string branchCode = string.Empty;
+                        string customerCode = string.Empty;
+
+                        if (obj["branchCode"] != null)
+                        {
+                            branchCode = obj["branchCode"].ToString();
+
+                            //Lookup customer data from json provided
+                            customerCode = dataHandler.GetCustomerCode(branchCode);
+
+                            obj["customerCode"] = customerCode;
+                        }
+
+                        else
+                        {
+                            branchCode = "";
+                            customerCode = "";
+                        }
+
+                        if (obj["lines"] is JArray linesArray)
+                        {
+                            foreach (JObject objLine in linesArray)
+                            {
+                                string test = "";
+                                test = "hello";
+                                // Lookup stock data from json provided
+                            }
+                        }
+
+                        var content = new StringContent(jObject.ToString(), System.Text.Encoding.UTF8, "application/json");
+
+                        HttpResponseMessage response = client.PostAsync(postDataUrl, content).Result;
+                    }
+
+
 
                 }
 
-                RestHandler restHandler = new RestHandler();
+                return Created(Request.GetDisplayUrl(), null);
+            }
 
-                client = restHandler.SetClient(Id, Name, Url, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
 
-                client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+        [HttpGet(Name = "Order")]
+        [Consumes("application/json")]
+        public ActionResult Get()
+        {
+            DataHandler dataHandler = new DataHandler();
 
-                DataTable dtPostDataUrl = dataHandler.GetApiData(TransactionType);
-                DataRow row = dtPostDataUrl.Rows[0];
-                string postDataUrl = row["EndPoint"].ToString();
+            try
+            {
+                TransactionType = "GetOrders";
+                dtApiData = dataHandler.GetApiData(TransactionType);
+                if (dtApiData.Rows.Count > 0)
+                {
+                    foreach (DataRow r in dtApiData.Rows)
+                    {
+                        Id = r["Id"].ToString();
+                        ApiKey = r["AccountKey"].ToString();
+                        Name = r["Name"].ToString();
+                        Url = r["EndPoint"].ToString();
+                        PrivateKey = r["PrivateKey"].ToString();
+                        Username = r["Username"].ToString();
+                        Password = r["Password"].ToString();
+                        AuthenticationType = r["AuthenticationType"].ToString();
+                        UseAPIKey = r["UseAPIKey"].ToString();
 
-                dynamic jObject = JsonConvert.DeserializeObject(jsonString);
+                    }
+                }
 
-                JArray dataArray;
+                if (Name == "PLASTIC")
+                {
+                    OrderHandler orderHandler = new OrderHandler();
 
-                dataArray = jObject;
+                    Orders ord = new Orders();
 
-                var content = new StringContent(dataArray.ToString(), System.Text.Encoding.UTF8, "application/json");
+                    try
+                    {
+                        string outputXtraEdit = string.Empty;
 
-                HttpResponseMessage response = client.PostAsync(postDataUrl, content).Result;
+                        string Response = orderHandler.CreateOrders(Id, ApiKey, Name, Url, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
 
+                    }
+                    catch (Exception ex)
+                    {
+                        dataHandler.WriteException(ex.InnerException.ToString(), "Get Orders");
+                    }
+                }
                 return Created(Request.GetDisplayUrl(), null);
             }
 

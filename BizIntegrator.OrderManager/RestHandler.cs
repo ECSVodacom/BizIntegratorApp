@@ -88,7 +88,7 @@ namespace BizIntegrator.OrderManager
         {
             DataHandler dataHandler = new DataHandler();
 
-            string transactionType = "Login";
+            string transactionType = "PostLogin";
             try
             {
                 using (var httpClient = new HttpClient())

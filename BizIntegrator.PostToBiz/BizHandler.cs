@@ -1,6 +1,4 @@
-﻿using BizIntegrator.Data;
-using BizIntegrator.PostToBiz.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BizIntegrator.PostToBiz
 {
@@ -33,21 +33,31 @@ namespace BizIntegrator.PostToBiz
 
         public PostResult PostResult { get; set; }
 
+        string bizlinkString = String.Empty;
+        public string SetBizLinkString()
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+            bizlinkString = configuration.GetSection("Settings:BizLinkEndPoint").Value;
+
+            return bizlinkString;
+        }
+
         public bool PostToBiz(string fContent, string fileName, string from, string to)
         {
             string fileContent = "[" + fContent + "]";
-            DataHandler dataHandler = new DataHandler();
 
             string contentType = "text/xml";
             byte[] bytes = null;
-            string protocol = Settings.Default.Protocol;
-            string uri = Settings.Default.BizLinkURL;
-            string port = Settings.Default.Port;
-            string party = Settings.Default.Party;
+
+            string config = SetBizLinkString();
 
             string uriBiz =
-                string.Format("{0}://{1}:{2}/msgsrv/http?from={3}&to={5}&filename={4}.{3}.{5}",
-                    protocol, uri, port, from == "" ? party : from, fileName, to);
+                string.Format("{0}?from={1}&to={3}&filename={2}.{1}.{3}",
+                    config, from, fileName, to);
 
             HttpWebRequest webRequest = WebRequest.Create(new Uri(uriBiz)) as HttpWebRequest;
             webRequest.Proxy = WebRequest.DefaultWebProxy;
@@ -85,7 +95,6 @@ namespace BizIntegrator.PostToBiz
             }
             catch (Exception exception)
             {
-                dataHandler.WriteException(exception.Message, "PostToBiz");
                 PostResult.Message = string.Format("Exception occured sending to Biz. {0}. {1}. {2}", fileName, exception.Message, exception.InnerException);
                 PostResult.IsPosted = false;
 

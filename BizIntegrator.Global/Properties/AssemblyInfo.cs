@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BizIntegrator.PostToBiz")]
+[assembly: AssemblyTitle("BizIntegrator.Global")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BizIntegrator.PostToBiz")]
-[assembly: AssemblyCopyright("Copyright ©  2023")]
+[assembly: AssemblyProduct("BizIntegrator.Global")]
+[assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c833f01a-a102-462a-8a2d-2be9cb4c7e5b")]
+[assembly: Guid("9ee6f4d9-90d9-45de-a193-c3942c9bf87b")]
 
 // Version information for an assembly consists of the following four values:
 //

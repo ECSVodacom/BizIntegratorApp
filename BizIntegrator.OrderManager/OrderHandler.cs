@@ -3,6 +3,7 @@ using BizIntegrator.Models;
 using BizIntegrator.PostToBiz;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
 using System.Data;
 using System.Data.Entity.Infrastructure.Design;
@@ -34,6 +35,7 @@ namespace BizIntegrator.OrderManager
         string AuthenticationType { get; set; }
         string UseAPIKey { get; set; }
         string TransactionType { get; set; }
+        string Method { get; set; }
 
         DataTable dtApiData;
 
@@ -42,8 +44,7 @@ namespace BizIntegrator.OrderManager
             DataHandler dataHandler = new DataHandler();
             try
             {
-                TransactionType = "Orders";
-
+                TransactionType = "GetOrders";
                 dtApiData = dataHandler.GetApiData(TransactionType);
 
                 foreach (DataRow row in dtApiData.Rows)
@@ -79,273 +80,7 @@ namespace BizIntegrator.OrderManager
                 string outputXtraEdit = string.Empty;
 
                 string Response = CreateOrders(_Id, _apiKey, _name, _url, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
-                /*
-                 * 
-                 * Commented out code to convert json to xml format
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true,
-                    IndentChars = "    ",
-                    NewLineChars = "\n",
-                    NewLineHandling = NewLineHandling.Replace,
-                    OmitXmlDeclaration = true
-                };
-
-
-                DataTable dtOrders = dataHandler.GetOrders();
-
-                foreach (DataRow row in dtOrders.Rows)
-                {
-                    using (StringWriter stringWriter = new StringWriter())
-                    {
-                        using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
-                        {
-                            XmlDocument outputDocument = new XmlDocument();
-
-                            XmlNode root = outputDocument.CreateElement("orderMessage");
-
-                            XmlNode standardBusinessDocumentHeader;
-                            XmlNode headerVersion;
-                            XmlNode documentType;
-                            XmlNode documentStatusCode;
-                            XmlNode documentIdentification;
-                            XmlNode standard;
-                            XmlNode typeVersion;
-                            XmlNode creationDateAndTime;
-                            XmlNode receiver;
-                            XmlNode sender;
-                            XmlNode receiverGln;
-                            XmlNode senderGln;
-
-                            ord.OrdNo = row["ordNo"].ToString();
-                            ord.OrdDate = row["ordDate"].ToString();
-                            ord.OrdDesc = row["ordDesc"].ToString();
-                            ord.OrdType = row["ordType"].ToString();
-                            ord.OrdTerm = row["ordTerm"].ToString();
-                            ord.OrdTermDesc = row["ordTermDesc"].ToString();
-                            ord.OrdStat = row["ordStat"].ToString();
-                            ord.OrderStatus = row["orderStatus"].ToString();
-                            ord.Origin = row["origin"].ToString();
-                            ord.PromDate = row["promDate"].ToString();
-                            ord.CompName = row["compName"].ToString();
-                            ord.BranchNo = row["branchNo"].ToString();
-                            ord.BranchName = row["branchName"].ToString();
-                            ord.BranchAddr1 = row["branchAddr1"].ToString();
-                            ord.BranchAddr2 = row["branchAddr2"].ToString();
-                            ord.BranchTel = row["branchTel"].ToString();
-                            ord.BranchFax = row["branchFax"].ToString();
-                            ord.BranchEmail = row["branchEmail"].ToString();
-                            ord.BranchVat = row["branchVat"].ToString();
-                            ord.VendorRef = row["vendorRef"].ToString();
-                            ord.VendorName = row["vendorName"].ToString();
-                            ord.VendorAddr1 = row["vendorAddr1"].ToString();
-                            ord.VendorAddr2 = row["vendorAddr2"].ToString();
-                            ord.VendorSuburb = row["vendorSuburb"].ToString();
-                            ord.VendorCity = row["vendorCity"].ToString();
-                            ord.VendorContact = row["vendorContact"].ToString();
-                            ord.TotLines = row["totLines"].ToString();
-                            ord.TotQty = row["totQty"].ToString();
-                            ord.TotExcl = row["totExcl"].ToString();
-                            ord.TotTax = row["totTax"].ToString();
-                            ord.TotVal = row["totVal"].ToString();
-                            ord.DelivAddr1 = row["delivAddr1"].ToString();
-                            ord.DelivAddr2 = row["delivAddr2"].ToString();
-                            ord.DelivSuburb = row["delivSuburb"].ToString();
-                            ord.DelivCity = row["delivCity"].ToString();
-                            ord.CompID = row["compID"].ToString();
-                            ord.VendorNo = row["vendorNo"].ToString();
-
-                            DataTable dtEancodes = dataHandler.GetEanCodes(ord.VendorNo);
-
-                            foreach (DataRow dr in dtEancodes.Rows)
-                            {
-                                senderEanCode = dr["SenderGln"].ToString();
-                                recieverEanCode = dr["RecieverGln"].ToString();
-                            }
-
-                            standardBusinessDocumentHeader = outputDocument.CreateElement("standardBusinessDocumentHeader");
-                            headerVersion = outputDocument.CreateElement("headerVersion");
-                            headerVersion.InnerText = "1.0";
-                            documentType = outputDocument.CreateElement("documentType");
-                            documentType.InnerText = "ORDER";
-                            documentStatusCode = outputDocument.CreateElement("documentStatusCode");
-                            documentStatusCode.InnerText = "ORIGINAL";
-                            documentIdentification = outputDocument.CreateElement("documentIdentification");
-                            standard = outputDocument.CreateElement("standard");
-                            standard.InnerText = "XTRA";
-                            typeVersion = outputDocument.CreateElement("typeVersion");
-                            typeVersion.InnerText = "1.0";
-                            creationDateAndTime = outputDocument.CreateElement("creationDateAndTime");
-                            creationDateAndTime.InnerText = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
-                            receiver = outputDocument.CreateElement("receiver");
-                            receiverGln = outputDocument.CreateElement("gln");
-                            receiverGln.InnerText = recieverEanCode;
-                            sender = outputDocument.CreateElement("sender");
-                            senderGln = outputDocument.CreateElement("gln");
-                            senderGln.InnerText = senderEanCode;
-                            root.AppendChild(standardBusinessDocumentHeader);
-                            standardBusinessDocumentHeader.AppendChild(headerVersion);
-                            standardBusinessDocumentHeader.AppendChild(documentType);
-                            standardBusinessDocumentHeader.AppendChild(documentStatusCode);
-                            standardBusinessDocumentHeader.AppendChild(documentIdentification);
-                            documentIdentification.AppendChild(standard);
-                            documentIdentification.AppendChild(typeVersion);
-                            documentIdentification.AppendChild(creationDateAndTime);
-                            standardBusinessDocumentHeader.AppendChild(receiver);
-                            receiver.AppendChild(receiverGln);
-                            standardBusinessDocumentHeader.AppendChild(sender);
-                            sender.AppendChild(senderGln);
-
-                            XmlNode newOrder = outputDocument.CreateElement("order");
-                            XmlNode newCustomer = outputDocument.CreateElement("customer");
-                            XmlNode customerGln = outputDocument.CreateElement("gln");
-                            customerGln.InnerText = senderEanCode;
-                            XmlNode contactInformation = outputDocument.CreateElement("contactInformation");
-                            contactInformation.InnerText = ord.BranchTel;
-                            XmlNode customerName = outputDocument.CreateElement("customerName");
-                            customerName.InnerText = ord.BranchName;
-                            XmlNode newDeliveryPoint = outputDocument.CreateElement("deliveryPoint");
-                            XmlNode gln = outputDocument.CreateElement("gln");
-                            gln.InnerText = ord.BranchNo;
-                            XmlNode deliveryPointName = outputDocument.CreateElement("deliveryPointName");
-                            deliveryPointName.InnerText = ord.BranchName;
-                            XmlNode newOrderIdentification = outputDocument.CreateElement("orderIdentification");
-                            XmlNode orderNo = outputDocument.CreateElement("orderNo");
-                            orderNo.InnerText = ord.OrdNo;
-                            XmlNode orderDate = outputDocument.CreateElement("orderDate");
-                            orderDate.InnerText = ord.OrdDate;
-                            XmlNode deliveryDates = outputDocument.CreateElement("deliveryDates");
-                            XmlNode dueDate = outputDocument.CreateElement("dueDate");
-                            dueDate.InnerText = ord.PromDate;
-                            XmlNode earliestDate = outputDocument.CreateElement("earliestDate");
-                            earliestDate.InnerText = ord.PromDate;
-                            XmlNode latestDate = outputDocument.CreateElement("latestDate");
-                            latestDate.InnerText = ord.PromDate;
-                            XmlNode orderCurrencyCode = outputDocument.CreateElement("orderCurrencyCode");
-                            orderCurrencyCode.InnerText = "ZAR";
-                            XmlNode countryOfSupplyOfGoods = outputDocument.CreateElement("countryOfSupplyOfGoods");
-                            countryOfSupplyOfGoods.InnerText = "ZA";
-                            XmlNode representatives = outputDocument.CreateElement("representatives");
-                            representatives.InnerText = ord.VendorNo;
-                            XmlNode orderTotals = outputDocument.CreateElement("orderTotals");
-                            orderTotals.InnerText = "";
-                            XmlNode totalOrderAmountExclusive = outputDocument.CreateElement("totalOrderAmountExclusive");
-                            totalOrderAmountExclusive.InnerText = Convert.ToDecimal(ord.TotExcl).ToString("0.00", CultureInfo.InvariantCulture);
-                            XmlNode totalOrderAmountInclusive = outputDocument.CreateElement("totalOrderAmountInclusive");
-                            totalOrderAmountInclusive.InnerText = Convert.ToDecimal(ord.TotVal).ToString("0.00", CultureInfo.InvariantCulture);
-
-                            outputDocument.AppendChild(root);
-                            root.AppendChild(newOrder);
-                            newOrder.AppendChild(newCustomer);
-                            newOrder.AppendChild(newOrderIdentification);
-                            orderTotals.AppendChild(totalOrderAmountExclusive);
-                            orderTotals.AppendChild(totalOrderAmountInclusive);
-                            newCustomer.AppendChild(customerGln);
-                            newCustomer.AppendChild(contactInformation);
-                            newCustomer.AppendChild(customerName);
-                            newCustomer.AppendChild(newDeliveryPoint);
-                            newDeliveryPoint.AppendChild(gln);
-                            newDeliveryPoint.AppendChild(deliveryPointName);
-                            newOrder.AppendChild(newOrderIdentification);
-                            newOrderIdentification.AppendChild(orderNo);
-                            newOrderIdentification.AppendChild(orderDate);
-                            newOrderIdentification.AppendChild(deliveryDates);
-                            deliveryDates.AppendChild(dueDate);
-                            deliveryDates.AppendChild(earliestDate);
-                            deliveryDates.AppendChild(latestDate);
-                            newOrderIdentification.AppendChild(orderCurrencyCode);
-                            newOrderIdentification.AppendChild(countryOfSupplyOfGoods);
-                            newOrderIdentification.AppendChild(representatives);
-
-                            DataTable dtOrderLines = dataHandler.GetOrdersLines(ord.OrdNo);
-
-                            foreach (DataRow rowOln in dtOrderLines.Rows)
-                            {
-                                string ordLn = rowOln["ordLn"].ToString();
-                                string itemNo = rowOln["itemNo"].ToString();
-                                string itemDesc = rowOln["itemDesc"].ToString();
-                                string mfrItem = rowOln["mfrItem"].ToString();
-                                string ordQty = rowOln["ordQty"].ToString();
-                                string purcUom = rowOln["purcUom"].ToString();
-                                string unitPrc = rowOln["unitPrc"].ToString();
-
-                                decimal amountExclusiveCalc = Convert.ToDecimal(ordQty) * decimal.Parse(unitPrc);
-
-                                XmlNode orderLineItem = outputDocument.CreateElement("orderLineItem");
-                                XmlNode lineItemNumber = outputDocument.CreateElement("lineItemNumber");
-                                lineItemNumber.InnerText = ordLn;
-                                XmlNode transactionalTradeItem = outputDocument.CreateElement("transactionalTradeItem");
-                                transactionalTradeItem.InnerText = "";
-                                XmlNode customerIdentifier = outputDocument.CreateElement("customerIdentifier");
-                                customerIdentifier.InnerText = "";
-                                XmlNode gtin = outputDocument.CreateElement("gtin");
-                                gtin.InnerText = itemNo;
-                                XmlNode code = outputDocument.CreateElement("code");
-                                code.InnerText = mfrItem;
-                                XmlNode description = outputDocument.CreateElement("description");
-                                description.InnerText = itemDesc;
-                                XmlNode supplierIdentifier = outputDocument.CreateElement("supplierIdentifier");
-                                supplierIdentifier.InnerText = "";
-                                XmlNode supplierGtin = outputDocument.CreateElement("gtin");
-                                supplierGtin.InnerText = itemNo;
-                                XmlNode orderedQuantity = outputDocument.CreateElement("orderedQuantity");
-                                orderedQuantity.InnerText = Convert.ToDecimal(ordQty).ToString("0.00", CultureInfo.InvariantCulture);
-                                XmlNode unitOfMeasure = outputDocument.CreateElement("UnitOfMeasure");
-                                unitOfMeasure.InnerText = purcUom;
-                                XmlNode itemPriceExclusive = outputDocument.CreateElement("itemPriceExclusive");
-                                itemPriceExclusive.InnerText = Convert.ToDecimal(unitPrc).ToString("0.00", CultureInfo.InvariantCulture);
-                                XmlNode amountExclusiveBeforeDiscount = outputDocument.CreateElement("amountExclusiveBeforeDiscount");
-                                amountExclusiveBeforeDiscount.InnerText = amountExclusiveCalc.ToString("0.00", CultureInfo.InvariantCulture);
-                                XmlNode discount = outputDocument.CreateElement("discount");
-                                discount.InnerText = "";
-                                XmlNode amountExclusiveAfterDiscount = outputDocument.CreateElement("amountExclusiveAfterDiscount");
-                                amountExclusiveAfterDiscount.InnerText = amountExclusiveCalc.ToString("0.00", CultureInfo.InvariantCulture);
-                                XmlNode orderLineTaxInformation = outputDocument.CreateElement("orderLineTaxInformation");
-                                representatives.InnerText = ord.VendorNo;
-
-                                newOrder.AppendChild(orderLineItem);
-                                transactionalTradeItem.AppendChild(customerIdentifier);
-                                customerIdentifier.AppendChild(gtin);
-                                customerIdentifier.AppendChild(code);
-                                customerIdentifier.AppendChild(description);
-                                transactionalTradeItem.AppendChild(supplierIdentifier);
-                                supplierIdentifier.AppendChild(supplierGtin);
-                                orderLineItem.AppendChild(lineItemNumber);
-                                orderLineItem.AppendChild(transactionalTradeItem);
-                                orderLineItem.AppendChild(unitOfMeasure);
-                                orderLineItem.AppendChild(orderedQuantity);
-                                orderLineItem.AppendChild(itemPriceExclusive);
-                                orderLineItem.AppendChild(amountExclusiveBeforeDiscount);
-                                orderLineItem.AppendChild(discount);
-                                orderLineItem.AppendChild(amountExclusiveAfterDiscount);
-                                orderLineItem.AppendChild(orderLineTaxInformation);
-                            }
-
-                            newOrder.AppendChild(orderTotals);
-
-                            DateTime date = DateTime.Now;
-                            string formattedDate = date.ToString("yyyyMMdd");
-
-                            fileName = "PP" + "-ORDER-" + ord.OrdNo + "-" + formattedDate;
-
-                            outputDocument.Save(xmlWriter);
-                            outputXtraEdit = stringWriter.ToString();
-
-                            bool orderProcessed = dataHandler.CheckOrders(ord.OrdNo);
-
-                            BizHandler bizHandler = new BizHandler();
-
-                            if (!orderProcessed)
-                            {
-                                bizHandler.PostToBiz(outputXtraEdit, fileName + ".xml");
-                                dataHandler.UpdateProcessedOrder(ord.OrdNo);
-                            }
-                        }
-
-                    }
-
-                }
-                */
+                
                 return "";
             }
             catch (Exception ex)
@@ -452,7 +187,7 @@ namespace BizIntegrator.OrderManager
                                                 , o.VendorCity, o.VendorContact, o.TotLines, o.TotQty
                                                 , o.TotExcl, o.TotTax, o.TotVal, o.DelivAddr1
                                                 , o.DelivAddr2, o.DelivSuburb, o.DelivCity, o.BuyerNote, (bool)o.ConfirmInd
-                                                , o.CompID, (bool)o.ResendOrder, (bool)o.Processed);
+                                                , o.CompID, (bool)o.ResendOrder, (bool)o.Processed, _id);
 
                         string ordLineItem = obj["ordNo"].ToString();
 
@@ -536,7 +271,7 @@ namespace BizIntegrator.OrderManager
             DataHandler dataHandler = new DataHandler();
             HttpClient client;
 
-            string transactionType = "Orders";
+            string transactionType = "GetOrders";
 
             try
             {

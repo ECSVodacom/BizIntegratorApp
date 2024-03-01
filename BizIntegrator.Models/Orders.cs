@@ -50,5 +50,7 @@ namespace BizIntegrator.Models
         public string CompID { get; set; }
         public Nullable<bool> ResendOrder { get; set; }
         public Nullable<bool> Processed { get; set; }
+
+        public string API_Id { get; set; }
     }
 }

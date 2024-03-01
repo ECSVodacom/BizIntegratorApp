@@ -4,19 +4,22 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using BizIntegrator.InvoiceManager.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Data;
-using BizIntegrator.InvoiceManager.Repository;
+using BizIntegrator.Service.Repository;
 using BizIntegrator.Data;
 using System.Net.NetworkInformation;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Configuration;
+using System.Threading;
+using System.Threading.Tasks;
+using BizIntegrator.Models;
 
-namespace BizIntegrator.InvoiceManager.Controllers
+namespace BizIntegrator.Service.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -32,14 +35,17 @@ namespace BizIntegrator.InvoiceManager.Controllers
         string AuthenticationType { get; set; }
         string UseAPIKey { get; set; }
         string TransactionType { get; set; }
+        string Method { get; set; }
 
         DataTable dtApiData;
 
         private readonly ILogger<CustomerListController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public CustomerListController(ILogger<CustomerListController> logger)
+        public CustomerListController(ILogger<CustomerListController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpGet(Name = "CustomerList")]
@@ -48,24 +54,26 @@ namespace BizIntegrator.InvoiceManager.Controllers
             CustomerList c = new CustomerList();
             try
             {
-                TransactionType = "GetCustomerList";
+                TransactionType = "GetCustList";
 
                 DataHandler dataHandler = new DataHandler();
 
                 dtApiData = dataHandler.GetApiData(TransactionType);
 
-                foreach (DataRow r in dtApiData.Rows)
+                if (dtApiData.Rows.Count > 0)
                 {
-                    Id = r["Id"].ToString();
-                    ApiKey = r["AccountKey"].ToString();
-                    Name = r["Name"].ToString();
-                    Url = r["EndPoint"].ToString();
-                    PrivateKey = r["PrivateKey"].ToString();
-                    Username = r["Username"].ToString();
-                    Password = r["Password"].ToString();
-                    AuthenticationType = r["AuthenticationType"].ToString();
-                    UseAPIKey = r["UseAPIKey"].ToString();
-
+                    foreach (DataRow r in dtApiData.Rows)
+                    {
+                        Id = r["Id"].ToString();
+                        ApiKey = r["AccountKey"].ToString();
+                        Name = r["Name"].ToString();
+                        Url = r["EndPoint"].ToString();
+                        PrivateKey = r["PrivateKey"].ToString();
+                        Username = r["Username"].ToString();
+                        Password = r["Password"].ToString();
+                        AuthenticationType = r["AuthenticationType"].ToString();
+                        UseAPIKey = r["UseAPIKey"].ToString();
+                    }
                 }
 
                 HttpClient client;
@@ -80,130 +88,158 @@ namespace BizIntegrator.InvoiceManager.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    List<Task> tasks = new List<Task>();
+
                     var dataObjects = response.Content.ReadAsStringAsync();
 
                     dynamic jObject = JsonConvert.DeserializeObject(dataObjects.Result);
 
                     foreach (JObject obj in jObject["data"])
                     {
-                        if (obj["code"] != null)
-                        {
-                            c.CustomerCode = obj["code"].ToString();
-                        }
+                        bool dataExists = dataHandler.CheckCustomerList(obj["code"].ToString());
 
-                        else
+                        if (!dataExists)
                         {
-                            c.CustomerCode = "";
-                        }
+                            if (obj["code"] != null)
+                            {
+                                c.CustomerCode = obj["code"].ToString();
+                            }
 
-                        if (obj["code"] != null)
-                        {
-                            c.CustomerCode = obj["code"].ToString();
-                        }
+                            else
+                            {
+                                c.CustomerCode = "";
+                            }
 
-                        else
-                        {
-                            c.CustomerCode = "";
-                        }
+                            if (obj["code"] != null)
+                            {
+                                c.CustomerCode = obj["code"].ToString();
+                            }
 
-                        if (obj["name"] != null)
-                        {
-                            c.CustomerName = obj["name"].ToString();
-                        }
+                            else
+                            {
+                                c.CustomerCode = "";
+                            }
 
-                        else
-                        {
-                            c.CustomerName = "";
-                        }
+                            if (obj["name"] != null)
+                            {
+                                c.CustomerName = obj["name"].ToString();
+                            }
 
-                        if (obj["physicalAddress1"] != null ||
-                            obj["physicalAddress2"] != null ||
-                            obj["physicalAddress3"] != null ||
-                            obj["physicalAddress4"] != null ||
-                            obj["physicalAddress5"] != null)
-                        {
-                            c.PhysicalAddress = obj["physicalAddress1"].ToString() + ""
-                            + obj["physicalAddress2"].ToString() + ""
-                            + obj["physicalAddress3"].ToString() + ""
-                            + obj["physicalAddress4"].ToString() + ""
-                            + obj["physicalAddress5"].ToString();
-                        }
+                            else
+                            {
+                                c.CustomerName = "";
+                            }
 
-                        else
-                        {
-                            c.PhysicalAddress = "";
-                        }
+                            if (obj["physicalAddress1"] != null ||
+                                obj["physicalAddress2"] != null ||
+                                obj["physicalAddress3"] != null ||
+                                obj["physicalAddress4"] != null ||
+                                obj["physicalAddress5"] != null)
+                            {
+                                c.PhysicalAddress = obj["physicalAddress1"].ToString() + ""
+                                + obj["physicalAddress2"].ToString() + ""
+                                + obj["physicalAddress3"].ToString() + ""
+                                + obj["physicalAddress4"].ToString() + ""
+                                + obj["physicalAddress5"].ToString();
+                            }
 
-                        if (obj["eMail"] != null)
-                        {
-                            c.Email = obj["eMail"].ToString();
-                        }
+                            else
+                            {
+                                c.PhysicalAddress = "";
+                            }
 
-                        else
-                        {
-                            c.Email = "";
-                        }
+                            if (obj["eMail"] != null)
+                            {
+                                c.Email = obj["eMail"].ToString();
+                            }
 
-                        if (obj["BranchCode"] != null)
-                        {
-                            c.BranchCode = obj["BranchCode"].ToString();
-                        }
+                            else
+                            {
+                                c.Email = "";
+                            }
 
-                        else
-                        {
-                            c.BranchCode = "";
-                        }
+                            //ucARBrnchNo
+                            if (obj["ucARBrnchNo"] != null)
+                            {
+                                c.UcARBrnchNo = obj["ucARBrnchNo"].ToString();
+                            }
 
-                        if (obj["dTimeStamp"] != null)
-                        {
-                            c.DateTimeStamp = obj["dTimeStamp"].ToString();
-                        }
+                            else
+                            {
+                                c.UcARBrnchNo = "";
+                            }
 
-                        else
-                        {
-                            c.DateTimeStamp = "";
-                        }
+                            if (obj["branchCode"] != null)
+                            {
+                                c.BranchCode = obj["branchCode"].ToString();
+                            }
 
-                        if (obj["group"] != null)
-                        {
-                            c.GroupCode = obj["group"].ToString();
-                        }
-                        else
-                        {
-                            c.GroupCode = "";
-                        }
+                            else
+                            {
+                                c.BranchCode = "";
+                            }
 
-                        if (obj["groupDescription"] != null)
-                        {
-                            c.GroupDescription = obj["groupDescription"].ToString();
-                        }
-                        else
-                        {
-                            c.GroupDescription = "";
-                        }
+                            if (obj["dTimeStamp"] != null)
+                            {
+                                c.DateTimeStamp = obj["dTimeStamp"].ToString();
+                            }
 
-                        if (obj["area"] != null)
-                        {
-                            c.Area = obj["area"].ToString();
-                        }
-                        else
-                        {
-                            c.Area = "";
-                        }
+                            else
+                            {
+                                c.DateTimeStamp = "";
+                            }
 
-                        if (obj["areaDescription"] != null)
-                        {
-                            c.AreaDescription = obj["areaDescription"].ToString();
-                        }
-                        else
-                        {
-                            c.AreaDescription = "";
-                        }
+                            if (obj["group"] != null)
+                            {
+                                c.GroupCode = obj["group"].ToString();
+                            }
+                            else
+                            {
+                                c.GroupCode = "";
+                            }
 
-                        dataHandler.CreateCustomerList(c.CustomerCode, c.CustomerName, c.PhysicalAddress, c.Email
-                            , c.BranchCode, Convert.ToDateTime(c.DateTimeStamp), c.GroupCode, c.GroupDescription, c.Area, c.AreaDescription);
+                            if (obj["groupDescription"] != null)
+                            {
+                                c.GroupDescription = obj["groupDescription"].ToString();
+                            }
+                            else
+                            {
+                                c.GroupDescription = "";
+                            }
+
+                            if (obj["area"] != null)
+                            {
+                                c.Area = obj["area"].ToString();
+                            }
+                            else
+                            {
+                                c.Area = "";
+                            }
+
+                            if (obj["areaDescription"] != null)
+                            {
+                                c.AreaDescription = obj["areaDescription"].ToString();
+                            }
+                            else
+                            {
+                                c.AreaDescription = "";
+                            }
+
+                            if (obj["ulARWHLinked"] != null)
+                            {
+                                c.UlARWHLinked = obj["ulARWHLinked"].ToString();
+                            }
+                            else
+                            {
+                                c.UlARWHLinked = "";
+                            }
+
+
+                            dataHandler.CreateCustomerList(c.CustomerCode, c.CustomerName, c.PhysicalAddress, c.Email
+                                , c.UcARBrnchNo, c.BranchCode, c.DateTimeStamp, c.GroupCode, c.GroupDescription, c.Area
+                                , c.AreaDescription, c.UlARWHLinked, Id);
+                        }
                     }
-
 
                     return Created(Request.GetDisplayUrl(), null);
                 }

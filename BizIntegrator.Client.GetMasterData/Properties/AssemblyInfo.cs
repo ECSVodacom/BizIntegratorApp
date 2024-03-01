@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BizIntegrator")]
+[assembly: AssemblyTitle("BizIntegrator.Client.GetMasterData")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BizIntegrator")]
-[assembly: AssemblyCopyright("Copyright ©  2023")]
+[assembly: AssemblyProduct("BizIntegrator.Client.GetMasterData")]
+[assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("502128a7-bacb-4013-96da-d34e28e59b0e")]
+[assembly: Guid("8dca1236-b80c-46b4-9467-d995eea71db7")]
 
 // Version information for an assembly consists of the following four values:
 //

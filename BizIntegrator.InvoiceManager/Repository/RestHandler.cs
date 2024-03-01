@@ -6,7 +6,7 @@ using System.Data;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BizIntegrator.InvoiceManager.Repository
+namespace BizIntegrator.Service.Repository
 {
     public class RestHandler
     {
@@ -86,7 +86,8 @@ namespace BizIntegrator.InvoiceManager.Repository
         {
             DataHandler dataHandler = new DataHandler();
 
-            string transactionType = "Login";
+            string transactionType = "PostLogin";
+
             try
             {
                 using (var httpClient = new HttpClient())

@@ -1,4 +1,4 @@
-﻿namespace BizIntegrator.InvoiceManager.Models
+﻿namespace BizIntegrator.Models
 {
     public class InvoiceLine
     {

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0BE9D51A-4815-4405-A251-4E22C0B6BE21}</ProjectGuid>
+    <ProjectGuid>{B27C057B-1E4F-4D85-9062-2E166FD3E021}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BizIntegrator.Models</RootNamespace>
@@ -12,7 +12,6 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,9 +43,13 @@
   <ItemGroup>
     <Compile Include="APIEndPoints.cs" />
     <Compile Include="APIs.cs" />
+    <Compile Include="CustomerList.cs" />
+    <Compile Include="Invoice.cs" />
+    <Compile Include="InvoiceLine.cs" />
     <Compile Include="OrderLines.cs" />
     <Compile Include="Orders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StockBarcode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

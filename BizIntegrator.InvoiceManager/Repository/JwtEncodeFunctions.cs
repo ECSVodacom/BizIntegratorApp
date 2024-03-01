@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace BizIntegrator.InvoiceManager.Repository
+namespace BizIntegrator.Service.Repository
 {
     public static class JwtEncodeFunctions
     {
