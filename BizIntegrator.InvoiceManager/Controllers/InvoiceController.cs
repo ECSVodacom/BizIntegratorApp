@@ -114,7 +114,7 @@ namespace BizIntegrator.Service.Controllers
                             //obj.Add("GlnNumber");
                             //    //= "6001001030007";
 
-                            //obj["GlnNumber"] = "6001001030007";
+                            obj["GlnNumber"] = "6001001030007";
 
                             if (obj["invoiceNumber"] != null)
                             {
