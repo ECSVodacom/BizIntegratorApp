@@ -14,6 +14,9 @@ using BizIntegrator.Service.Repository;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
 using BizIntegrator.Models;
+using System.Net;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace BizIntegrator.Service.Controllers
 {
@@ -199,6 +202,38 @@ namespace BizIntegrator.Service.Controllers
             {
                 return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
             }
+        }
+
+        [HttpPost(Name = "StockBarcode")]
+        public async Task<ActionResult> Post()
+        {
+            string errorMessage = "Errors encountered";
+
+            try
+            {
+                string apiUrl = "http://localhost/BizIntegratorApp/api/CustomerList";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    try
+                    {
+                        HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                        Thread.Sleep(5000);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred: {ex.InnerException}");
+                    }
+                }
+
+                return Created(Request.GetDisplayUrl(), "Stock Barcodes have been successfully imported and sent to biz");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
+            }
+
         }
     }
 }

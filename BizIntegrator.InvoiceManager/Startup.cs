@@ -33,13 +33,13 @@ namespace BizIntegrator.InvoiceManager
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BizIntegrator.InvoiceManager", Version = "v1" });
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-                });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowAll", builder =>
+            //    {
+            //        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            //    });
+            //});
 
             // Add this to Configure method (before UseEndpoints)
            
@@ -67,7 +67,7 @@ namespace BizIntegrator.InvoiceManager
                 endpoints.MapControllers();
             });
 
-            app.UseCors("AllowAll");
+            //app.UseCors("AllowAll");
         }
     }
 }

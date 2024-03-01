@@ -287,40 +287,30 @@ namespace BizIntegrator.Service.Controllers
 
             string apiUrl = string.Empty;
 
-            DataHandler dataHandler = new DataHandler();
-
-            string TransactionType = "PostCustList";
 
             try
             {
-                DataTable dtApiData = dataHandler.GetInternalAPIData(TransactionType);
 
-                if (dtApiData.Rows.Count > 0)
+                apiUrl = "http://localhost/BizIntegratorApp/api/CustomerList";
+
+                using (HttpClient client = new HttpClient())
                 {
-                    foreach (DataRow row in dtApiData.Rows)
+                    try
                     {
-                        apiUrl = row["EndPoint"].ToString();
+                        HttpResponseMessage response = await client.GetAsync(apiUrl);
 
-                        using (HttpClient client = new HttpClient())
-                        {
-                            try
-                            {
-                                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-                                HttpResponseMessage response = await client.GetAsync(apiUrl);
-
-                                Thread.Sleep(5000);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"An error occurred: {ex.InnerException}");
-                            }
-                        }
+                        Thread.Sleep(5000);
                     }
-
-
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred: {ex.InnerException}");
+                    }
                 }
-                return Created(Request.GetDisplayUrl(), "Invoices has been successfully imported and sent to biz");
+
+
+
+
+                return Created(Request.GetDisplayUrl(), "Customer List has been successfully imported and sent to biz");
             }
             catch (Exception ex)
             {
