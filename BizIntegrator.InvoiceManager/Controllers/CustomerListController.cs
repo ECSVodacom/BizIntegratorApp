@@ -310,15 +310,6 @@ namespace BizIntegrator.Service.Controllers
                                 HttpResponseMessage response = await client.GetAsync(apiUrl);
 
                                 Thread.Sleep(5000);
-
-                                //if (response.IsSuccessStatusCode)
-                                //{
-                                //    Console.WriteLine("CustomerList List data has been successfully imported");
-                                //}
-                                //else
-                                //{
-                                //    Console.WriteLine("Customer List data import failed");
-                                //}
                             }
                             catch (Exception ex)
                             {
