@@ -11,11 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.Security", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.Data", "BizIntegrator.Data\BizIntegrator.Data.csproj", "{7D29856E-AB59-4B27-89AB-1E520CC820D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.Client", "BizIntegrator.Client\BizIntegrator.Client.csproj", "{5DD0AF42-A02E-4F16-B831-A62B308C1BF3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BizIntegrator.Service", "BizIntegrator.InvoiceManager\BizIntegrator.Service.csproj", "{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.Client.GetMasterData", "BizIntegrator.Client.GetMasterData\BizIntegrator.Client.GetMasterData.csproj", "{8DCA1236-B80C-46B4-9467-D995EEA71DB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizIntegrator.Global", "BizIntegrator.Global\BizIntegrator.Global.csproj", "{9EE6F4D9-90D9-45DE-A193-C3942C9BF87B}"
 EndProject
@@ -43,18 +39,10 @@ Global
 		{7D29856E-AB59-4B27-89AB-1E520CC820D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D29856E-AB59-4B27-89AB-1E520CC820D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D29856E-AB59-4B27-89AB-1E520CC820D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DD0AF42-A02E-4F16-B831-A62B308C1BF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DD0AF42-A02E-4F16-B831-A62B308C1BF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DD0AF42-A02E-4F16-B831-A62B308C1BF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DD0AF42-A02E-4F16-B831-A62B308C1BF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BD1E489-8B4D-45CD-80F6-9BEAF61BE4C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8DCA1236-B80C-46B4-9467-D995EEA71DB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DCA1236-B80C-46B4-9467-D995EEA71DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DCA1236-B80C-46B4-9467-D995EEA71DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DCA1236-B80C-46B4-9467-D995EEA71DB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9EE6F4D9-90D9-45DE-A193-C3942C9BF87B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9EE6F4D9-90D9-45DE-A193-C3942C9BF87B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EE6F4D9-90D9-45DE-A193-C3942C9BF87B}.Release|Any CPU.ActiveCfg = Release|Any CPU

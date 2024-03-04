@@ -48,7 +48,7 @@ namespace BizIntegrator.PostToBiz
 
         public bool PostToBiz(string fContent, string fileName, string from, string to)
         {
-            string fileContent = "[" + fContent + "]";
+            string fileContent = fContent;
 
             string contentType = "text/xml";
             byte[] bytes = null;

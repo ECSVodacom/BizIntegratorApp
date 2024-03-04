@@ -48,17 +48,14 @@ namespace BizIntegrator.Service.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet(Name = "Invoice")]
-        public ActionResult Get()
+        [HttpPost(Name = "Invoice")]
+        public ActionResult Post()
         {
             Invoice i = new Invoice();
             InvoiceLine il = new InvoiceLine();
 
             string errorMessage = "Errors encountered";
 
-            //string response = "";
-            //try
-            //{
             TransactionType = "GetInvoices";
 
             DataHandler dataHandler = new DataHandler();
@@ -110,11 +107,7 @@ namespace BizIntegrator.Service.Controllers
 
                         if (!dataExists)
                         {
-                            ////Add GLN for sender = Shoprite
-                            //obj.Add("GlnNumber");
-                            //    //= "6001001030007";
-
-                            obj["GlnNumber"] = "6001001030007";
+                            obj.Add("GlnNumber", new JValue("6001651190618"));
 
                             if (obj["invoiceNumber"] != null)
                             {
@@ -466,7 +459,9 @@ namespace BizIntegrator.Service.Controllers
 
                             BizHandler bizHandler = new BizHandler();
 
-                            bool invoiceProcessed = dataHandler.CheckInvoice(obj["invoiceId"].ToString());
+                            bool invoiceProcessed = dataHandler.CheckProcessedInvoice(obj["invoiceId"].ToString());
+
+                            string ooo = obj.ToString();
 
                             if (!invoiceProcessed)
                             {
@@ -490,42 +485,6 @@ namespace BizIntegrator.Service.Controllers
             }
         }
 
-        [HttpPost(Name = "Invoice")]
-        public async Task<ActionResult> Post()
-        {
-            string errorMessage = "Errors encountered";
 
-            string apiUrl = "http://localhost/BizIntegratorApp/api/CustomerList";
-
-            DataHandler dataHandler = new DataHandler();
-
-            try
-            {
-
-
-                using (HttpClient client = new HttpClient())
-                {
-                    try
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-                        HttpResponseMessage response = await client.GetAsync(apiUrl);
-
-                        Thread.Sleep(5000);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"An error occurred: {ex.InnerException}");
-                    }
-                }
-
-                return Created(Request.GetDisplayUrl(), "Invoices have been successfully imported and sent to biz");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
-            }
-
-        }
     }
 }

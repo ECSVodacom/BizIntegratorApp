@@ -47,8 +47,8 @@ namespace BizIntegrator.Service.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet(Name = "StockBarcode")]
-        public ActionResult Get()
+        [HttpPost(Name = "StockBarcode")]
+        public ActionResult Post()
         {
             string errorMessage = "Errors encountered";
             StockBarcode s = new StockBarcode();
@@ -204,36 +204,5 @@ namespace BizIntegrator.Service.Controllers
             }
         }
 
-        [HttpPost(Name = "StockBarcode")]
-        public async Task<ActionResult> Post()
-        {
-            string errorMessage = "Errors encountered";
-
-            try
-            {
-                string apiUrl = "http://localhost/BizIntegratorApp/api/CustomerList";
-
-                using (HttpClient client = new HttpClient())
-                {
-                    try
-                    {
-                        HttpResponseMessage response = await client.GetAsync(apiUrl);
-
-                        Thread.Sleep(5000);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"An error occurred: {ex.InnerException}");
-                    }
-                }
-
-                return Created(Request.GetDisplayUrl(), "Stock Barcodes have been successfully imported and sent to biz");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
-            }
-
-        }
     }
 }

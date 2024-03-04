@@ -55,8 +55,8 @@ namespace BizIntegrator.Service.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet(Name = "CustomerList")]
-        public ActionResult Get()
+        [HttpPost(Name = "CustomerList")]
+        public ActionResult Post()
         {
             string errorMessage = "Errors encountered";
 
@@ -280,44 +280,6 @@ namespace BizIntegrator.Service.Controllers
 
         }
 
-        [HttpPost(Name = "CustomerList")]
-        public async Task<ActionResult> Post()
-        {
-            string errorMessage = "Errors encountered";
-
-            string apiUrl = string.Empty;
-
-
-            try
-            {
-
-                apiUrl = "http://localhost/BizIntegratorApp/api/CustomerList";
-
-                using (HttpClient client = new HttpClient())
-                {
-                    try
-                    {
-                        HttpResponseMessage response = await client.GetAsync(apiUrl);
-
-                        Thread.Sleep(5000);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"An error occurred: {ex.InnerException}");
-                    }
-                }
-
-
-
-
-                return Created(Request.GetDisplayUrl(), "Customer List has been successfully imported and sent to biz");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
-            }
-
-        }
 
     }
 }

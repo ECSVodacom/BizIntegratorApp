@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 
 namespace BizIntegrator.Data
 {
@@ -53,42 +54,6 @@ namespace BizIntegrator.Data
                     sb.AppendLine("inner join APIEndpoints ep  ");
                     sb.AppendLine("on api.Id = ep.API_Id ");
                     sb.AppendLine("where ep.TransactionType = '"+ transactionType + "' and IsActive = 1 ");
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
-                    {
-                        da.Fill(dataTable);
-                    }
-
-                    return dataTable;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex.InnerException.Message, "GetApiData");
-
-                throw;
-            }
-        }
-
-        public DataTable GetInternalAPIData(string transactionType)
-        {
-            _connection = SetConnectionString();
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(_connection))
-                {
-                    DataTable dataTable = new DataTable();
-
-                    StringBuilder sb = new StringBuilder();
-
-                    connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("select api.[Name], ep.[EndPoint], ep.TransactionType ");
-                    sb.AppendLine("from APIs api ");
-                    sb.AppendLine("inner join Internal_Endpoints ep  ");
-                    sb.AppendLine("on api.Id = ep.API_Id ");
-                    sb.AppendLine("where ep.TransactionType = '" + transactionType + "' and IsActive = 1 ");
                     using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
                     {
                         da.Fill(dataTable);
@@ -350,10 +315,10 @@ namespace BizIntegrator.Data
                         cmd.Parameters.Add("@VendorCity", SqlDbType.VarChar).Value = vendorCity;
                         cmd.Parameters.Add("@VendorContact", SqlDbType.VarChar).Value = vendorContact;
                         cmd.Parameters.Add("@TotLines", SqlDbType.Int).Value = totLines;
-                        cmd.Parameters.Add("@TotQty", SqlDbType.Decimal).Value = totQty;
-                        cmd.Parameters.Add("@TotExcl", SqlDbType.Decimal).Value = totExcl;
-                        cmd.Parameters.Add("@TotTax", SqlDbType.Decimal).Value = totTax;
-                        cmd.Parameters.Add("@TotVal", SqlDbType.Decimal).Value = totVal;
+                        cmd.Parameters.Add("@TotQty", SqlDbType.Decimal).Value = decimal.Parse(totQty, CultureInfo.InvariantCulture); 
+                        cmd.Parameters.Add("@TotExcl", SqlDbType.Decimal).Value = decimal.Parse(totExcl, CultureInfo.InvariantCulture); 
+                        cmd.Parameters.Add("@TotTax", SqlDbType.Decimal).Value = decimal.Parse(totTax, CultureInfo.InvariantCulture); 
+                        cmd.Parameters.Add("@TotVal", SqlDbType.Decimal).Value = decimal.Parse(totVal, CultureInfo.InvariantCulture); 
                         cmd.Parameters.Add("@DelivAddr1", SqlDbType.VarChar).Value = delivAddr1;
                         cmd.Parameters.Add("@DelivAddr2", SqlDbType.VarChar).Value = delivAddr2;
                         cmd.Parameters.Add("@DelivSuburb", SqlDbType.VarChar).Value = delivSuburb;
@@ -395,16 +360,16 @@ namespace BizIntegrator.Data
                         cmd.Parameters.Add("@ItemNo", SqlDbType.VarChar).Value = itemNo;
                         cmd.Parameters.Add("@ItemDesc", SqlDbType.VarChar).Value = itemDesc;
                         //cmd.Parameters.Add("@MfrItem", SqlDbType.VarChar).Value = MfrItem;
-                        cmd.Parameters.Add("@QtyConv", SqlDbType.Decimal).Value = qtyConv;
-                        cmd.Parameters.Add("@OrdQty", SqlDbType.Decimal).Value = ordQty;
+                        cmd.Parameters.Add("@QtyConv", SqlDbType.Decimal).Value = decimal.Parse(qtyConv, CultureInfo.InvariantCulture);
+                        cmd.Parameters.Add("@OrdQty", SqlDbType.Decimal).Value = decimal.Parse(ordQty, CultureInfo.InvariantCulture);
                         cmd.Parameters.Add("@PurcUom", SqlDbType.VarChar).Value = purcUom;
-                        cmd.Parameters.Add("@PurcUomConv", SqlDbType.Decimal).Value = purcUomConv;
+                        cmd.Parameters.Add("@PurcUomConv", SqlDbType.Decimal).Value = decimal.Parse(purcUomConv, CultureInfo.InvariantCulture);
                         cmd.Parameters.Add("@TaxCde", SqlDbType.VarChar).Value = taxCde;
-                        cmd.Parameters.Add("@TaxRate", SqlDbType.Decimal).Value = taxRate;
-                        cmd.Parameters.Add("@UnitPrc", SqlDbType.Decimal).Value = unitPrc;
-                        cmd.Parameters.Add("@LineTotExcl", SqlDbType.Decimal).Value = lineTotExcl;
-                        cmd.Parameters.Add("@LineTotTax", SqlDbType.Decimal).Value = lineTotTax;
-                        cmd.Parameters.Add("@LineTotVal", SqlDbType.Decimal).Value = lineTotVal;
+                        cmd.Parameters.Add("@TaxRate", SqlDbType.Decimal).Value = decimal.Parse(taxRate, CultureInfo.InvariantCulture);
+                        cmd.Parameters.Add("@UnitPrc", SqlDbType.Decimal).Value = decimal.Parse(unitPrc, CultureInfo.InvariantCulture);
+                        cmd.Parameters.Add("@LineTotExcl", SqlDbType.Decimal).Value = decimal.Parse(lineTotExcl, CultureInfo.InvariantCulture);
+                        cmd.Parameters.Add("@LineTotTax", SqlDbType.Decimal).Value = decimal.Parse(lineTotTax, CultureInfo.InvariantCulture);
+                        cmd.Parameters.Add("@LineTotVal", SqlDbType.Decimal).Value = decimal.Parse(lineTotVal, CultureInfo.InvariantCulture);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -688,7 +653,7 @@ namespace BizIntegrator.Data
 
                     connection.Open();
                     sb.Clear();
-                    sb.AppendLine("select * from Invoices ");
+                    sb.AppendLine("select Processed from Invoices ");
                     sb.AppendLine("where InvoiceId = '" + invoiceId + "' ");
                     using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
                     {
@@ -716,6 +681,53 @@ namespace BizIntegrator.Data
             }
         }
 
+        public bool CheckProcessedInvoice(string invoiceId)
+        {
+            _connection = SetConnectionString();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connection))
+                {
+                    DataTable dataTable = new DataTable();
+
+                    StringBuilder sb = new StringBuilder();
+
+                    bool result = false;
+
+                    connection.Open();
+                    sb.Clear();
+                    sb.AppendLine("select Processed from Invoices ");
+                    sb.AppendLine("where InvoiceId = '" + invoiceId + "' ");
+                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+                    {
+                        da.Fill(dataTable);
+                    }
+
+                    int rowCount = dataTable.Rows.Count;
+                    if (rowCount > 0)
+                    {
+                        if (dataTable.Rows[0]["Processed"].ToString() == "True")
+                        {
+                            result = true;
+                        }
+                        else if (dataTable.Rows[0]["Processed"].ToString() == "False")
+                        {
+                            result = false;
+                        }
+                    }
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                WriteException(ex.InnerException.Message, "CheckInvoice");
+
+                throw;
+            }
+        }
         public void UpdateProcessedInvoice(string invoiceId)
         {
             _connection = SetConnectionString();
