@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using BizIntegrator.PostToBiz;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 
 
 
@@ -65,29 +66,32 @@ namespace BizIntegrator.Service.Controllers
             string errorMessage = "Errors encountered";
             HttpClient client;
             DataHandler dataHandler = new DataHandler();
-
+            string resp = string.Empty;
+            string headerName = "APIName";
+            TransactionType = "PostOrders";
             try
             {
-                TransactionType = "PostOrders";
 
-                dtApiData = dataHandler.GetApiData(TransactionType);
-
-                if (dtApiData.Rows.Count > 0)
+                if (HttpContext.Request.Headers.TryGetValue(headerName, out var headerValues))
                 {
-                    foreach (DataRow r in dtApiData.Rows)
-                    {
-                        Id = r["Id"].ToString();
-                        ApiKey = r["AccountKey"].ToString();
-                        Name = r["Name"].ToString();
-                        Url = r["EndPoint"].ToString();
-                        PrivateKey = r["PrivateKey"].ToString();
-                        Username = r["Username"].ToString();
-                        Password = r["Password"].ToString();
-                        AuthenticationType = r["AuthenticationType"].ToString();
-                        UseAPIKey = r["UseAPIKey"].ToString();
+                    string headerValue = headerValues.FirstOrDefault();
 
-                        if (Name == "Diageo_Vodacom")
+                    if (!string.IsNullOrEmpty(headerValue) && headerValue.Equals("Diageo_Vodacom", StringComparison.OrdinalIgnoreCase))
+                    {
+                        dtApiData = dataHandler.GetApiDataPerName(headerValue, TransactionType);
+
+                        if (dtApiData.Rows.Count > 0)
                         {
+                            Name = headerValue;
+                            Id = dtApiData.Rows[0]["Id"].ToString();
+                            ApiKey = dtApiData.Rows[0]["AccountKey"].ToString();
+                            Url = dtApiData.Rows[0]["EndPoint"].ToString();
+                            PrivateKey = dtApiData.Rows[0]["PrivateKey"].ToString();
+                            Username = dtApiData.Rows[0]["Username"].ToString();
+                            Password = dtApiData.Rows[0]["Password"].ToString();
+                            AuthenticationType = dtApiData.Rows[0]["AuthenticationType"].ToString();
+                            UseAPIKey = dtApiData.Rows[0]["UseAPIKey"].ToString();
+
                             Orders o = new Orders();
                             OrderLines ol = new OrderLines();
 
@@ -104,9 +108,6 @@ namespace BizIntegrator.Service.Controllers
 
                             foreach (JObject obj in jObject)
                             {
-                                //string branchCode = string.Empty;
-                                //string customerCode = string.Empty;
-
                                 o.OrdNo = obj["orderNumber"].ToString();
                                 o.OrdDate = obj["orderDate"].ToString();
                                 o.OrdDesc = obj["description"].ToString();
@@ -189,13 +190,37 @@ namespace BizIntegrator.Service.Controllers
                                     var content = new StringContent(jObject.ToString(), System.Text.Encoding.UTF8, "application/json");
 
                                     HttpResponseMessage response = client.PostAsync(postDataUrl, content).Result;
+
+                                    resp = response.ToString();
                                 }
 
                             }
                         }
 
-                        else if (Name == "PLASTIC")
+                        else
                         {
+                            resp = "Error found - No APIs found";
+                        }
+                        
+
+                    }
+
+                    else if (!string.IsNullOrEmpty(headerValue) && headerValue.Equals("PLASTIC", StringComparison.OrdinalIgnoreCase))
+                    {
+                        dtApiData = dataHandler.GetApiDataPerName(headerValue, TransactionType);
+
+                        if (dtApiData.Rows.Count > 0)
+                        {
+                            Name = headerValue;
+                            Id = dtApiData.Rows[0]["Id"].ToString();
+                            ApiKey = dtApiData.Rows[0]["AccountKey"].ToString();
+                            Url = dtApiData.Rows[0]["EndPoint"].ToString();
+                            PrivateKey = dtApiData.Rows[0]["PrivateKey"].ToString();
+                            Username = dtApiData.Rows[0]["Username"].ToString();
+                            Password = dtApiData.Rows[0]["Password"].ToString();
+                            AuthenticationType = dtApiData.Rows[0]["AuthenticationType"].ToString();
+                            UseAPIKey = dtApiData.Rows[0]["UseAPIKey"].ToString();
+
                             OrderHandler orderHandler = new OrderHandler();
 
                             Orders ord = new Orders();
@@ -205,6 +230,7 @@ namespace BizIntegrator.Service.Controllers
                                 string outputXtraEdit = string.Empty;
 
                                 string Response = orderHandler.CreateOrders(Id, ApiKey, Name, Url, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
+                                resp = Response.ToString();
 
                             }
                             catch (Exception ex)
@@ -212,17 +238,18 @@ namespace BizIntegrator.Service.Controllers
                                 dataHandler.WriteException(ex.InnerException.ToString(), "Get Orders");
                             }
                         }
+
+                        else
+                        {
+                            resp = "Error found - No APIs found";
+                        }
+
                     }
                 }
 
-                else
-                {
-                    return BadRequest(new { Message = errorMessage });
-                }
 
+                return Created(Request.GetDisplayUrl(), resp);
 
-
-                return Created(Request.GetDisplayUrl(), "Orders has been successfully posted");
             }
             catch (Exception ex)
             {

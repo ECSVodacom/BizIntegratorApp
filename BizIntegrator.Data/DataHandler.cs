@@ -815,5 +815,44 @@ namespace BizIntegrator.Data
             }
 
         }
+
+        public DataTable GetApiDataPerName(string headerValue, string transactionType)
+        {
+            _connection = SetConnectionString();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connection))
+                {
+                    DataTable dataTable = new DataTable();
+
+                    StringBuilder sb = new StringBuilder();
+
+                    connection.Open();
+                    sb.Clear();
+                    sb.AppendLine("select api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey ");
+                    sb.AppendLine(",api.Username ");
+                    sb.AppendLine(",api.[Password] ");
+                    sb.AppendLine(", api.AuthenticationType, api.UseAPIKey, ep.TransactionType ");
+                    sb.AppendLine("from APIs api ");
+                    sb.AppendLine("inner join APIEndpoints ep  ");
+                    sb.AppendLine("on api.Id = ep.API_Id ");
+                    sb.AppendLine("where api.Name = '" + headerValue + "' and ep.TransactionType = '"+ transactionType + "' and IsActive = 1 ");
+                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+                    {
+                        da.Fill(dataTable);
+                    }
+
+                    return dataTable;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                WriteException(ex.InnerException.Message, "GetApiData");
+
+                throw;
+            }
+        }
     }
 }

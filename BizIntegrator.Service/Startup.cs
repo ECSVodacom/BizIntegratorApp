@@ -1,3 +1,4 @@
+using BizIntegrator.Service.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,18 +32,12 @@ namespace BizIntegrator.InvoiceManager
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BizIntegrator.Service", Version = "v1" });
+                c.OperationFilter<AddHeaderOperationFilter>("APIName", "Pass through API name as header");
             });
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("AllowAll", builder =>
-            //    {
-            //        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-            //    });
-            //});
+            // Add the custom header to Swagger requests
 
-            // Add this to Configure method (before UseEndpoints)
-           
+
 
         }
 
