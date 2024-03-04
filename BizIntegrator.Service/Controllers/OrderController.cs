@@ -194,7 +194,7 @@ namespace BizIntegrator.Service.Controllers
                             }
                         }
 
-                        if (Name == "PLASTIC")
+                        else if (Name == "PLASTIC")
                         {
                             OrderHandler orderHandler = new OrderHandler();
 

@@ -34,9 +34,9 @@ namespace BizIntegrator.Service.Repository
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var dataObjects = "[{\r\n  \"ordNo\": \"091146307\",\r\n  \"ordDate\": \"2024-01-24T00:00:00\",\r\n  \"ordDesc\": \"OFFICIAL STOCK ORDER\",\r\n  \"ordType\": \"SI\",\r\n  \"ordTerm\": \"FB\",\r\n  \"ordTermDesc\": \"F.O.B\",\r\n  \"ordStat\": 5,\r\n  \"orderStatus\": \"Released\",\r\n  \"origin\": \"Manual\",\r\n  \"promDate\": \"2024-01-24T00:00:00\",\r\n  \"compName\": \"Woermann Brock & Co (Swakopmund)(Pty)Ltd\",\r\n  \"branchNo\": \"091\",\r\n  \"branchName\": \"SEAGULL\",\r\n  \"branchAddr1\": \"Erf 299, Cores Street;Walvis Bay;\",\r\n  \"branchAddr2\": \"BOX 12;SWAKOPMUND;\",\r\n  \"branchTel\": \"415500\",\r\n  \"branchFax\": \"\",\r\n  \"branchEmail\": \"seagullbm@yourwoermann.com\",\r\n  \"branchVat\": \"\",\r\n  \"vendorRef\": \"\",\r\n  \"vendorNo\": \"PLA002\",\r\n  \"vendorName\": \"PLASTIC PACKAGING (Carrier Bags only)\",\r\n  \"vendorAddr1\": \"BOX\",\r\n  \"vendorAddr2\": \"\",\r\n  \"vendorSuburb\": \"\",\r\n  \"vendorCity\": \"WINDHOEK\",\r\n  \"vendorContact\": \"LIEZL QUINTAL\",\r\n  \"totLines\": 1,\r\n  \"totQty\": 15.0,\r\n  \"totExcl\": 15092.85,\r\n  \"totTax\": 2263.93,\r\n  \"totVal\": 17356.78,\r\n  \"delivAddr1\": \"Erf 299, Cores Street\",\r\n  \"delivAddr2\": \"\",\r\n  \"delivSuburb\": \"\",\r\n  \"delivCity\": \"SWAKOPMUND\",\r\n  \"confirmInd\": false,\r\n  \"compID\": \"WBS\",\r\n  \"orderLines\": [\r\n    {\r\n      \"ordLn\": 1,\r\n      \"itemNo\": \"6006510014579\",\r\n      \"itemDesc\": \"WB MIDI CARRIER BAG    24M\",\r\n      \"mfrItem\": \"9000002058\",\r\n      \"qtyConv\": 15000.0,\r\n      \"ordQty\": 15.0,\r\n      \"purcUom\": \"CASE\",\r\n      \"purcUomConv\": 1000.0,\r\n      \"taxCde\": \"S\",\r\n      \"taxRate\": 15.0,\r\n      \"unitPrc\": 1006.19,\r\n      \"lineTotExcl\": 15092.85,\r\n      \"lineTotTax\": 2263.93,\r\n      \"lineTotVal\": 17356.78\r\n    }\r\n  ]\r\n}]";
+                    var dataObjects = response.Content.ReadAsStringAsync();
 
-                    dynamic jObject = JsonConvert.DeserializeObject(dataObjects);
+                    dynamic jObject = JsonConvert.DeserializeObject(dataObjects.Result);
 
                     JArray dataArray;
 
