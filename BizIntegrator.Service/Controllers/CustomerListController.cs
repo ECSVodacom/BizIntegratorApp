@@ -168,7 +168,6 @@ namespace BizIntegrator.Service.Controllers
                                         c.Email = "";
                                     }
 
-                                    //ucARBrnchNo
                                     if (obj["ucARBrnchNo"] != null)
                                     {
                                         c.UcARBrnchNo = obj["ucARBrnchNo"].ToString();

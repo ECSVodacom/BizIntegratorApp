@@ -22,14 +22,13 @@ namespace BizIntegrator.Service.Repository
                 operation.Parameters = new List<OpenApiParameter>();
             }
 
-            // Add the custom header to the Swagger request parameters
             operation.Parameters.Add(new OpenApiParameter
             {
                 Name = headerName,
                 In = ParameterLocation.Header,
                 Description = headerDescription,
-                Required = false, // Set to true if the header is required
-                Schema = new OpenApiSchema { Type = "string" } // Set the schema type accordingly
+                Required = false, 
+                Schema = new OpenApiSchema { Type = "string" } 
             });
         }
     }

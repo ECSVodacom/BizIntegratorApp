@@ -117,7 +117,6 @@ namespace BizIntegrator.Service.Controllers
                                 o.OrdStat = "0";
                                 o.OrderStatus = "";
                                 o.Origin = "";
-                                //o.PromDate = obj["promDate"].ToString();
                                 o.CompName = "";
                                 o.BranchNo = obj["branchCode"].ToString();
                                 o.BranchName = "";

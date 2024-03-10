@@ -132,7 +132,6 @@ namespace BizIntegrator.OrderManager
                         o.OrdStat = obj["ordStat"].ToString();
                         o.OrderStatus = obj["orderStatus"].ToString();
                         o.Origin = obj["origin"].ToString();
-                        //o.PromDate = obj["promDate"].ToString();
                         o.CompName = obj["compName"].ToString();
                         o.BranchNo = obj["branchNo"].ToString();
                         o.BranchName = obj["branchName"].ToString();
@@ -204,7 +203,6 @@ namespace BizIntegrator.OrderManager
                                 ol.OrdNo = obj["ordNo"].ToString();
                                 ol.ItemNo = objLines["itemNo"].ToString();
                                 ol.ItemDesc = objLines["itemDesc"].ToString();
-                                //ol.MfrItem = objLines["mfrItem"].ToString();
                                 ol.QtyConv = objLines["qtyConv"].ToString();
                                 ol.OrdQty = objLines["ordQty"].ToString();
                                 ol.PurcUom = objLines["purcUom"].ToString();
