@@ -85,8 +85,6 @@ namespace BizIntegrator.Service.Controllers
 
                 var postedUrl = Url + dateString;
 
-
-
                 client = restHandler.SetClient(Id, Name, postedUrl, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
 
                 client.DefaultRequestHeaders.Accept.Add(
