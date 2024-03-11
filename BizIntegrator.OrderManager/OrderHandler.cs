@@ -262,7 +262,7 @@ namespace BizIntegrator.OrderManager
 
         }
 
-        private void ConfirmOrders(string ordNo, string ordContent, string id, string name, string url, string apiKey, string privateKey, string username, string password, string authenticationType, string useAPIKey)
+        private string ConfirmOrders(string ordNo, string ordContent, string id, string name, string url, string apiKey, string privateKey, string username, string password, string authenticationType, string useAPIKey)
         {
             RestHandler restHandler = new RestHandler();
             DataHandler dataHandler = new DataHandler();
@@ -284,10 +284,13 @@ namespace BizIntegrator.OrderManager
                 var content = new StringContent(ordContent, System.Text.Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = client.PostAsync(postDataUrl, content).Result;
+
+                return response.ToString();
             }
             catch (Exception ex)
             {
                 dataHandler.WriteException(ex.Message, "ConfirmOrders");
+                return ex.InnerException.ToString();
             }
 
         }

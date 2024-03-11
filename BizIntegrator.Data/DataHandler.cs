@@ -37,11 +37,7 @@ namespace BizIntegrator.Data
                 {
                     DataTable dataTable = new DataTable();
 
-                    StringBuilder sb = new StringBuilder();
-                    
                     connection.Open();
-                    sb.Clear();
-
 
                     string queryString = "select api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey " +
                                             ",api.Username " +
@@ -144,13 +140,12 @@ namespace BizIntegrator.Data
                 using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendLine("SELECT api.EanCode AS SenderGln, sv.EanCode AS RecieverGln ");
-                    sb.AppendLine("FROM APIs api ");
-                    sb.AppendLine("INNER JOIN Suppliers s ON api.ID = s.API_Id ");
-                    sb.AppendLine("INNER JOIN SupplierVendors sv ON s.Id = sv.SupplierId ");
-                    sb.AppendLine("WHERE Vendor = @VendorNo");
-                    using (SqlCommand command = new SqlCommand(sb.ToString(), connection))
+                    var queryString = "SELECT api.EanCode AS SenderGln, sv.EanCode AS RecieverGln " +
+                                        "FROM APIs api " +
+                                        "INNER JOIN Suppliers s ON api.ID = s.API_Id " +
+                                        "INNER JOIN SupplierVendors sv ON s.Id = sv.SupplierId " +
+                                        "WHERE Vendor = @VendorNo";
+                    using (SqlCommand command = new SqlCommand(queryString.ToString(), connection))
                     {
                         command.Parameters.AddWithValue("@VendorNo", vendorNo);
 
