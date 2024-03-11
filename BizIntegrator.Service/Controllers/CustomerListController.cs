@@ -39,7 +39,7 @@ namespace BizIntegrator.Service.Controllers
         string TransactionType { get; set; }
         string Method { get; set; }
 
-        DataTable dtApiData;
+
 
         private readonly ILogger<CustomerListController> _logger;
         private readonly IConfiguration _configuration;
@@ -58,6 +58,8 @@ namespace BizIntegrator.Service.Controllers
         [HttpPost(Name = "CustomerList")]
         public ActionResult Post()
         {
+            DataTable dtApiData;
+
             string errorMessage = "Errors encountered";
             string resp = string.Empty;
             CustomerList c = new CustomerList();

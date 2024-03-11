@@ -47,8 +47,6 @@ namespace BizIntegrator.Service.Controllers
         string TransactionType { get; set; }
         string Method { get; set; }
 
-        DataTable dtApiData;
-
         private readonly ILogger<CustomerListController> _logger;
         private readonly IConfiguration _configuration;
 
@@ -62,6 +60,8 @@ namespace BizIntegrator.Service.Controllers
         [Consumes("application/json")]
         public ActionResult Post([FromBody] JsonElement orders)
         {
+            DataTable dtApiData;
+
             string jsonString = orders.ToString();
             string errorMessage = "Errors encountered";
             HttpClient client;

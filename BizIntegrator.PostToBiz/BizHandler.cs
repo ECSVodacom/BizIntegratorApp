@@ -33,7 +33,6 @@ namespace BizIntegrator.PostToBiz
 
         public PostResult PostResult { get; set; }
 
-        string bizlinkString = String.Empty;
         public string SetBizLinkString()
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -41,7 +40,7 @@ namespace BizIntegrator.PostToBiz
             .AddJsonFile("appsettings.json")
             .Build();
 
-            bizlinkString = configuration.GetSection("Settings:BizLinkEndPoint").Value;
+            string bizlinkString = configuration.GetSection("Settings:BizLinkEndPoint").Value;
 
             return bizlinkString;
         }

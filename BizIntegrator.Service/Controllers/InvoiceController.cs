@@ -37,7 +37,7 @@ namespace BizIntegrator.Service.Controllers
         string TransactionType { get; set; }
         string Method { get; set; }
 
-        DataTable dtApiData;
+
 
         private readonly ILogger<CustomerListController> _logger;
         private readonly IConfiguration _configuration;
@@ -51,6 +51,8 @@ namespace BizIntegrator.Service.Controllers
         [HttpPost(Name = "Invoice")]
         public ActionResult Post()
         {
+            DataTable dtApiData;
+
             Invoice i = new Invoice();
             InvoiceLine il = new InvoiceLine();
             string resp = string.Empty;
