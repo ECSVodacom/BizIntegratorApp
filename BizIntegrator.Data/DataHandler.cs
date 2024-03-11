@@ -678,8 +678,6 @@ namespace BizIntegrator.Data
                 {
                     DataTable dataTable = new DataTable();
 
-                    StringBuilder sb = new StringBuilder();
-
                     bool result = false;
 
                     connection.Open();
