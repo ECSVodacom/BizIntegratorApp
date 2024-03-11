@@ -24,7 +24,7 @@ namespace BizIntegrator.Data
             .AddJsonFile("appsettings.json")
             .Build();
 
-            connectionString = configuration.GetConnectionString("DefaultConnection");
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
 
             return connectionString;
         }
