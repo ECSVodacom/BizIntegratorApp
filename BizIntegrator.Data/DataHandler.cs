@@ -41,16 +41,16 @@ namespace BizIntegrator.Data
                     
                     connection.Open();
                     sb.Clear();
-                    sb.AppendLine("select api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey ");
-                    sb.AppendLine(",api.Username ");
-                    sb.AppendLine(",api.[Password] ");
-                    sb.AppendLine(", api.AuthenticationType, api.UseAPIKey, ep.TransactionType ");
-                    sb.AppendLine("from APIs api ");
-                    sb.AppendLine("inner join APIEndpoints ep  ");
-                    sb.AppendLine("on api.Id = ep.API_Id ");
-                    sb.AppendLine("WHERE ep.TransactionType = @TransactionType AND IsActive = 1 ");
 
-                    string queryString = sb.ToString();
+
+                    string queryString = "select api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey " +
+                                            ",api.Username " +
+                                            ",api.[Password] " +
+                                            ", api.AuthenticationType, api.UseAPIKey, ep.TransactionType " +
+                                            "from APIs api " +
+                                            "inner join APIEndpoints ep  " +
+                                            "on api.Id = ep.API_Id " +
+                                            "WHERE ep.TransactionType = @TransactionType AND IsActive = 1 ");
 
                     using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
