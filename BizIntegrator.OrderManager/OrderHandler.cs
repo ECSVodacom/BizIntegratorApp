@@ -37,10 +37,12 @@ namespace BizIntegrator.OrderManager
         string TransactionType { get; set; }
         string Method { get; set; }
 
-        DataTable dtApiData;
+
 
         public void ProcessOrders()
         {
+            DataTable dtApiData;
+
             DataHandler dataHandler = new DataHandler();
             try
             {
