@@ -810,13 +810,13 @@ namespace BizIntegrator.Data
                     StringBuilder sb = new StringBuilder();
                     connection.Open();
 
-                    sb.AppendLine("SELECT api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey, api.Username, api.[Password], api.AuthenticationType");
-                    sb.AppendLine(", api.UseAPIKey, ep.TransactionType ");
-                    sb.AppendLine("FROM APIs api ");
-                    sb.AppendLine("INNER JOIN APIEndpoints ep ON api.Id = ep.API_Id ");
-                    sb.AppendLine("WHERE api.Name = @HeaderValue AND ep.TransactionType = @TransactionType AND IsActive = 1");
+                    string queryString = "SELECT api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey, api.Username, api.[Password], api.AuthenticationType" +
+                                        ", api.UseAPIKey, ep.TransactionType " +
+                                        "FROM APIs api " +
+                                        "INNER JOIN APIEndpoints ep ON api.Id = ep.API_Id " +
+                                        "WHERE api.Name = @HeaderValue AND ep.TransactionType = @TransactionType AND IsActive = 1";
 
-                    using (SqlCommand command = new SqlCommand(sb.ToString(), connection))
+                    using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
                         command.Parameters.AddWithValue("@HeaderValue", headerValue);
                         command.Parameters.AddWithValue("@TransactionType", transactionType);
