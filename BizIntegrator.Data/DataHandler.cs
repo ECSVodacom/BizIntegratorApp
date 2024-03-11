@@ -396,8 +396,6 @@ namespace BizIntegrator.Data
                 {
                     DataTable dataTable = new DataTable();
 
-                    StringBuilder sb = new StringBuilder();
-
                     sb.Clear();
                     sb.AppendLine("SELECT [OrdLn],[OrderNo],[ItemNo],[ItemDesc],[MfrItem] ");
                     sb.AppendLine(",[QtyConv],[OrdQty],[PurcUom],[PurcUomConv],[TaxCde] ");
