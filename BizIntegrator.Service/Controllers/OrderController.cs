@@ -224,8 +224,6 @@ namespace BizIntegrator.Service.Controllers
 
                             try
                             {
-                                string outputXtraEdit = string.Empty;
-
                                 string Response = orderHandler.CreateOrders(Id, ApiKey, Name, Url, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
                                 resp = Response.ToString();
 
