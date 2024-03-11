@@ -28,7 +28,7 @@ namespace BizIntegrator.Service.Repository
 
                 if (authenticationType == "OAuth")
                 {
-                    JwtToken = GenerateJwtAsync(id, name, username, password).Result;
+                    JwtToken = GenerateJwtAsync(name, username, password).Result;
                 }
 
                 else if (authenticationType == "APIKey")
@@ -82,7 +82,7 @@ namespace BizIntegrator.Service.Repository
 
         }
 
-        private static async Task<string> GenerateJwtAsync(string _id, string _compNo, string _username, string _password)
+        private static async Task<string> GenerateJwtAsync(string _compNo, string _username, string _password)
         {
             DataHandler dataHandler = new DataHandler();
 

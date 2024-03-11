@@ -453,8 +453,6 @@ namespace BizIntegrator.Service.Controllers
 
                                 bool invoiceProcessed = dataHandler.CheckProcessedInvoice(obj["invoiceId"].ToString());
 
-                                string ooo = obj.ToString();
-
                                 if (!invoiceProcessed)
                                 {
                                     bizHandler.PostToBiz(obj.ToString(), fileName, "6001651190618", "6001001030007");

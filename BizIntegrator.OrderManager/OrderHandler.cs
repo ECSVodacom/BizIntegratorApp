@@ -74,19 +74,16 @@ namespace BizIntegrator.OrderManager
         public string ConvertOrderToXtraEdi(string _Id, string _apiKey, string _name, string _url, string _privateKey, string _username, string _Password, string _authenticationType, string _useAPIKey)
         {
             DataHandler dataHandler = new DataHandler();
-            Orders ord = new Orders();
             try
             {
-                string outputXtraEdit = string.Empty;
-
-                string Response = CreateOrders(_Id, _apiKey, _name, _url, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
+                CreateOrders(_Id, _apiKey, _name, _url, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
                 
-                return "";
+                return "Orders downloaded";
             }
             catch (Exception ex)
             {
                 dataHandler.WriteException(ex.Message, "ConvertOrderToXtraEdi");
-                return "Orders not downloaded";
+                return ex.InnerException.ToString();
             }
 
         }

@@ -222,8 +222,6 @@ namespace BizIntegrator.Service.Controllers
 
                             OrderHandler orderHandler = new OrderHandler();
 
-                            Orders ord = new Orders();
-
                             try
                             {
                                 string outputXtraEdit = string.Empty;

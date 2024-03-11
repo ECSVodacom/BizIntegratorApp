@@ -96,8 +96,6 @@ namespace BizIntegrator.Service.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-                        List<Task> tasks = new List<Task>();
-
                         var dataObjects = response.Content.ReadAsStringAsync();
 
                         dynamic jObject = JsonConvert.DeserializeObject(dataObjects.Result);
