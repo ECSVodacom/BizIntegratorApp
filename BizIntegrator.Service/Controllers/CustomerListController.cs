@@ -118,16 +118,6 @@ namespace BizIntegrator.Service.Controllers
                                         c.CustomerCode = "";
                                     }
 
-                                    if (obj["code"] != null)
-                                    {
-                                        c.CustomerCode = obj["code"].ToString();
-                                    }
-
-                                    else
-                                    {
-                                        c.CustomerCode = "";
-                                    }
-
                                     if (obj["name"] != null)
                                     {
                                         c.CustomerName = obj["name"].ToString();
