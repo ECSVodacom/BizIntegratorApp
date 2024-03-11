@@ -18,6 +18,7 @@ using BizIntegrator.PostToBiz;
 using System.Net;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace BizIntegrator.Service.Controllers
 {
@@ -78,14 +79,26 @@ namespace BizIntegrator.Service.Controllers
                 AuthenticationType = dtApiData.Rows[0]["AuthenticationType"].ToString();
                 UseAPIKey = dtApiData.Rows[0]["UseAPIKey"].ToString();
 
+                string headerName = "APIName";
+
                 HttpClient client;
                 RestHandler restHandler = new RestHandler();
 
-                var dateString = DateTime.Now.ToString("yyyy-MM-dd");
+                if (HttpContext.Request.Headers.TryGetValue(headerName, out var headerValues))
+                {
+                    string headerValue = headerValues.FirstOrDefault();
 
-                var postedUrl = Url + dateString;
+                    if (!string.IsNullOrEmpty(headerValue) && headerValue.Equals("Diageo_Vodacom", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var dateString = DateTime.Now.ToString("yyyy-MM-dd");
+                        Url = Url + dateString;
+                    }
+                }
 
-                client = restHandler.SetClient(Id, Name, postedUrl, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
+
+
+
+                client = restHandler.SetClient(Id, Name, Url, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
 
                 client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
