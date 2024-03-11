@@ -81,7 +81,13 @@ namespace BizIntegrator.Service.Controllers
                 HttpClient client;
                 RestHandler restHandler = new RestHandler();
 
-                client = restHandler.SetClient(Id, Name, Url, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
+                var dateString = DateTime.Now.ToString("yyyy-MM-dd");
+
+                var postedUrl = Url + dateString;
+
+
+
+                client = restHandler.SetClient(Id, Name, postedUrl, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
 
                 client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
