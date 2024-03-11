@@ -140,12 +140,12 @@ namespace BizIntegrator.Data
                 using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
-                    var queryString = "SELECT api.EanCode AS SenderGln, sv.EanCode AS RecieverGln " +
+                    string queryString = "SELECT api.EanCode AS SenderGln, sv.EanCode AS RecieverGln " +
                                         "FROM APIs api " +
                                         "INNER JOIN Suppliers s ON api.ID = s.API_Id " +
                                         "INNER JOIN SupplierVendors sv ON s.Id = sv.SupplierId " +
                                         "WHERE Vendor = @VendorNo";
-                    using (SqlCommand command = new SqlCommand(queryString.ToString(), connection))
+                    using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
                         command.Parameters.AddWithValue("@VendorNo", vendorNo);
 
