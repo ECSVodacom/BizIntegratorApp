@@ -50,7 +50,9 @@ namespace BizIntegrator.Data
                     sb.AppendLine("on api.Id = ep.API_Id ");
                     sb.AppendLine("WHERE ep.TransactionType = @TransactionType AND IsActive = 1 ");
 
-                    using (SqlCommand command = new SqlCommand(sb.ToString(), connection))
+                    string queryString = sb.ToString();
+
+                    using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
                         command.Parameters.AddWithValue("@TransactionType", transactionType);
 
