@@ -50,7 +50,7 @@ namespace BizIntegrator.Data
                                             "from APIs api " +
                                             "inner join APIEndpoints ep  " +
                                             "on api.Id = ep.API_Id " +
-                                            "WHERE ep.TransactionType = @TransactionType AND IsActive = 1 ");
+                                            "WHERE ep.TransactionType = @TransactionType AND IsActive = 1 ";
 
                     using (SqlCommand command = new SqlCommand(queryString, connection))
                     {
