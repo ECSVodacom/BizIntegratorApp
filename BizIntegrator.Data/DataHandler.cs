@@ -17,7 +17,6 @@ namespace BizIntegrator.Data
 {
     public class DataHandler
     {
-        string connectionString = String.Empty;
         public string SetConnectionString()
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
