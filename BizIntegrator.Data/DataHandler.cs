@@ -30,15 +30,11 @@ namespace BizIntegrator.Data
             return connectionString;
         }
 
-        string _connection;
-
         public DataTable GetApiData(string transactionType)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
 
@@ -79,11 +75,9 @@ namespace BizIntegrator.Data
 
         public bool CheckOrders(string ordNo)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
 
@@ -122,11 +116,9 @@ namespace BizIntegrator.Data
 
         public void UpdateProcessedOrder(string ordNo)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand("UPDATE Orders SET Processed = 1 WHERE ordNo = @ordNo", connection))
@@ -146,11 +138,9 @@ namespace BizIntegrator.Data
 
         public DataTable GetEanCodes(string vendorNo)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
                     StringBuilder sb = new StringBuilder();
@@ -181,11 +171,9 @@ namespace BizIntegrator.Data
 
         public bool ResendOrders(string orderNo)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
 
@@ -220,13 +208,11 @@ namespace BizIntegrator.Data
 
         public void WriteException(String exception, string method)
         {
-            _connection = SetConnectionString();
-
             try
             {
                 RemoveQuotes(exception);
 
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
 
@@ -263,11 +249,9 @@ namespace BizIntegrator.Data
                             , string branchCode, string ucARBrnchNo, string dateTimeStamp, string groupCode, string groupDescription
                             , string area, string areaDescription, string ulARWHLinked, string id)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand("SP_CREATE_CustomerList", connection))
@@ -309,11 +293,9 @@ namespace BizIntegrator.Data
                                 ,string delivCity,string buyerNote,bool confirmInd,string compID,bool resendOrder
                                 ,bool processed, string id)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand("SP_CREATE_ORDER", connection))
@@ -376,11 +358,9 @@ namespace BizIntegrator.Data
                                     , string ordQty,string purcUom, string purcUomConv,string taxCde, string taxRate
                                     , string unitPrc, string lineTotExcl, string lineTotTax, string lineTotVal)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand("SP_CREATE_ORDER_LINES", connection))
@@ -414,11 +394,9 @@ namespace BizIntegrator.Data
 
         public DataTable GetOrdersLines(string orderNo)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
 
@@ -456,11 +434,9 @@ namespace BizIntegrator.Data
             , double grossTotalExVat, double grossTaxTotal, double discountAmountInVat, double discountAmountExVat
             , double netTotalExVat, double netTaxTotal, int totalInvoiceRounding, double netTotalInVat, bool processed, string id)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand("SP_CREATE_Invoice", connection))
@@ -502,11 +478,9 @@ namespace BizIntegrator.Data
             , double lineNetTotalOrderedInVat, double lineNetTotalOrderedExVat, double lineNetTotalProcessedInVat
             , double lineNetTotalProcessedExVat, string lineNotes)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand("SP_CREATE_InvoiceLine", connection))
@@ -543,11 +517,9 @@ namespace BizIntegrator.Data
 
         public bool CheckStockBarcode(string productCode)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
 
@@ -579,11 +551,9 @@ namespace BizIntegrator.Data
 
         public bool CheckCustomerList(string customerCode)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
 
@@ -624,11 +594,9 @@ namespace BizIntegrator.Data
 
         public string GetCustomerCode(string branchCode)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
 
@@ -664,14 +632,11 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public bool CheckInvoice(string invoiceId)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
 
@@ -706,14 +671,11 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public bool CheckProcessedInvoice(string invoiceId)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
 
@@ -760,11 +722,9 @@ namespace BizIntegrator.Data
         }
         public void UpdateProcessedInvoice(string invoiceId)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
 
@@ -785,14 +745,11 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public void CreateStocBarcode(string productCode, string productDescription, string bottleBarcode, string caseBarcode, string bottleUom, string caseUom, int unitsPerCase, string id)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand("SP_CREATE_StockBarcode", connection))
@@ -821,11 +778,9 @@ namespace BizIntegrator.Data
 
         public DataTable GetCustomerData()
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
 
@@ -853,11 +808,9 @@ namespace BizIntegrator.Data
 
         public DataTable GetApiDataPerName(string headerValue, string transactionType)
         {
-            _connection = SetConnectionString();
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connection))
+                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
                 {
                     DataTable dataTable = new DataTable();
                     StringBuilder sb = new StringBuilder();
