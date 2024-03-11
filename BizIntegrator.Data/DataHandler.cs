@@ -53,10 +53,16 @@ namespace BizIntegrator.Data
                     sb.AppendLine("from APIs api ");
                     sb.AppendLine("inner join APIEndpoints ep  ");
                     sb.AppendLine("on api.Id = ep.API_Id ");
-                    sb.AppendLine("where ep.TransactionType = '"+ transactionType + "' and IsActive = 1 ");
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+                    sb.AppendLine("WHERE ep.TransactionType = @TransactionType AND IsActive = 1 ");
+
+                    using (SqlCommand command = new SqlCommand(sb.ToString(), connection))
                     {
-                        da.Fill(dataTable);
+                        command.Parameters.AddWithValue("@TransactionType", transactionType);
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(dataTable);
+                        }
                     }
 
                     return dataTable;
@@ -80,18 +86,29 @@ namespace BizIntegrator.Data
                 using (SqlConnection connection = new SqlConnection(_connection))
                 {
                     connection.Open();
-                    SqlDataAdapter dt = new SqlDataAdapter("SELECT isnull(Processed, 0) Processed From Orders Where OrdNo = '" + ordNo + "'", connection);
-                    DataSet ds = new DataSet();
-                    dt.Fill(ds);
 
-                    if (Convert.ToBoolean(ds.Tables[0].Rows[0]["Processed"]) == true)
+                    string query = "SELECT ISNULL(Processed, 0) AS Processed FROM Orders WHERE OrdNo = @OrdNo";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        return true;
+                        command.Parameters.Add(new SqlParameter("@OrdNo", SqlDbType.VarChar) { Value = ordNo });
+
+                        using (SqlDataAdapter dt = new SqlDataAdapter(command))
+                        {
+                            DataTable dataTable = new DataTable();
+                            dt.Fill(dataTable);
+
+                            if (Convert.ToBoolean(dataTable.Rows[0]["Processed"]) == true)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
                     }
-                    else
-                    {
-                        return false;
-                    }
+
 
                 }
 
@@ -112,9 +129,10 @@ namespace BizIntegrator.Data
                 using (SqlConnection connection = new SqlConnection(_connection))
                 {
                     connection.Open();
-                    using (SqlCommand cmd = new SqlCommand("Update Orders set Processed = 1 where ordNo = '" + ordNo + "'", connection))
+                    using (SqlCommand cmd = new SqlCommand("UPDATE Orders SET Processed = 1 WHERE ordNo = @ordNo", connection))
                     {
                         cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@ordNo", ordNo);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -134,22 +152,23 @@ namespace BizIntegrator.Data
             {
                 using (SqlConnection connection = new SqlConnection(_connection))
                 {
-                    StringBuilder sb = new StringBuilder();
-
                     connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("SELECT api.EanCode SenderGln, sv.EanCode AS RecieverGln ");
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("SELECT api.EanCode AS SenderGln, sv.EanCode AS RecieverGln ");
                     sb.AppendLine("FROM APIs api ");
-                    sb.AppendLine("inner join Suppliers s ");
-                    sb.AppendLine("on api.ID = s.API_Id ");
-                    sb.AppendLine("inner join SupplierVendors sv ");
-                    sb.AppendLine("on s.Id = sv.SupplierId ");
-                    sb.AppendLine("Where Vendor = '"+vendorNo+"'");
-                    SqlDataAdapter dt = new SqlDataAdapter(sb.ToString(), connection);
-                    DataSet ds = new DataSet();
-                    dt.Fill(ds);
+                    sb.AppendLine("INNER JOIN Suppliers s ON api.ID = s.API_Id ");
+                    sb.AppendLine("INNER JOIN SupplierVendors sv ON s.Id = sv.SupplierId ");
+                    sb.AppendLine("WHERE Vendor = @VendorNo");
+                    using (SqlCommand command = new SqlCommand(sb.ToString(), connection))
+                    {
+                        command.Parameters.AddWithValue("@VendorNo", vendorNo);
 
-                    return ds.Tables[0];
+                        SqlDataAdapter dt = new SqlDataAdapter(command);
+                        DataSet ds = new DataSet();
+                        dt.Fill(ds);
+
+                        return ds.Tables[0];
+                    }
                 }
 
             }
@@ -169,20 +188,27 @@ namespace BizIntegrator.Data
                 using (SqlConnection connection = new SqlConnection(_connection))
                 {
                     connection.Open();
-                    SqlDataAdapter dt = new SqlDataAdapter("SELECT Processed From Orders Where OrdNo = '" + orderNo + "'", connection);
-                    DataSet ds = new DataSet();
-                    dt.Fill(ds);
 
-                    if (Convert.ToBoolean(ds.Tables[0].Rows[0]["Processed"]) == true)
+                    string query = "SELECT Processed FROM Orders WHERE OrdNo = @OrderNo";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                        command.Parameters.AddWithValue("@OrderNo", orderNo);
 
+                        SqlDataAdapter dt = new SqlDataAdapter(command);
+                        DataSet ds = new DataSet();
+                        dt.Fill(ds);
+
+                        if (ds.Tables[0].Rows.Count > 0 && Convert.ToBoolean(ds.Tables[0].Rows[0]["Processed"]))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                 }
+
 
             }
             catch (Exception ex)
@@ -203,13 +229,20 @@ namespace BizIntegrator.Data
                 using (SqlConnection connection = new SqlConnection(_connection))
                 {
                     connection.Open();
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO MessageException(ExceptionDate, Exception, Method) VALUES ('" + DateTime.Now + "', '" + RemoveQuotes(exception) + "', '" + method + "')", connection))
+
+                    string query = "INSERT INTO MessageException(ExceptionDate, Exception, Method) VALUES (@ExceptionDate, @Exception, @Method)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@ExceptionDate", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@Exception", RemoveQuotes(exception));
+                        cmd.Parameters.AddWithValue("@Method", method);
 
                         cmd.ExecuteNonQuery();
                     }
                 }
+
 
             }
             catch (Exception ex)
@@ -396,16 +429,19 @@ namespace BizIntegrator.Data
                     sb.AppendLine(",[QtyConv],[OrdQty],[PurcUom],[PurcUomConv],[TaxCde] ");
                     sb.AppendLine(",[TaxRate],[UnitPrc],[LineTotExcl],[LineTotTax],[LineTotVal] ");
                     sb.AppendLine("FROM [dbo].[OrderLines] ");
-                    sb.AppendLine("WHERE OrderNo = '" + orderNo + "' ");
+                    sb.AppendLine("WHERE OrderNo = @OrderNo");
 
                     connection.Open();
 
                     using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
                     {
+                        da.SelectCommand.Parameters.AddWithValue("@OrderNo", orderNo);
                         da.Fill(dataTable);
                     }
+
                     return dataTable;
                 }
+
             }
             catch (Exception ex)
             {
@@ -515,29 +551,22 @@ namespace BizIntegrator.Data
                 {
                     DataTable dataTable = new DataTable();
 
-                    StringBuilder sb = new StringBuilder();
-
                     connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("select * from StockBarcodes ");
 
-                    sb.AppendLine("where ProductCode = '" + productCode + "' ");
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+                    string query = "SELECT * FROM StockBarcodes WHERE ProductCode = @ProductCode";
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(query, connection))
                     {
+                        da.SelectCommand.Parameters.AddWithValue("@ProductCode", productCode);
+
                         da.Fill(dataTable);
                     }
 
                     int rowCount = dataTable.Rows.Count;
 
-                    if (rowCount > 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return rowCount > 0;
                 }
+
 
             }
             catch (Exception ex)
@@ -558,15 +587,18 @@ namespace BizIntegrator.Data
                 {
                     DataTable dataTable = new DataTable();
 
-                    StringBuilder sb = new StringBuilder();
-
                     connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("select * from CustomerList ");
-                    sb.AppendLine("where CustomerCode = '" + customerCode + "' ");
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+
+                    string query = "SELECT * FROM CustomerList WHERE CustomerCode = @CustomerCode";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        da.Fill(dataTable);
+                        command.Parameters.AddWithValue("@CustomerCode", customerCode);
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(dataTable);
+                        }
                     }
 
                     int rowCount = dataTable.Rows.Count;
@@ -600,15 +632,16 @@ namespace BizIntegrator.Data
                 {
                     DataTable dataTable = new DataTable();
 
-                    StringBuilder sb = new StringBuilder();
-
-                    connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("select CustomerCode from CustomerList ");
-                    sb.AppendLine("where BranchCode = '" + branchCode + "' ");
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+                    using (SqlCommand cmd = new SqlCommand("SELECT CustomerCode FROM CustomerList WHERE BranchCode = @BranchCode", connection))
                     {
-                        da.Fill(dataTable);
+                        cmd.Parameters.AddWithValue("@BranchCode", branchCode);
+
+                        connection.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            da.Fill(dataTable);
+                        }
                     }
 
                     string customerCode = string.Empty;
@@ -618,14 +651,9 @@ namespace BizIntegrator.Data
                         customerCode = dataTable.Rows[0]["CustomerCode"].ToString();
                     }
 
-                    else
-                    {
-                        customerCode = string.Empty;
-                    }
-                    
-
                     return customerCode;
-                    
+
+
                 }
 
             }
@@ -647,16 +675,16 @@ namespace BizIntegrator.Data
                 {
                     DataTable dataTable = new DataTable();
 
-                    StringBuilder sb = new StringBuilder();
+                        connection.Open();
 
-                    connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("select Processed from Invoices ");
-                    sb.AppendLine("where InvoiceId = '" + invoiceId + "' ");
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
-                    {
-                        da.Fill(dataTable);
-                    }
+                        string query = "SELECT Processed FROM Invoices WHERE InvoiceId = @InvoiceId";
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(query, connection))
+                        {
+                            da.SelectCommand.Parameters.AddWithValue("@InvoiceId", invoiceId);
+                            da.Fill(dataTable);
+                        }
+                    
 
                     int rowCount = dataTable.Rows.Count;
 
@@ -694,12 +722,16 @@ namespace BizIntegrator.Data
                     bool result = false;
 
                     connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("select Processed from Invoices ");
-                    sb.AppendLine("where InvoiceId = '" + invoiceId + "' ");
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+                    string query = "SELECT Processed FROM Invoices WHERE InvoiceId = @InvoiceId";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        da.Fill(dataTable);
+                        command.Parameters.AddWithValue("@InvoiceId", invoiceId);
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(dataTable);
+                        }
                     }
 
                     int rowCount = dataTable.Rows.Count;
@@ -735,12 +767,17 @@ namespace BizIntegrator.Data
                 using (SqlConnection connection = new SqlConnection(_connection))
                 {
                     connection.Open();
-                    using (SqlCommand cmd = new SqlCommand("Update Invoices set Processed = 1 where InvoiceId = '" + invoiceId + "'", connection))
+
+                    string updateQuery = "UPDATE Invoices SET Processed = 1 WHERE InvoiceId = @InvoiceId";
+
+                    using (SqlCommand cmd = new SqlCommand(updateQuery, connection))
                     {
                         cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@InvoiceId", invoiceId);
                         cmd.ExecuteNonQuery();
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -823,26 +860,29 @@ namespace BizIntegrator.Data
                 using (SqlConnection connection = new SqlConnection(_connection))
                 {
                     DataTable dataTable = new DataTable();
-
                     StringBuilder sb = new StringBuilder();
-
                     connection.Open();
-                    sb.Clear();
-                    sb.AppendLine("select api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey ");
-                    sb.AppendLine(",api.Username ");
-                    sb.AppendLine(",api.[Password] ");
-                    sb.AppendLine(", api.AuthenticationType, api.UseAPIKey, ep.TransactionType ");
-                    sb.AppendLine("from APIs api ");
-                    sb.AppendLine("inner join APIEndpoints ep  ");
-                    sb.AppendLine("on api.Id = ep.API_Id ");
-                    sb.AppendLine("where api.Name = '" + headerValue + "' and ep.TransactionType = '"+ transactionType + "' and IsActive = 1 ");
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
+
+                    sb.AppendLine("SELECT api.Id, api.AccountKey, api.[Name], ep.[EndPoint], api.PrivateKey, api.Username, api.[Password], api.AuthenticationType");
+                    sb.AppendLine(", api.UseAPIKey, ep.TransactionType ");
+                    sb.AppendLine("FROM APIs api ");
+                    sb.AppendLine("INNER JOIN APIEndpoints ep ON api.Id = ep.API_Id ");
+                    sb.AppendLine("WHERE api.Name = @HeaderValue AND ep.TransactionType = @TransactionType AND IsActive = 1");
+
+                    using (SqlCommand command = new SqlCommand(sb.ToString(), connection))
                     {
-                        da.Fill(dataTable);
+                        command.Parameters.AddWithValue("@HeaderValue", headerValue);
+                        command.Parameters.AddWithValue("@TransactionType", transactionType);
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(dataTable);
+                        }
                     }
 
                     return dataTable;
                 }
+
 
             }
             catch (Exception ex)
