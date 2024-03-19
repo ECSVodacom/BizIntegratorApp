@@ -39,8 +39,6 @@ namespace BizIntegrator.Service.Controllers
         string TransactionType { get; set; }
         string Method { get; set; }
 
-
-
         private readonly ILogger<CustomerListController> _logger;
         private readonly IConfiguration _configuration;
 

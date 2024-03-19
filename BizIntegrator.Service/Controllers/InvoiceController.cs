@@ -95,9 +95,6 @@ namespace BizIntegrator.Service.Controllers
                     }
                 }
 
-
-
-
                 client = restHandler.SetClient(Id, Name, Url, ApiKey, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
 
                 client.DefaultRequestHeaders.Accept.Add(

@@ -69,7 +69,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public bool CheckOrders(string ordNo)
         {
             try
@@ -110,7 +109,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public void UpdateProcessedOrder(string ordNo)
         {
             try
@@ -132,7 +130,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public DataTable GetEanCodes(string vendorNo)
         {
             try
@@ -164,44 +161,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
-        public bool ResendOrders(string orderNo)
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
-                {
-                    connection.Open();
-
-                    string query = "SELECT Processed FROM Orders WHERE OrdNo = @OrderNo";
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@OrderNo", orderNo);
-
-                        SqlDataAdapter dt = new SqlDataAdapter(command);
-                        DataSet ds = new DataSet();
-                        dt.Fill(ds);
-
-                        if (ds.Tables[0].Rows.Count > 0 && Convert.ToBoolean(ds.Tables[0].Rows[0]["Processed"]))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex.InnerException.Message, "ResendOrders");
-                throw;
-            }
-        }
-
         public void WriteException(String exception, string method)
         {
             try
@@ -235,12 +194,10 @@ namespace BizIntegrator.Data
 
 
         }
-
         static string RemoveQuotes(string input)
         {
             return input.Replace("'", "").Replace("\"", "").Replace("`", "");
         }
-
         public void CreateCustomerList(string customerCode, string customerName, string physicalAddress, string email
                             , string branchCode, string ucARBrnchNo, string dateTimeStamp, string groupCode, string groupDescription
                             , string area, string areaDescription, string ulARWHLinked, string id)
@@ -278,7 +235,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public void CreateOrders(string ordNo,string ordDate,string ordDesc,string ordType,string ordTerm
                                 ,string ordTermDesc, string ordStat,string orderStatus,string origin, string promDate
                                 ,string compName,string branchNo,string branchName,string branchAddr1,string branchAddr2
@@ -349,7 +305,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public void CreateOrderLines(string ordLn,string ordNo,string itemNo,string itemDesc,string mfrItem, string qtyConv
                                     , string ordQty,string purcUom, string purcUomConv,string taxCde, string taxRate
                                     , string unitPrc, string lineTotExcl, string lineTotTax, string lineTotVal)
@@ -387,42 +342,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
-        public DataTable GetOrdersLines(string orderNo)
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
-                {
-                    DataTable dataTable = new DataTable();
-
-                    sb.Clear();
-                    sb.AppendLine("SELECT [OrdLn],[OrderNo],[ItemNo],[ItemDesc],[MfrItem] ");
-                    sb.AppendLine(",[QtyConv],[OrdQty],[PurcUom],[PurcUomConv],[TaxCde] ");
-                    sb.AppendLine(",[TaxRate],[UnitPrc],[LineTotExcl],[LineTotTax],[LineTotVal] ");
-                    sb.AppendLine("FROM [dbo].[OrderLines] ");
-                    sb.AppendLine("WHERE OrderNo = @OrderNo");
-
-                    connection.Open();
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
-                    {
-                        da.SelectCommand.Parameters.AddWithValue("@OrderNo", orderNo);
-                        da.Fill(dataTable);
-                    }
-
-                    return dataTable;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex.InnerException.Message, "GetOrderLines");
-                throw;
-            }
-
-        }
-
         public void CreateInvoice(string invoiceNumber, int invoiceId, string invoiceDate, int documentState
             , string orderNumber, string externalOrderNumber, string customerCode, double grossTotalInVat
             , double grossTotalExVat, double grossTaxTotal, double discountAmountInVat, double discountAmountExVat
@@ -466,7 +385,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public void CreateInvoiceLines(string invoiceNumber, int invoiceId, string warehouseCode, string itemCode, string moduleCode
             , string lineDescription, double unitPriceExcl, double unitPriceIncl, int quantity, string unitOfMeasure
             , double lineNetTotalOrderedInVat, double lineNetTotalOrderedExVat, double lineNetTotalProcessedInVat
@@ -508,7 +426,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public bool CheckStockBarcode(string productCode)
         {
             try
@@ -542,7 +459,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
         public bool CheckCustomerList(string customerCode)
         {
             try
@@ -581,47 +497,6 @@ namespace BizIntegrator.Data
             catch (Exception ex)
             {
                 WriteException(ex.InnerException.Message, "CheckCustomerList");
-
-                throw;
-            }
-        }
-
-        public string GetCustomerCode(string branchCode)
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
-                {
-                    DataTable dataTable = new DataTable();
-
-                    using (SqlCommand cmd = new SqlCommand("SELECT CustomerCode FROM CustomerList WHERE BranchCode = @BranchCode", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@BranchCode", branchCode);
-
-                        connection.Open();
-
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            da.Fill(dataTable);
-                        }
-                    }
-
-                    string customerCode = string.Empty;
-
-                    if (dataTable.Rows.Count > 0)
-                    {
-                        customerCode = dataTable.Rows[0]["CustomerCode"].ToString();
-                    }
-
-                    return customerCode;
-
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex.InnerException.Message, "GetCustomerCode");
 
                 throw;
             }
@@ -767,37 +642,6 @@ namespace BizIntegrator.Data
                 throw;
             }
         }
-
-        public DataTable GetCustomerData()
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(SetConnectionString()))
-                {
-                    DataTable dataTable = new DataTable();
-
-                    StringBuilder sb = new StringBuilder();
-
-                    sb.Clear();
-                    sb.AppendLine("SELECT * FROM [dbo].[CustomerList] ");
-
-                    connection.Open();
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(sb.ToString(), connection))
-                    {
-                        da.Fill(dataTable);
-                    }
-                    return dataTable;
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex.InnerException.Message, "GetOrderLines");
-                throw;
-            }
-
-        }
-
         public DataTable GetApiDataPerName(string headerValue, string transactionType)
         {
             try

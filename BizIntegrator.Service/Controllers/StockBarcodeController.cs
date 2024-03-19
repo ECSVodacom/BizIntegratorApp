@@ -197,9 +197,6 @@ namespace BizIntegrator.Service.Controllers
                 {
                     return BadRequest(new { Message = errorMessage });
                 }
-
-
-
             }
             catch (Exception ex)
             {

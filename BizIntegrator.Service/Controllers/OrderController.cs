@@ -68,7 +68,7 @@ namespace BizIntegrator.Service.Controllers
             DataHandler dataHandler = new DataHandler();
             string resp = string.Empty;
             string headerName = "APIName";
-            TransactionType = "PostOrders";
+            TransactionType = "Orders";
             try
             {
 

@@ -37,8 +37,6 @@ namespace BizIntegrator.OrderManager
         string TransactionType { get; set; }
         string Method { get; set; }
 
-
-
         public void ProcessOrders()
         {
             DataTable dtApiData;
@@ -62,8 +60,6 @@ namespace BizIntegrator.OrderManager
                     UseAPIKey = row["UseAPIKey"].ToString();
 
                     ConvertOrderToXtraEdi(Id, ApiKey, Name, Url, PrivateKey, Username, Password, AuthenticationType, UseAPIKey);
-
-
                 }
             }
             catch (Exception ex)
