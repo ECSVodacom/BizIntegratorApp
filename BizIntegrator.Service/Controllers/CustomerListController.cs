@@ -249,7 +249,7 @@ namespace BizIntegrator.Service.Controllers
 
                     else
                     {
-                        return BadRequest();
+                        return BadRequest(new { Message = resp });
                     }
 
                 }
