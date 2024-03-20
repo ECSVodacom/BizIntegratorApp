@@ -168,7 +168,7 @@ namespace BizIntegrator.Service.Repository
                     }
 
 
-                    return response.RequestMessage.ToString();
+                    return response.ToString();
                 }
 
 
