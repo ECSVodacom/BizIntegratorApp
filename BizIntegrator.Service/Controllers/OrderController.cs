@@ -47,10 +47,10 @@ namespace BizIntegrator.Service.Controllers
         string TransactionType { get; set; }
         string Method { get; set; }
 
-        private readonly ILogger<CustomerListController> _logger;
+        private readonly ILogger<OrderController> _logger;
         private readonly IConfiguration _configuration;
 
-        public OrderController(ILogger<CustomerListController> logger, IConfiguration configuration)
+        public OrderController(ILogger<OrderController> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
@@ -251,6 +251,7 @@ namespace BizIntegrator.Service.Controllers
                 return BadRequest(new { Message = errorMessage, ExceptionDetails = ex.Message });
             }
         }
+
     }
 
 }

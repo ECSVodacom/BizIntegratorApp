@@ -36,10 +36,10 @@ namespace BizIntegrator.Service.Controllers
         string TransactionType { get; set; }
         string Method { get; set; }
 
-        private readonly ILogger<CustomerListController> _logger;
+        private readonly ILogger<StockBarcodeController> _logger;
         private readonly IConfiguration _configuration;
 
-        public StockBarcodeController(ILogger<CustomerListController> logger, IConfiguration configuration)
+        public StockBarcodeController(ILogger<StockBarcodeController> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;

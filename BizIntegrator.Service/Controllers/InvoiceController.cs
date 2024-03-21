@@ -40,10 +40,10 @@ namespace BizIntegrator.Service.Controllers
 
 
 
-        private readonly ILogger<CustomerListController> _logger;
+        private readonly ILogger<InvoiceController> _logger;
         private readonly IConfiguration _configuration;
 
-        public InvoiceController(ILogger<CustomerListController> logger, IConfiguration configuration)
+        public InvoiceController(ILogger<InvoiceController> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;

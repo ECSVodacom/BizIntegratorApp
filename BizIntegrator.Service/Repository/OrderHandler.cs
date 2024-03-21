@@ -28,7 +28,7 @@ namespace BizIntegrator.Service.Repository
                 client = restHandler.SetClient(_id, _name, _url, _apiKey, _privateKey, _username, _Password, _authenticationType, _useAPIKey);
 
                 client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+                new MediaTypeWithQualityHeaderValue("application/xml"));
 
                 HttpResponseMessage response = client.GetAsync("").Result;
 
