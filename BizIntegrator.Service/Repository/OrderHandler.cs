@@ -154,6 +154,8 @@ namespace BizIntegrator.Service.Repository
 
                         BizHandler bizHandler = new BizHandler();
 
+                        string jsonfile = obj.ToString();
+                        var aaa = jsonfile;
                         bool orderProcessed = dataHandler.CheckOrders(ordNo);
 
                         if (!orderProcessed)
@@ -193,7 +195,7 @@ namespace BizIntegrator.Service.Repository
             DataHandler dataHandler = new DataHandler();
             HttpClient client;
 
-            string transactionType = "GetOrders";
+            string transactionType = "Orders";
 
             try
             {
@@ -202,7 +204,7 @@ namespace BizIntegrator.Service.Repository
                 client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-                DataTable dtPostDataUrl = dataHandler.GetApiData(transactionType);
+                DataTable dtPostDataUrl = dataHandler.GetApiDataPerName(name,transactionType);
                 DataRow row = dtPostDataUrl.Rows[0];
                 string postDataUrl = row["EndPoint"].ToString() + "/" + ordNo;
 

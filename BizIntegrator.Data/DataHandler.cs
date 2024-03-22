@@ -81,21 +81,30 @@ namespace BizIntegrator.Data
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.Add(new SqlParameter("@OrdNo", SqlDbType.VarChar) { Value = ordNo });
+                        command.Parameters.AddWithValue("@OrdNo", ordNo);
 
                         using (SqlDataAdapter dt = new SqlDataAdapter(command))
                         {
                             DataTable dataTable = new DataTable();
                             dt.Fill(dataTable);
 
-                            if (Convert.ToBoolean(dataTable.Rows[0]["Processed"]) == true)
+                            if (dataTable.Rows.Count > 0)
                             {
-                                return true;
+                                if (Convert.ToBoolean(dataTable.Rows[0]["Processed"]) == true)
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
                             }
+
                             else
                             {
                                 return false;
                             }
+
                         }
                     }
 
