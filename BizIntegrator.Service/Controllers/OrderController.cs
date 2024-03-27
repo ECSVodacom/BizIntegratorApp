@@ -76,7 +76,7 @@ namespace BizIntegrator.Service.Controllers
                 {
                     string headerValue = headerValues.FirstOrDefault();
 
-                    if (!string.IsNullOrEmpty(headerValue) && headerValue.Equals("Diageo_Vodacom", StringComparison.OrdinalIgnoreCase))
+                    if (!string.IsNullOrEmpty(headerValue) && headerValue.Equals("Diageo_CheckersLive", StringComparison.OrdinalIgnoreCase))
                     {
                         dtApiData = dataHandler.GetApiDataPerName(headerValue, TransactionType);
 
